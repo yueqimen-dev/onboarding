@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<!-- saved from url=(0106)file:///Users/sarah/Downloads/%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC/Connect%20Platforms%20_%20WorkfxAI.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connect Platforms | WorkfxAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link href="./Connect Platforms _ WorkfxAI_files/css2" rel="stylesheet">
+  <style>
+    :root {
+      --app-bg: #fafafa;
+      --app-surface: #FFFFFF;
+      --app-primary: #0a0a0a;
+      --app-text: #171717;
+      --app-sub: #525252;
+      --app-muted: #a3a3a3;
+      --app-border: #e5e5e5;
+      --app-border-light: #f5f5f5;
+      --shell-font: 'Manrope', sans-serif;
+      --app-font: 'Inter', sans-serif;
+      --blue: #2563eb;
+      --blue-light: #eff6ff;
+      --green: #16a34a;
+      --green-light: #f0fdf4;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--app-font);
+      background: var(--app-bg);
+      color: var(--app-text);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ═══ TRIAL BAR ═══ */
+    .trial-bar {
+      display: flex;
+      align-items: center;
+      padding: 10px 24px;
+      background: white;
+      border-bottom: 1px solid var(--app-border);
+      flex-shrink: 0;
+      gap: 20px;
+      opacity: 0;
+      animation: barIn 0.4s ease 0.05s forwards;
+    }
+
+    @keyframes barIn {
+      from {
+        opacity: 0;
+        transform: translateY(-6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .trial-label {
+      font-family: var(--shell-font);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--app-primary);
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .trial-label-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--app-primary);
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: .4
+      }
+    }
+
+    .trial-track {
+      flex: 1;
+      height: 3px;
+      background: var(--app-border);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .trial-fill {
+      height: 100%;
+      background: var(--app-primary);
+      border-radius: 100px;
+      transition: width .6s ease;
+    }
+
+    .trial-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .trial-back {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: 1.5px solid var(--app-border);
+      background: white;
+      font-family: var(--shell-font);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--app-sub);
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .trial-back:hover {
+      border-color: var(--app-sub);
+      color: var(--app-text);
+    }
+
+    .trial-skip {
+      font-family: var(--shell-font);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--app-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color .2s;
+    }
+
+    .trial-skip:hover {
+      color: var(--app-sub);
+    }
+
+    .trial-next {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 18px;
+      border-radius: 8px;
+      border: 1.5px solid var(--app-border);
+      background: white;
+      font-family: var(--shell-font);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--app-sub);
+      cursor: pointer;
+      transition: all .25s;
+    }
+
+    .trial-next:hover {
+      border-color: var(--app-sub);
+      color: var(--app-text);
+    }
+
+    .trial-next svg {
+      transition: transform 0.2s;
+    }
+
+    .trial-next:hover svg {
+      transform: translateX(2px);
+    }
+
+    /* ═══ LAYOUT ═══ */
+    .app-layout {
+      flex: 1;
+      display: flex;
+      min-height: 0;
+      opacity: 0;
+      animation: layoutIn .5s ease .15s forwards;
+    }
+
+    @keyframes layoutIn {
+      from {
+        opacity: 0
+      }
+
+      to {
+        opacity: 1
+      }
+    }
+
+    /* ═══ SIDEBAR ═══ */
+    .sidebar {
+      width: 220px;
+      background: white;
+      border-right: 1px solid var(--app-border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .sidebar-logo {
+      padding: 16px;
+      border-bottom: 1px solid var(--app-border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar-logo-box {
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      background: var(--app-primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--app-font);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .sidebar-logo-text {
+      font-family: var(--app-font);
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      padding: 12px 10px;
+      overflow-y: auto;
+    }
+
+    .nav-overview {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 8px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      background: transparent;
+      transition: all 0.2s;
+    }
+
+    .nav-overview:hover {
+      background: var(--app-border-light);
+    }
+
+    .nav-overview-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--app-muted);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .nav-overview-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--app-sub);
+      line-height: 1.3;
+    }
+
+    .nav-overview-desc {
+      font-size: 11px;
+      color: var(--app-muted);
+      margin-top: 1px;
+    }
+
+    .nav-divider {
+      height: 1px;
+      background: var(--app-border-light);
+      margin: 4px 0 8px;
+    }
+
+    .nav-section-label {
+      font-family: var(--shell-font);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--app-muted);
+      padding: 0 10px;
+      margin-bottom: 6px;
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: default;
+      border: 1px solid transparent;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 2px;
+      transition: all .2s;
+    }
+
+    .nav-btn.locked {
+      opacity: 0.35;
+      filter: blur(1.5px);
+      pointer-events: none;
+    }
+
+    .nav-idx {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--app-border-light);
+      color: var(--app-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 10px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .nav-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--app-text);
+      line-height: 1.3;
+    }
+
+    .nav-desc {
+      font-size: 11px;
+      color: var(--app-sub);
+      margin-top: 1px;
+    }
+
+    .nav-btn.active {
+      background: var(--blue-light);
+      border: 1px solid #bfdbfe;
+      opacity: 1;
+      filter: none;
+      pointer-events: auto;
+    }
+
+    .nav-btn.active .nav-idx {
+      background: var(--blue);
+      color: white;
+    }
+
+    .nav-btn.active .nav-title {
+      color: var(--blue);
+    }
+
+    .nav-btn.unlocking {
+      animation: navUnlock 0.4s ease forwards;
+    }
+
+    @keyframes navUnlock {
+      from {
+        opacity: 0.35;
+        filter: blur(1.5px);
+      }
+
+      to {
+        opacity: 1;
+        filter: blur(0);
+      }
+    }
+
+    .nav-btn.unlocked {
+      opacity: 1;
+      filter: none;
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
+    .nav-btn.unlocked:hover {
+      background: var(--app-border-light);
+      border-color: var(--app-border);
+    }
+
+    /* ═══ WORKSPACE ═══ */
+    .workspace {
+      flex: 1;
+      min-width: 0;
+      overflow-y: auto;
+      background: var(--app-bg);
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .workspace::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* ═══ CONTENT ═══ */
+    .content {
+      max-width: 460px;
+      width: 100%;
+      padding: 40px 32px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp 0.5s ease 0.2s forwards;
+    }
+
+    .page-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--shell-font);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--blue);
+      background: var(--blue-light);
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 14px;
+    }
+
+    .page-title {
+      font-family: var(--shell-font);
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--app-primary);
+      letter-spacing: -.025em;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+
+    .page-subtitle {
+      font-size: 13px;
+      color: var(--app-muted);
+      line-height: 1.5;
+    }
+
+    /* Platform list */
+    .platforms {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+
+    .platform {
+      background: white;
+      border: 1.5px solid var(--app-border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.2s ease;
+      opacity: 0;
+      animation: fadeUp 0.4s ease forwards;
+    }
+
+    .platform:nth-child(1) {
+      animation-delay: 0.3s;
+    }
+
+    .platform:nth-child(2) {
+      animation-delay: 0.35s;
+    }
+
+    .platform:nth-child(3) {
+      animation-delay: 0.40s;
+    }
+
+    .platform:nth-child(4) {
+      animation-delay: 0.45s;
+    }
+
+    .platform:hover {
+      border-color: var(--app-muted);
+    }
+
+    .platform.connected {
+      border-color: var(--green);
+      background: var(--green-light);
+    }
+
+    .p-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: var(--app-border-light);
+    }
+
+    .p-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .p-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .p-name {
+      font-family: var(--shell-font);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--app-primary);
+      line-height: 1.3;
+    }
+
+    .p-desc {
+      font-size: 11px;
+      color: var(--app-muted);
+      margin-top: 1px;
+    }
+
+    .p-btn {
+      flex-shrink: 0;
+      padding: 6px 14px;
+      border-radius: 7px;
+      border: 1.5px solid var(--app-border);
+      background: white;
+      font-family: var(--shell-font);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--app-sub);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .p-btn:hover {
+      border-color: var(--app-primary);
+      color: var(--app-primary);
+    }
+
+    .p-btn.done {
+      border-color: var(--green);
+      background: var(--green-light);
+      color: var(--green);
+      pointer-events: none;
+    }
+
+    /* Value hint — subtle inline below platforms */
+    .value-hint {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      padding: 10px 0 0;
+      opacity: 0;
+      animation: fadeUp 0.4s ease 0.55s forwards;
+    }
+
+    .value-hint span {
+      font-size: 11px;
+      color: var(--app-muted);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .value-hint span::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--app-muted);
+      flex-shrink: 0;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      margin-top: 24px;
+      opacity: 0;
+      animation: fadeUp 0.4s ease 0.6s forwards;
+    }
+
+    .connected-count {
+      font-size: 11px;
+      color: var(--app-muted);
+      margin-bottom: 12px;
+    }
+
+    .connected-count strong {
+      color: var(--green);
+      font-weight: 600;
+    }
+
+    .continue-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--app-primary);
+      color: white;
+      border: none;
+      border-radius: 9px;
+      font-family: var(--shell-font);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .continue-btn:hover {
+      background: #262626;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .skip-link {
+      font-size: 12px;
+      color: var(--app-muted);
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: var(--app-font);
+      transition: color .2s;
+    }
+
+    .skip-link:hover {
+      color: var(--app-sub);
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width:900px) {
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- TRIAL BAR -->
+  <div class="trial-bar">
+    <div class="trial-label">
+      <div class="trial-label-dot"></div> Guided Trial
+    </div>
+    <div class="trial-track">
+      <div class="trial-fill" style="width:95%"></div>
+    </div>
+    <div class="trial-nav">
+      <button class="trial-back" onclick="history.back()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M9 3L4.5 7 9 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+        Back
+      </button>
+      <button class="trial-skip" onclick="goNext()">Skip</button>
+      <button class="trial-next" onclick="goNext()">
+        Next Step
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M5 3l4.5 4-4.5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- LAYOUT -->
+  <div class="app-layout">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-box">W</div>
+        <div class="sidebar-logo-text">WorkfxAI</div>
+      </div>
+      <div class="sidebar-nav">
+        <div class="nav-overview" onclick="history.back()">
+          <div class="nav-overview-icon">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M6 1l1.5 3L11 4.5 8.5 7l.5 3.5L6 9 3 10.5l.5-3.5L1 4.5l3.5-.5z" fill="white"></path>
+            </svg>
+          </div>
+          <div>
+            <div class="nav-overview-title">Action Overview</div>
+            <div class="nav-overview-desc">Your Growth Plan</div>
+          </div>
+        </div>
+
+        <div class="nav-divider"></div>
+        <div class="nav-section-label">Modules</div>
+
+        <div class="nav-btn unlocked" data-module="quick-check">
+          <div class="nav-idx">1</div>
+          <div>
+            <div class="nav-title">Competitor Analysis</div>
+            <div class="nav-desc">Health Score</div>
+          </div>
+        </div>
+        <div class="nav-btn unlocked" data-module="tech-assessment">
+          <div class="nav-idx">2</div>
+          <div>
+            <div class="nav-title">Tech Assessment</div>
+            <div class="nav-desc">Fix Critical Errors</div>
+          </div>
+        </div>
+        <div class="nav-btn unlocked" data-module="product-listing">
+          <div class="nav-idx">3</div>
+          <div>
+            <div class="nav-title">Product Listing</div>
+            <div class="nav-desc">Optimize &amp; Sell</div>
+          </div>
+        </div>
+        <div class="nav-btn unlocked" data-module="daily-content">
+          <div class="nav-idx">4</div>
+          <div>
+            <div class="nav-title">Daily Content</div>
+            <div class="nav-desc">Growth Engine</div>
+          </div>
+        </div>
+        <div class="nav-btn unlocked" data-module="reddit-strategy">
+          <div class="nav-idx">5</div>
+          <div>
+            <div class="nav-title">Reddit Strategy</div>
+            <div class="nav-desc">Community</div>
+          </div>
+        </div>
+        <div class="nav-btn active" data-module="integrations">
+          <div class="nav-idx">6</div>
+          <div>
+            <div class="nav-title">Integrations</div>
+            <div class="nav-desc">Connect &amp; Publish</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Workspace -->
+    <div class="workspace">
+      <div class="content">
+        <div class="header">
+          <div class="page-badge">Step 6 of 6</div>
+          <h1 class="page-title">Connect your platforms</h1>
+          <p class="page-subtitle">Link once, then we handle publishing and tracking.</p>
+        </div>
+
+        <div class="platforms">
+          <div class="platform" id="plat-wp">
+            <div class="p-icon" style="background:#eff6ff">
+              <svg viewBox="0 0 24 24" fill="#21759B">
+                <path d="M12 2C6.49 2 2 6.49 2 12s4.49 10 10 10 10-4.49 10-10S17.51 2 12 2zM3.01 12c0-1.3.28-2.54.78-3.66l4.29 11.75C5.15 18.53 3.01 15.5 3.01 12zM12 20.99c-.88 0-1.73-.13-2.54-.37l2.7-7.84 2.76 7.57c.02.04.04.09.06.12-.93.34-1.93.52-2.98.52zm1.24-14.8c.54-.03 1.03-.09 1.03-.09.49-.06.43-.77-.06-.74 0 0-1.46.11-2.4.11-.88 0-2.37-.11-2.37-.11-.48-.03-.54.71-.06.74 0 0 .46.06.94.09l1.4 3.84-1.97 5.9-3.27-9.74c.54-.03 1.03-.09 1.03-.09.48-.06.43-.77-.06-.74 0 0-1.46.11-2.4.11-.17 0-.37 0-.58-.01C6.1 4.62 8.86 3.01 12 3.01c2.34 0 4.47.89 6.07 2.36-.04 0-.08-.01-.12-.01-.88 0-1.51.77-1.51 1.6 0 .74.43 1.37.88 2.11.34.6.74 1.37.74 2.48 0 .77-.3 1.66-.68 2.91l-.9 3-3.24-9.64z">
+                </path>
+              </svg>
+            </div>
+            <div class="p-info">
+              <div class="p-name">WordPress</div>
+              <div class="p-desc">Auto-publish blog content</div>
+            </div>
+            <button class="p-btn" onclick="connectPlatform(&#39;wp&#39;,this)">Connect</button>
+          </div>
+
+          <div class="platform" id="plat-li">
+            <div class="p-icon" style="background:#eff6ff">
+              <svg viewBox="0 0 24 24" fill="#0A66C2">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z">
+                </path>
+              </svg>
+            </div>
+            <div class="p-info">
+              <div class="p-name">LinkedIn</div>
+              <div class="p-desc">Schedule professional posts</div>
+            </div>
+            <button class="p-btn" onclick="connectPlatform(&#39;li&#39;,this)">Connect</button>
+          </div>
+
+          <div class="platform" id="plat-reddit">
+            <div class="p-icon" style="background:#fff5f5">
+              <svg viewBox="0 0 24 24" fill="#FF4500">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M16.67 15.47c-.2.2-.53.2-.73 0a3.85 3.85 0 00-3.94-.77 3.85 3.85 0 00-3.94.77.52.52 0 01-.73 0 .52.52 0 010-.73 4.87 4.87 0 014.67-.97 4.87 4.87 0 014.67.97c.2.2.2.53 0 .73zM10.3 12.5a1.2 1.2 0 110-2.4 1.2 1.2 0 010 2.4zm3.4 0a1.2 1.2 0 110-2.4 1.2 1.2 0 010 2.4z" fill="white"></path>
+              </svg>
+            </div>
+            <div class="p-info">
+              <div class="p-name">Reddit</div>
+              <div class="p-desc">Post to relevant communities</div>
+            </div>
+            <button class="p-btn" onclick="connectPlatform(&#39;reddit&#39;,this)">Connect</button>
+          </div>
+
+          <div class="platform" id="plat-x">
+            <div class="p-icon">
+              <svg viewBox="0 0 24 24" fill="#0a0a0a">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z">
+                </path>
+              </svg>
+            </div>
+            <div class="p-info">
+              <div class="p-name">X (Twitter)</div>
+              <div class="p-desc">Auto-post threads &amp; updates</div>
+            </div>
+            <button class="p-btn" onclick="connectPlatform(&#39;x&#39;,this)">Connect</button>
+          </div>
+        </div>
+
+        <div class="value-hint">
+          <span>1-click publishing</span>
+          <span>Unified analytics</span>
+          <span>Smart scheduling</span>
+        </div>
+
+        <div class="footer">
+          <div class="connected-count" id="countLabel"><strong>0</strong> of 4 connected</div>
+          <button class="continue-btn" onclick="goNext()">
+            Continue
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M5 3l4.5 4-4.5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </button>
+          <button class="skip-link" onclick="goNext()">Skip for now — you can connect later</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let connected = 0;
+
+    function connectPlatform(id, btn) {
+      const plat = document.getElementById('plat-' + id);
+      btn.textContent = '...';
+      btn.style.pointerEvents = 'none';
+
+      setTimeout(() => {
+        plat.classList.add('connected');
+        btn.classList.add('done');
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7.5l3 3 5-6" stroke="#16a34a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Done';
+        connected++;
+        document.getElementById('countLabel').innerHTML = '<strong>' + connected + '</strong> of 4 connected';
+      }, 800);
+    }
+
+    function goNext() {
+      window.location.href = '../4.3_Publish_Manager_Fluent.html';
+    }
+
+    // ═══ SIDEBAR: HIGHLIGHT ACTIVE MODULE + 5s UNLOCK ═══
+    const activeModule = 'integrations';
+    const activeBtn = document.querySelector(`.nav-btn[data-module="${activeModule}"]`);
+    if (activeBtn) {
+      activeBtn.classList.remove('locked');
+      activeBtn.classList.add('active');
+    }
+
+    setTimeout(() => {
+      document.querySelectorAll('.nav-btn.locked').forEach((btn, i) => {
+        setTimeout(() => {
+          btn.classList.remove('locked');
+          btn.classList.add('unlocking');
+          setTimeout(() => {
+            btn.classList.remove('unlocking');
+            btn.classList.add('unlocked');
+          }, 400);
+        }, i * 120);
+      });
+    }, 5000);
+  </script>
+
+
+
+
+
+</body></html>

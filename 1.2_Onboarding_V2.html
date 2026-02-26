@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome to WorkfxAI | Onboarding</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa;
+  --bg-alt: #f4f4f5;
+  --ink: #0a0a0a;
+  --ink-secondary: #52525b;
+  --ink-tertiary: #71717a;
+  --ink-faint: #a1a1aa;
+  --border: #e4e4e7;
+  --border-focus: #0a0a0a;
+  --white: #ffffff;
+  --font-display: 'Manrope', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ═══ LAYOUT ═══ */
+.page-layout {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 54% 46%;
+}
+
+/* ═══ LEFT SIDE ═══ */
+.form-side {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 64px;
+}
+
+.form-card {
+  max-width: 480px;
+  width: 100%;
+}
+
+/* Staggered entrance */
+.form-card > * {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: entrance 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.form-card > *:nth-child(1) { animation-delay: 0.05s; }
+.form-card > *:nth-child(2) { animation-delay: 0.12s; }
+.form-card > *:nth-child(3) { animation-delay: 0.18s; }
+.form-card > *:nth-child(4) { animation-delay: 0.24s; }
+
+@keyframes entrance {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Progress */
+.progress-bar {
+  margin-bottom: 56px;
+  height: 2px;
+  background: var(--border);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--ink);
+  border-radius: 1px;
+  transition: width 0.6s ease;
+}
+
+/* Typography */
+.form-title {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin-bottom: 12px;
+  color: var(--ink);
+}
+
+.form-subtitle {
+  font-size: 15px;
+  color: var(--ink-tertiary);
+  line-height: 1.65;
+  margin-bottom: 44px;
+  max-width: 420px;
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 32px;
+}
+
+.form-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-tertiary);
+  margin-bottom: 10px;
+}
+
+/* Inputs */
+.input-wrap {
+  display: flex;
+  align-items: center;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.input-wrap:focus-within {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(10, 10, 10, 0.06);
+}
+
+.input-prefix {
+  padding: 15px 0 15px 18px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--ink-faint);
+  user-select: none;
+  flex-shrink: 0;
+  letter-spacing: -0.01em;
+}
+
+.input-field {
+  flex: 1;
+  padding: 15px 18px 15px 2px;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--ink);
+  background: transparent;
+  outline: none;
+  letter-spacing: -0.01em;
+}
+
+.input-field::placeholder {
+  color: var(--ink-faint);
+}
+
+/* Competitor row */
+.competitor-row {
+  display: flex;
+  gap: 8px;
+}
+
+.competitor-row .input-wrap { flex: 1; }
+
+.add-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  color: var(--ink-tertiary);
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.add-btn:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+/* Chips */
+.competitor-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px 5px 14px;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-secondary);
+  animation: chipIn 0.2s ease;
+}
+
+@keyframes chipIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.chip-remove {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: none;
+  background: var(--border);
+  color: var(--ink-tertiary);
+  font-size: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  line-height: 1;
+}
+
+.chip-remove:hover {
+  background: #ef4444;
+  color: white;
+}
+
+/* Hint */
+.form-hint {
+  font-size: 12px;
+  color: var(--ink-faint);
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* CTA */
+.btn-primary {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  padding: 16px 40px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--ink);
+  color: var(--white);
+  width: 100%;
+  margin-top: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary:hover::after {
+  opacity: 1;
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* ═══ RIGHT SIDE ═══ */
+.story-side {
+  background: #09090b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 56px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Layered atmospheric background */
+.story-side::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 20%, rgba(255,255,255,0.03) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 80% at 20% 80%, rgba(255,255,255,0.02) 0%, transparent 60%);
+}
+
+/* Subtle noise texture */
+.story-side::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 128px 128px;
+  pointer-events: none;
+}
+
+.story-content {
+  position: relative;
+  z-index: 1;
+  max-width: 380px;
+}
+
+/* Oversized decorative stat */
+.deco-stat {
+  font-family: var(--font-display);
+  font-size: 140px;
+  font-weight: 800;
+  color: rgba(255,255,255,0.03);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  position: absolute;
+  top: -20px;
+  right: -30px;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Thin decorative rule */
+.story-rule {
+  width: 32px;
+  height: 1.5px;
+  background: rgba(255,255,255,0.15);
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: ruleIn 0.8s ease 0.4s forwards;
+}
+
+@keyframes ruleIn {
+  from { opacity: 0; width: 0; }
+  to { opacity: 1; width: 32px; }
+}
+
+.story-headline {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.92);
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: storyIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+}
+
+@keyframes storyIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.story-body {
+  font-size: 14px;
+  color: rgba(255,255,255,0.35);
+  line-height: 1.75;
+  letter-spacing: 0.005em;
+  opacity: 0;
+  animation: storyIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
+}
+
+.story-body strong {
+  color: rgba(255,255,255,0.6);
+  font-weight: 600;
+}
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 1024px) {
+  .form-side { padding: 60px 40px; }
+  .story-side { padding: 60px 40px; }
+  .form-title { font-size: 30px; }
+  .story-headline { font-size: 26px; }
+  .deco-stat { font-size: 100px; }
+}
+
+@media (max-width: 768px) {
+  .page-layout { grid-template-columns: 1fr; }
+  .form-side { padding: 48px 24px; }
+  .story-side { padding: 48px 24px; min-height: 320px; }
+  .form-card { max-width: 100%; }
+  .deco-stat { font-size: 80px; right: -10px; }
+}
+</style>
+</head>
+<body>
+
+<div class="page-layout">
+  <!-- LEFT -->
+  <div class="form-side">
+    <div class="form-card">
+
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: 20%"></div>
+      </div>
+
+      <h1 class="form-title">Let's get started!</h1>
+      <p class="form-subtitle">
+        Tell us about your website, and we'll analyze your SEO performance and find growth opportunities.
+      </p>
+
+      <form id="onboardingForm">
+        <div class="form-group">
+          <label class="form-label">Your Website URL</label>
+          <div class="input-wrap">
+            <span class="input-prefix">https://</span>
+            <input type="text" class="input-field" id="websiteUrl" placeholder="nordstrom.com" required>
+          </div>
+          <div class="form-hint">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M7 4.5V7L8.5 8.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+            We'll analyze your current SEO and AI search performance
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Known Competitors <span style="font-weight:400; text-transform:none; letter-spacing:0;">— optional</span></label>
+          <div class="competitor-row">
+            <div class="input-wrap">
+              <span class="input-prefix">https://</span>
+              <input type="text" class="input-field" id="competitorInput" placeholder="macys.com">
+            </div>
+            <button type="button" class="add-btn" onclick="addCompetitor()">+</button>
+          </div>
+          <div class="competitor-chips" id="competitorChips"></div>
+          <div class="form-hint">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M7 1.5L8.5 5L12.5 5L9.5 7.5L10.5 11.5L7 9L3.5 11.5L4.5 7.5L1.5 5L5.5 5Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" fill="none"/>
+            </svg>
+            We'll also detect them automatically
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary">
+          Continue
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M7 4.5L12 9L7 13.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="story-side">
+    <div class="story-content">
+      <div class="deco-stat">58%</div>
+      <div class="story-rule"></div>
+      <div class="story-headline">Find out if AI is sending customers to your competitors instead of you.</div>
+      <div class="story-body"><strong>58% of product searches</strong> now involve AI tools like ChatGPT and Google AI. We'll analyze your site and show you exactly where you stand.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+let competitors = [];
+
+function addCompetitor() {
+  const input = document.getElementById('competitorInput');
+  const value = input.value.trim();
+  if (!value) return;
+
+  let clean = value.replace(/^https?:\/\//, '').replace(/\/$/, '');
+  if (competitors.includes(clean)) return;
+  if (competitors.length >= 4) return;
+
+  competitors.push(clean);
+  renderChips();
+  input.value = '';
+  input.focus();
+}
+
+function removeCompetitor(index) {
+  competitors.splice(index, 1);
+  renderChips();
+}
+
+function renderChips() {
+  const container = document.getElementById('competitorChips');
+  container.innerHTML = competitors.map((c, i) =>
+    `<div class="chip">${c}<button type="button" class="chip-remove" onclick="removeCompetitor(${i})">×</button></div>`
+  ).join('');
+}
+
+document.getElementById('competitorInput').addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    addCompetitor();
+  }
+});
+
+document.getElementById('onboardingForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const domain = document.getElementById('websiteUrl').value.trim();
+  const websiteUrl = 'https://' + domain.replace(/^https?:\/\//, '');
+
+  const remainingInput = document.getElementById('competitorInput').value.trim();
+  if (remainingInput) {
+    let clean = remainingInput.replace(/^https?:\/\//, '').replace(/\/$/, '');
+    if (!competitors.includes(clean)) competitors.push(clean);
+  }
+
+  localStorage.setItem('workfxai_website', websiteUrl);
+  localStorage.setItem('workfxai_competitors', competitors.join(', '));
+
+  window.location.href = '1.3_Industry_Recognition_V2.html';
+});
+</script>
+
+</body>
+</html>

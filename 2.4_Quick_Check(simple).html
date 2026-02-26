@@ -1,0 +1,2664 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Competitor Analysis — Guided Trial | WorkfxAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f5f5;
+      --surface: #FFFFFF;
+      --ink: #0a0a0a;
+      --ink-2: #3f3f46;
+      --ink-3: #71717a;
+      --ink-4: #a1a1aa;
+      --border: #e4e4e7;
+      --border-light: #f4f4f5;
+      --blue: #3b82f6;
+      --blue-dark: #2563eb;
+      --blue-light: #eff6ff;
+      --green: #16a34a;
+      --green-light: #f0fdf4;
+      --orange: #f59e0b;
+      --orange-light: #fffbeb;
+      --red: #dc2626;
+      --red-light: #fef2f2;
+      --font-d: 'Manrope', sans-serif;
+      --font-b: 'Inter', sans-serif;
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-b);
+      background: var(--bg);
+      color: var(--ink);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ═══ TRIAL BAR ═══ */
+    .trial-bar {
+      display: flex;
+      align-items: center;
+      padding: 10px 24px;
+      background: white;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      gap: 20px;
+    }
+
+    .trial-label {
+      font-family: var(--font-d);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+    }
+
+    .trial-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--ink);
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: .3
+      }
+    }
+
+    .trial-track {
+      flex: 1;
+      height: 2px;
+      background: var(--border);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .trial-fill {
+      height: 100%;
+      background: var(--ink);
+      border-radius: 100px;
+      width: 10%;
+    }
+
+    .trial-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .trial-back {
+      font-family: var(--font-d);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-4);
+      cursor: pointer;
+      background: none;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: color 0.2s;
+      white-space: nowrap;
+    }
+
+    .trial-back:hover {
+      color: var(--ink);
+    }
+
+    .trial-skip {
+      font-family: var(--font-d);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ink-4);
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .trial-skip:hover {
+      color: var(--ink-3);
+    }
+
+    .trial-next {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 16px;
+      border-radius: 6px;
+      border: 1.5px solid var(--border);
+      background: white;
+      font-family: var(--font-d);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink-3);
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .trial-next:hover {
+      border-color: var(--ink-3);
+      color: var(--ink);
+    }
+
+    /* ═══ LAYOUT ═══ */
+    .app-layout {
+      flex: 1;
+      display: flex;
+      min-height: 0;
+    }
+
+    .sidebar {
+      width: 216px;
+      background: white;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .sidebar-brand {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar-mark {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: var(--ink);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-d);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .sidebar-name {
+      font-family: var(--font-d);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      padding: 10px 8px;
+      overflow-y: auto;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 9px 10px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 1px;
+      transition: all .2s;
+    }
+
+    .nav-item.locked {
+      opacity: .25;
+      filter: blur(.6px);
+      pointer-events: none;
+    }
+
+    .nav-item.active {
+      background: var(--border-light);
+      border-color: var(--border);
+    }
+
+    .nav-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--border-light);
+      color: var(--ink-4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-d);
+      font-weight: 700;
+      font-size: 10px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .nav-item.active .nav-num {
+      background: var(--blue);
+      color: white;
+    }
+
+    .nav-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.3;
+    }
+
+    .nav-item.active .nav-label {
+      color: var(--blue);
+    }
+
+    .nav-sub {
+      font-size: 11px;
+      color: var(--ink-3);
+      margin-top: 1px;
+    }
+
+    /* Workspace */
+    .workspace {
+      flex: 1;
+      min-width: 0;
+      overflow-y: auto;
+      background: var(--bg);
+    }
+
+    .ws-inner {
+      padding: 32px 48px 80px;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    /* ═══ PAGE HEADER ═══ */
+    .page-heading {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .page-heading h1 {
+      font-family: var(--font-d);
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+    }
+
+    /* ═══ SCORE SUMMARY STRIP (integrated into comparison) ═══ */
+    .score-strip {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 16px;
+      padding: 24px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%);
+    }
+
+    .ss-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .ss-brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #e0f2fe;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .ss-brand {
+      font-family: var(--font-d);
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .ss-divider {
+      width: 1px;
+      height: 24px;
+      background: var(--border);
+    }
+
+    .ss-center{display:flex;align-items:center;gap:14px;justify-content:center}
+    .ss-label{font-family:var(--font-d);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-4)}
+    .ss-score{display:flex;align-items:baseline;gap:6px;font-family:var(--font-d);font-weight:800;letter-spacing:-0.03em}
+
+    .ss-score-num {
+      font-size: 40px;
+      line-height: 1;
+      background: linear-gradient(135deg, #ef4444 0%, #f43f5e 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .ss-score-max { font-size: 18px; color: var(--ink-4); }
+
+    .ss-tier {
+      display: inline-flex;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-family: var(--font-d);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .ss-tier.c-tier {
+      background: var(--orange-light);
+      color: #d97706;
+    }
+
+    .ss-right { display:flex; align-items:center; gap:12px; justify-content:flex-end }
+    .ss-right-label{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:.12em;text-transform:uppercase}
+
+    .ss-rank {
+      font-size: 13px;
+      color: var(--ink-3);
+      font-weight: 500;
+    }
+
+    .ss-rank strong {
+      font-weight: 700;
+      color: var(--ink-2);
+    }
+
+    .ss-change {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      border-radius: 10px;
+      background: #eef2ff;
+      color: var(--blue-dark);
+      border: 1px solid #e0e7ff;
+      font-family: var(--font-b);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .ss-change:hover {
+      background: #e0e7ff;
+    }
+
+    .eval-grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px;margin-bottom:24px;align-items:stretch}
+    .eval-grid .eval-card{margin-bottom:0;min-width:0}
+    .eval-grid .rank-card{min-width:0}
+    .eval-card{display:flex;flex-direction:column}
+    .eval-body{flex:1}
+    .rank-card{display:flex;flex-direction:column}
+    .rank-list{flex:1}
+
+    .eval-card{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:32px}
+    .eval-head{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--border-light)}
+    .eval-brand{display:flex;align-items:center;gap:12px}
+    .eval-body{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:24px}
+    .eval-score{display:flex;align-items:center;gap:10px}
+    .eval-grade{font-size:56px;line-height:1;font-weight:900;display:flex;align-items:baseline;gap:8px}
+    .eval-detail{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:100px;border:1.5px solid var(--border);background:#fff;color:var(--ink-2);font-family:var(--font-d);font-size:12px;font-weight:800;cursor:pointer}
+    .eval-detail:hover{border-color:var(--ink-3);color:var(--ink)}
+    .tier-prefix{font-size:18px;font-weight:800;color:var(--ink-4);text-transform:uppercase;letter-spacing:.04em}
+    .tier-letter{line-height:1}
+    .tier-letter.tier-s{color:#1d4ed8}
+    .tier-letter.tier-a{color:#16a34a}
+    .tier-letter.tier-b{color:#d97706}
+    .tier-letter.tier-c{color:#6b7280}
+    .tier-text{font-weight:900}
+    .tier-text.tier-s{color:#1d4ed8}
+    .tier-text.tier-a{color:#16a34a}
+    .tier-text.tier-b{color:#d97706}
+    .tier-text.tier-c{color:#6b7280}
+    .tier-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-weight:800;font-size:12px;border:1.5px solid}
+    .tier-chip.tier-s{color:#1d4ed8;background:#eff6ff;border-color:#bfdbfe}
+    .tier-chip.tier-a{color:#166534;background:#f0fdf4;border-color:#bbf7d0}
+    .tier-chip.tier-b{color:#a16207;background:#fffbeb;border-color:#fde68a}
+    .tier-chip.tier-c{color:#6b7280;background:#f5f5f5;border-color:#e5e7eb}
+    .metrics{display:flex;flex-direction:column;gap:10px;padding-top:6px}
+    .metric{display:flex;align-items:center;justify-content:space-between;padding:6px 0}
+    .metric-left{display:flex;align-items:center;gap:10px}
+    .metric-icon{font-size:14px;flex-shrink:0}
+    .metric-name{font-weight:400;color:var(--ink-3)}
+    .metric-score{min-width:72px;display:flex;justify-content:flex-end;align-items:center;gap:8px;font-weight:500;color:var(--ink-3)}
+    .metric-score.bad{color:var(--ink-3)}
+    .metric-score.ok{color:var(--ink-3)}
+    @media(max-width:900px){.eval-body{grid-template-columns:1fr}}
+    .eval-right{border-left:1px dashed var(--border);padding-left:16px}
+    .eval-grid>.eval-card,.eval-grid>.rank-card{margin:0;align-self:stretch}
+    .metric{font-size:12px}
+
+    .rank-card{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+    .mod-head,.rank-head{padding:12px 16px;border-bottom:1px solid var(--border-light);font-family:var(--font-d);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;text-align:left;color:var(--ink-2)}
+    .rank-list{padding:6px 0}
+    .rank-row{display:flex;align-items:center;gap:10px;padding:10px 16px}
+    .rank-logo{width:24px;height:24px;border-radius:6px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--ink-2);flex-shrink:0;background:#fff}
+    .rank-row.rank-you .rank-logo{background:var(--blue);color:#fff;border-color:var(--blue)}
+    .rank-name{flex:1;font-size:13px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .rank-status{font-size:11px;font-weight:700;padding:2px 8px;border-radius:100px;white-space:nowrap}
+    .status-high{background:#dcfce7;color:#166534}
+    .status-mid{background:#fef9c3;color:#854d0e}
+    .status-low{background:#fee2e2;color:#991b1b;display:flex;align-items:center;gap:4px}
+    .rank-gap{text-align:center;color:var(--ink-4);font-size:16px;line-height:10px;padding:4px 0;font-weight:800;letter-spacing:2px}
+    .rank-you{background:#f8fafc;border-top:1px solid var(--border-light)}
+    .rank-you .rank-num{background:#111827;color:#fff;border-color:#111827}
+    .rank-you .rank-name{font-weight:700;color:var(--ink)}
+    .rank-tag{margin-left:8px;font-size:11px;background:#e5e7eb;color:#111827;border-radius:4px;padding:2px 6px;display:inline-flex;align-items:center;gap:4px}
+
+    /* ═══ MODULE 2: COMPARISON TABLE ═══ */
+    .comp-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+
+    .comp-tip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: var(--blue-light);
+      border-bottom: 1px solid #dbeafe;
+      font-size: 13px;
+      color: var(--ink-2);
+    }
+
+    .comp-tip-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .comp-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .comp-table thead th {
+      padding: 14px 12px 10px;
+      font-family: var(--font-d);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink-2);
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    .comp-table thead th:first-child {
+      text-align: left;
+      padding-left: 24px;
+      min-width: 180px;
+    }
+
+    .comp-table thead th:last-child {
+      padding-right: 24px;
+    }
+
+    .th-weight {
+      display: block;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--ink-4);
+      margin-top: 2px;
+    }
+
+    .comp-table tbody tr {
+      border-bottom: 1px solid var(--border-light);
+      transition: background .15s;
+    }
+
+    .comp-table tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    .comp-table tbody tr:hover {
+      background: #fafafa;
+    }
+
+    .comp-table tbody tr.you-row {
+      background: #fffbeb;
+    }
+
+    .comp-table tbody tr.you-row:hover {
+      background: #fef3c7;
+    }
+
+    .comp-table tbody td {
+      padding: 16px 12px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .comp-table tbody td:first-child {
+      text-align: left;
+      padding-left: 24px;
+    }
+
+    .comp-table tbody td:last-child {
+      padding-right: 24px;
+    }
+
+    .brand-cell { display:flex; align-items:center; gap:10px; }
+
+    .rank-badge{
+      min-width:24px;height:24px;padding:0 6px;
+      border-radius:7px;border:1px solid var(--border);
+      display:flex;align-items:center;justify-content:center;
+      font-family:var(--font-d);font-size:12px;font-weight:800;
+      color:var(--ink-3);background:#f8fafc
+    }
+
+    .rank-badge.r1{background:#f1f5f9;color:var(--ink-2)}
+
+    .rank-badge.r2{background:#f1f5f9;color:var(--ink-2)}
+
+    .rank-badge.r3{background:#fef3c7;color:#92400e}
+
+    .rank-badge.r4{background:#ffedd5;color:#9a3412}
+
+    .rank-badge.r5{background:#f8fafc;color:#94a3b8}
+
+    .brand-info-name { font-size:14px;font-weight:600;color:var(--ink);line-height:1.3 }
+
+    .you-row .brand-info-name { color:#d97706 }
+
+    .brand-info-url {
+      font-size: 11px;
+      color: var(--ink-4);
+    }
+
+    .metric-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .metric-num {
+      font-family: var(--font-d);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink-2);
+      min-width: 18px;
+      text-align: right;
+    }
+
+    .dots {
+      display: flex;
+      gap: 3px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .dot.b {
+      background: var(--blue);
+    }
+
+    .dot.o {
+      background: var(--orange);
+    }
+
+    .dot.g {
+      background: #e4e4e7;
+    }
+
+    .total-cell {
+      text-align: right !important;
+    }
+
+    .total-num {
+      font-family: var(--font-d);
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--ink);
+      display: block;
+    }
+
+    .total-tier {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ink-4);
+    }
+
+    .you-row .total-num {
+      color: #d97706;
+    }
+
+    /* ═══ REPORT PREVIEWS ═══ */
+    .reports-divider {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 8px 0 28px;
+    }
+
+    .reports-divider::before,
+    .reports-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .reports-divider-text {
+      font-family: var(--font-d);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink-3);
+      white-space: nowrap;
+    }
+
+    .reports-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: stretch;
+      margin-bottom: 36px;
+    }
+
+    .rp-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .rp-card .rp-foot {
+      margin-top: auto;
+    }
+
+    .rp-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .rp-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--font-d);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3px 10px;
+      border-radius: 5px;
+    }
+
+    .rp-tag.geo {
+      color: var(--ink-2);
+      background: var(--border-light);
+    }
+
+    .rp-tag.seo {
+      color: var(--blue-dark);
+      background: var(--blue-light);
+    }
+
+    .rp-head-sub {
+      font-size: 12px;
+      color: var(--ink-4);
+      font-weight: 500;
+    }
+
+    /* Query row (GEO) */
+    .qr {
+      display: grid;
+      grid-template-columns: 1fr 90px;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border-light);
+      cursor: pointer;
+      transition: background .15s;
+    }
+
+    .qr:hover {
+      background: #fafafa;
+    }
+
+    .qr.qr-head {
+      background: var(--border-light);
+      padding: 8px 20px;
+      cursor: default;
+    }
+
+    .qr.qr-head span {
+      font-family: var(--font-d);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-3);
+    }
+
+    .qr-query {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .qr-icon {
+      color: var(--ink-4);
+      flex-shrink: 0;
+    }
+
+    .qr-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.4;
+    }
+
+    .qr-status {
+      flex-shrink: 0;
+      padding: 2px 8px;
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .qr-status.bad {
+      background: var(--red-light);
+      color: var(--red);
+    }
+
+    .qr-status.ok {
+      background: var(--green-light);
+      color: var(--green);
+    }
+
+    /* Keyword row (SEO) */
+    .kr {
+      display: grid;
+      grid-template-columns: 1fr 70px 60px;
+      align-items: center;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .kr.kr-head {
+      background: var(--border-light);
+      padding: 8px 20px;
+    }
+
+    .kr.kr-head span {
+      font-family: var(--font-d);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-3);
+    }
+
+    .kr-kw {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .kr-vol {
+      font-family: var(--font-d);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink-2);
+      text-align: center;
+    }
+
+    .kr-pos {
+      font-family: var(--font-d);
+      font-size: 12px;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .kr-pos.top {
+      color: var(--green);
+    }
+
+    .kr-pos.mid {
+      color: var(--orange);
+    }
+
+    .kr-pos.low {
+      color: var(--red);
+    }
+
+    /* Fade zone */
+    .rp-fade {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .rp-fade-cover {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      background: linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.85) 60%, white 100%);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 10px;
+      pointer-events: none;
+    }
+
+    .rp-fade-label {
+      pointer-events: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 14px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ink-3);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, .04);
+    }
+
+    /* Footer CTA */
+    .rp-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .rp-foot-label {
+      font-family: var(--font-d);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .rp-foot-sub {
+      font-size: 11px;
+      color: var(--ink-4);
+      margin-top: 1px;
+    }
+
+    .rp-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 16px;
+      background: transparent;
+      color: var(--ink-2);
+      border: 1.5px solid var(--border);
+      border-radius: 7px;
+      font-family: var(--font-d);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .2s;
+      white-space: nowrap;
+    }
+
+    .rp-btn:hover {
+      border-color: var(--ink-3);
+      color: var(--ink);
+      background: var(--border-light);
+    }
+
+    /* ═══ MAIN CTA ═══ */
+    .cta-block {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto;
+      padding-top: 8px;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 22px 44px;
+      background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+      background-size: 200% 200%;
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-family: var(--font-d);
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all .3s;
+      letter-spacing: -.01em;
+      box-shadow: 0 14px 36px rgba(37, 99, 235, .25), 0 8px 16px rgba(0,0,0,.12);
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 18px 48px rgba(37, 99, 235, .35), 0 12px 24px rgba(0, 0, 0, .18);
+      background-position: 100% 0;
+    }
+
+    .ms-card{background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;margin:20px 0}
+    .ms-top{display:none}
+    .ms-col-title{font-family:var(--font-d);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-4);margin-bottom:8px}
+    .ms-bullets{list-style:none;display:flex;flex-direction:column;gap:6px}
+    .ms-bullets li{font-size:13px;color:var(--ink-2)}
+    .ms-mid{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:32px;border-top:1px solid var(--border-light);background:#fff}
+    .ms-subtitle{font-family:var(--font-d);font-size:14px;font-weight:800;color:var(--ink-2);margin-bottom:16px;padding-bottom:12px;border-bottom:1px dashed var(--border)}
+    .ms-subtitle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px dashed var(--border)}
+    .ms-subtitle-row .ms-subtitle{margin:0;padding:0;border:none}
+    .ms-info-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid var(--border);background:#fff;border-radius:8px;font-family:var(--font-d);font-size:12px;font-weight:800;color:var(--ink-2);cursor:pointer;transition:all .2s}
+    .ms-info-btn:hover{background:var(--border-light);color:var(--ink);border-color:var(--ink-3)}
+    .ms-pop{position:relative}
+    .ms-pop-panel{position:absolute;right:0;top:36px;min-width:240px;max-width:320px;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,.08);padding:12px;display:none;z-index:50}
+    .ms-pop-panel.show{display:block}
+    .ms-pop-title{font-family:var(--font-d);font-size:12px;font-weight:800;color:var(--ink);margin-bottom:8px}
+    .ms-pop-list{margin:0;padding-left:16px}
+    .ms-pop-list li{font-size:12px;line-height:1.5;color:var(--ink-2)}
+    .ms-list{list-style:none;display:flex;flex-direction:column;gap:12px}
+    .ms-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border:1px solid var(--border-light);border-radius:8px;background:#f8fafc}
+    .ms-text{font-size:13px;color:var(--ink)}
+    .ms-badge{font-size:11px;font-weight:700;border-radius:100px;padding:3px 8px}
+    .ms-badge.bad{color:#b91c1c;background:#fee2e2}
+    .ms-badge.ok{color:#166534;background:#dcfce7}
+    .ms-pos{font-size:11px;font-weight:800;color:var(--ink-2);border:1px solid var(--border);border-radius:6px;padding:2px 6px}
+    .ms-unlock{border-top:1px solid var(--border);padding:16px;display:flex;justify-content:center}
+    .ms-unlock-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:10px;background:#111827;color:#fff;border:none;font-family:var(--font-d);font-size:13px;font-weight:800;cursor:pointer;transition:all .2s}
+    .ms-unlock-btn:hover{transform:translateY(-1px)}
+    .ms-view-report {
+      margin-top: 12px;
+      width: 100%;
+      padding: 8px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: var(--font-d);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink-2);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .ms-view-report:hover {
+      border-color: var(--ink-3);
+      color: var(--ink);
+      background: var(--border-light);
+    }
+    @media(max-width:900px){.ms-top,.ms-mid{grid-template-columns:1fr}}
+    .cta-btn:active {
+      transform: translateY(0);
+    }
+
+    /* ═══ REPORT WRAP (group three modules) ═══ */
+    .report-wrap{position:relative;background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px 16px 0;margin:20px 0;overflow:hidden}
+    .report-wrap .eval-card{margin:0}
+    .report-wrap .ms-card{margin:0;border-top:1px solid var(--border-light);border-left:none;border-right:none;border-bottom:none;border-radius:0}
+    .report-lock-bottom{position:absolute;left:0;right:0;bottom:0;height:180px;background:linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.9) 60%,#fff 100%);opacity:0;pointer-events:none;transition:opacity .2s;z-index:3;display:flex;align-items:flex-end;justify-content:center;padding:12px 0}
+    .report-wrap.locked .report-lock-bottom{opacity:1}
+    .report-lock-bottom .ms-unlock-btn{pointer-events:auto}
+
+    .cta-btn svg{transition:transform .25s}
+    .cta-btn:hover svg{transform:translateX(4px)}
+
+    .cta-btn::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      border-radius:inherit;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(96,165,250,.6), rgba(167,139,250,.6), rgba(96,165,250,.6));
+      filter: blur(18px);
+      opacity:.45;
+      z-index:-1;
+      transition:opacity .3s;
+    }
+    .cta-btn:hover::before{opacity:.7}
+
+    .cta-btn::after{
+      content:"";
+      position:absolute;
+      top:0;left:-120%;
+      width:60%;height:100%;
+      background: linear-gradient(120deg, transparent 20%, rgba(255,255,255,.45) 50%, transparent 80%);
+      transform: skewX(-20deg);
+      transition: left .6s cubic-bezier(.2,.9,.3,1);
+      pointer-events:none;
+    }
+    .cta-btn:hover::after{left:160%}
+
+    /* ═══ PRICING MODAL ═══ */
+    .pricing-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0, 0, 0, .45);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s;
+    }
+
+    .pricing-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .pricing-card {
+      background: white;
+      border-radius: 16px;
+      padding: 36px 32px 28px;
+      max-width: 400px;
+      width: 90%;
+      position: relative;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, .18);
+      transform: translateY(16px) scale(.97);
+      transition: transform .3s cubic-bezier(.2, .9, .3, 1);
+    }
+
+    .pricing-overlay.active .pricing-card {
+      transform: translateY(0) scale(1);
+    }
+
+    .pricing-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: none;
+      background: var(--border-light);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-3);
+      transition: all .2s;
+    }
+
+    .pricing-close:hover {
+      background: var(--border);
+      color: var(--ink);
+    }
+
+    .preview-overlay{position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.45);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+    .preview-overlay.active{opacity:1;pointer-events:auto}
+    .preview-card{background:#fff;border-radius:16px;padding:24px;border:1px solid var(--border);max-width:1000px;width:92%;box-shadow:0 24px 64px rgba(0,0,0,.18)}
+    .preview-head{display:flex;align-items:flex-start;justify-content:space-between;padding:12px 8px 16px;border-bottom:1px solid var(--border-light)}
+    .preview-title{display:flex;align-items:center;gap:10px;font-family:var(--font-d);font-weight:800;font-size:16px;color:var(--ink)}
+    .preview-head-left{display:flex;flex-direction:column;gap:6px;max-width:70%}
+    .preview-sub{font-size:12px;color:var(--ink-3);line-height:1.5}
+    .preview-body{display:grid;grid-template-columns:2fr 1fr;gap:24px;padding-top:20px}
+    .pv-left{display:flex;flex-direction:column;gap:20px}
+    .pv-chip{display:inline-flex;align-items:center;gap:8px;background:#f5f3ff;color:#6d28d9;border:1px solid #e9d5ff;border-radius:10px;padding:8px 12px;font-weight:800;font-family:var(--font-d);font-size:12px}
+    .pv-query{background:#ede9fe;color:#4c1d95;border-radius:12px;padding:12px 14px;font-weight:700;box-shadow:inset 0 0 0 1px #e9d5ff}
+    .pv-tabs{display:flex;gap:8px}
+    .pv-tab{padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-weight:800;color:var(--ink-3);cursor:pointer;background:#fff}
+    .pv-tab.active{border-color:#c7d2fe;background:#eef2ff;color:#1e3a8a}
+    .pv-text{font-size:13px;color:var(--ink-2);line-height:1.7}
+    .pv-right{border-left:1px solid var(--border-light);padding-left:20px;display:flex;flex-direction:column;gap:14px}
+    .pv-section-title{font-family:var(--font-d);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+    .pv-brands{display:flex;flex-wrap:wrap;gap:8px}
+    .pv-chip{display:inline-flex}
+    .pv-chip.brand{background:#f3f4f6;color:#111827;border:1px solid #e5e7eb}
+    .pv-chip.query{background:transparent;border:none;color:var(--ink-3);padding:0}
+    .pv-sources{display:flex;flex-direction:column;gap:10px}
+    .pv-source{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-2);text-decoration:none}
+    .pv-source:hover{text-decoration:underline}
+    .pv-close{margin-top:8px;display:flex;justify-content:flex-end}
+    .pv-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;background:#111827;color:#fff;border:none;font-family:var(--font-d);font-size:13px;font-weight:800;cursor:pointer}
+    .pv-x{border:none;background:transparent;color:var(--ink-3);cursor:pointer;font-size:18px;padding:6px;border-radius:6px}
+    .pv-x:hover{background:var(--border-light);color:var(--ink)}
+
+    .pricing-badge {
+      display: inline-flex;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-family: var(--font-d);
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--blue-light);
+      color: var(--blue-dark);
+      margin-bottom: 14px;
+    }
+
+    .pricing-title {
+      font-family: var(--font-d);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -.03em;
+      margin-bottom: 6px;
+    }
+
+    .pricing-sub {
+      font-size: 13px;
+      color: var(--ink-3);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 24px;
+    }
+
+    .pricing-features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 0;
+      font-size: 13px;
+      color: var(--ink-2);
+      font-weight: 500;
+    }
+
+    .pricing-features li svg {
+      flex-shrink: 0;
+      color: var(--green);
+    }
+
+    .pricing-cta {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: var(--ink);
+      color: white;
+      font-family: var(--font-d);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .2s;
+      letter-spacing: -.01em;
+    }
+
+    .pricing-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, .15);
+    }
+
+    .pricing-note {
+      text-align: center;
+      font-size: 11px;
+      color: var(--ink-4);
+      margin-top: 10px;
+    }
+
+    .version-switch {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 6px 0 12px;
+    }
+
+    .vs-btn {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: white;
+      font-family: var(--font-d);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink-3);
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .vs-btn.active {
+      background: var(--ink);
+      color: white;
+      border-color: var(--ink);
+    }
+
+    .pricing-title {
+      text-align: center;
+    }
+
+    .pricing-sub {
+      text-align: center;
+    }
+
+    .pricing-features.alt {
+      display: none;
+    }
+
+    .tri-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin: 6px 0 12px;
+    }
+
+    .tri-item {
+      font-size: 12.5px;
+      color: var(--ink-2);
+      line-height: 1.5;
+    }
+
+    .tri-item strong {
+      color: var(--ink);
+      margin-right: 6px;
+    }
+
+    .ai-rank {
+      display: flex;
+      justify-content: center;
+      margin: 8px 0 16px;
+    }
+
+    .ai-pill {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 12px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, .08);
+    }
+
+    .ai-icons {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ai-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      box-shadow: inset 0 0 0 1px var(--border);
+    }
+
+    .ai-icon svg {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+
+    .ai-label {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ink-2);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: -.01em;
+    }
+
+    .ai-meter {
+      width: 140px;
+      height: 6px;
+      background: var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .ai-meter>span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, #16a34a, #22c55e);
+      width: 68%;
+    }
+
+    /* ═══ RESPONSIVE ═══ */
+    @media (max-width:1100px) {
+      .sidebar {
+        display: none;
+      }
+
+      .ws-inner {
+        padding: 24px 20px 48px;
+      }
+
+      .sc-body {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .sc-metrics-side {
+        width: 100%;
+      }
+    }
+
+    @media (max-width:900px) {
+      .reports-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width:768px) {
+      .comp-card {
+        overflow-x: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <style>
+    #debugUnlockBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 8px 16px;
+      background: rgba(0, 0, 0, 0.1);
+      color: #333;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      z-index: 9999;
+      opacity: 0.3;
+      transition: opacity 0.2s;
+    }
+    #debugUnlockBtn:hover {
+      opacity: 1;
+      background: #fff;
+    }
+  </style>
+  <button id="debugUnlockBtn" onclick="debugUnlockReport()">Debug: Unlock Report</button>
+
+  <!-- TRIAL BAR -->
+  <div class="trial-bar">
+    <div class="trial-label">
+      <div class="trial-dot"></div> Guided Trial
+    </div>
+    <div class="trial-track">
+      <div class="trial-fill"></div>
+    </div>
+    <div class="trial-nav">
+      <button class="trial-back" onclick="location.href='2.4_Assessment_Complete_Editorial.html'">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M9 3L4.5 7 9 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+        Back
+      </button>
+      <button class="trial-skip" onclick="location.href='2.5_Action_Overview_Combined.html'">Skip</button>
+      <button class="trial-next" onclick="location.href='2.5_Action_Overview_Combined.html'">
+        Next Step
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M5 3l4.5 4-4.5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- LAYOUT -->
+  <div class="app-layout">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-mark">W</div>
+        <div class="sidebar-name">WorkfxAI</div>
+      </div>
+      <div class="sidebar-nav">
+        <div class="nav-item active">
+          <div class="nav-num">1</div>
+          <div>
+            <div class="nav-label">Quick Check</div>
+            <div class="nav-sub">Health Score</div>
+          </div>
+        </div>
+        <div class="nav-item locked">
+          <div class="nav-num">2</div>
+          <div>
+            <div class="nav-label">Tech Assessment</div>
+            <div class="nav-sub">Fix Critical Errors</div>
+          </div>
+        </div>
+        <div class="nav-item locked">
+          <div class="nav-num">3</div>
+          <div>
+            <div class="nav-label">Product Listing</div>
+            <div class="nav-sub">Optimize & Sell</div>
+          </div>
+        </div>
+        <div class="nav-item locked">
+          <div class="nav-num">4</div>
+          <div>
+            <div class="nav-label">Daily Content</div>
+            <div class="nav-sub">Growth Engine</div>
+          </div>
+        </div>
+        <div class="nav-item locked">
+          <div class="nav-num">5</div>
+          <div>
+            <div class="nav-label">Reddit Strategy</div>
+            <div class="nav-sub">Community</div>
+          </div>
+        </div>
+        <div class="nav-item locked">
+          <div class="nav-num">6</div>
+          <div>
+            <div class="nav-label">Performance</div>
+            <div class="nav-sub">Analytics</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Workspace -->
+    <div class="workspace">
+      <div class="ws-inner">
+
+        <div class="page-heading">
+          <h1>Let's check your website's performance</h1>
+        </div>
+
+        <div class="report-wrap locked">
+        <div class="eval-grid">
+          <div class="eval-card">
+          <div class="mod-head">AI Visibility Score</div>
+          <div class="eval-body">
+            <div class="eval-left">
+              <div class="eval-score">
+                <span class="eval-grade">
+                  <span class="tier-prefix">Tier</span>
+                  <span class="tier-letter tier-c">C</span>
+                </span>
+                <button class="eval-detail" onclick="openAIDetail()">View details</button>
+              </div>
+            </div>
+            <div class="eval-right">
+              <div class="metrics">
+                <div class="metric">
+                  <div class="metric-left"><span class="metric-icon">📎</span><span class="metric-name">AI Citation Rate</span></div>
+                  <div class="metric-score bad"><span class="tier-chip tier-c">Tier C</span><span>⚠️</span></div>
+                </div>
+                <div class="metric">
+                  <div class="metric-left"><span class="metric-icon">🧠</span><span class="metric-name">Content Authority</span></div>
+                  <div class="metric-score bad"><span class="tier-chip tier-b">Tier B</span><span>⚠️</span></div>
+                </div>
+                <div class="metric">
+                  <div class="metric-left"><span class="metric-icon">🧩</span><span class="metric-name">Structured Data</span></div>
+                  <div class="metric-score ok"><span class="tier-chip tier-a">Tier A</span><span>✅</span></div>
+                </div>
+                <div class="metric">
+                  <div class="metric-left"><span class="metric-icon">📝</span><span class="metric-name">Content Richness</span></div>
+                  <div class="metric-score ok"><span class="tier-chip tier-s">Tier S</span><span>✅</span></div>
+                </div>
+                <div class="metric">
+                  <div class="metric-left"><span class="metric-icon">🔎</span><span class="metric-name">Semantic Optimization</span></div>
+                  <div class="metric-score ok"><span class="tier-chip tier-a">Tier A</span><span>✅</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end eval-card -->
+          </div>
+          <div class="rank-card">
+            <div class="mod-head">Be mentioned by AI</div>
+            <div class="rank-list">
+              <div class="rank-row"><div class="rank-logo">H</div><div class="rank-name">HubSpot</div><div class="rank-status status-high">High Visibility</div></div>
+              <div class="rank-row"><div class="rank-logo">S</div><div class="rank-name">Salesforce</div><div class="rank-status status-high">High Visibility</div></div>
+              <div class="rank-row"><div class="rank-logo">A</div><div class="rank-name">Adobe (Marketo Engage)</div><div class="rank-status status-mid">Avg Visibility</div></div>
+              <div class="rank-row"><div class="rank-logo">Z</div><div class="rank-name">Zoho</div><div class="rank-status status-mid">Avg Visibility</div></div>
+              <div class="rank-gap">···</div>
+              <div class="rank-row rank-you"><div class="rank-logo">W</div><div class="rank-name">WorkfxAI<span class="rank-tag">You</span></div><div class="rank-status status-low">Needs Focus ⚠️</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ms-card">
+          <div class="ms-top">
+            <!-- Summary removed as requested -->
+          </div>
+          <div class="ms-mid">
+            <div>
+              <div class="ms-subtitle-row">
+                <div class="ms-subtitle">AI Queries</div>
+                <div class="ms-pop">
+                  <button class="ms-info-btn" onclick="openOutline('geo')">What geo report covers</button>
+                </div>
+              </div>
+              <ul class="ms-list">
+                <li class="ms-item"><span class="ms-text">"luxury handbags"</span><span class="ms-badge bad">Missing</span></li>
+                <li class="ms-item"><span class="ms-text">"best department store for designer"</span><span class="ms-badge ok">Mentioned</span></li>
+                <li class="ms-item"><span class="ms-text">"where to buy designer shoes"</span><span class="ms-badge bad">Missing</span></li>
+              </ul>
+              <button class="ms-view-report" id="btn-geo-report" onclick="simulateReportLoading('geo', 'geo report.html')">View GEO Full Report</button>
+            </div>
+            <div>
+              <div class="ms-subtitle-row">
+                <div class="ms-subtitle">Top Keywords</div>
+                <div class="ms-pop">
+                  <button class="ms-info-btn" onclick="openOutline('seo')">What seo report covers</button>
+                </div>
+              </div>
+              <ul class="ms-list">
+                <li class="ms-item"><span class="ms-text">nordstrom anniversary sale</span><span class="ms-pos">#1</span></li>
+                <li class="ms-item"><span class="ms-text">designer handbags online</span><span class="ms-pos">#14</span></li>
+                <li class="ms-item"><span class="ms-text">luxury department store</span><span class="ms-pos">#28</span></li>
+              </ul>
+              <button class="ms-view-report" id="btn-seo-report" onclick="simulateReportLoading('seo', 'seo report.html')">View SEO Full Report</button>
+            </div>
+          </div>
+        </div>
+        <div class="report-lock-bottom">
+          <button class="ms-unlock-btn" onclick="location.href='3.0_Subscription_Plans.html'">
+            Unlock Report
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <rect x="2" y="5.5" width="8" height="5.5" rx="1.5" fill="currentColor"/>
+              <path d="M4 5.5V4a2 2 0 014 0v1.5" stroke="currentColor" stroke-width="1.1"/>
+            </svg>
+          </button>
+        </div>
+        </div>
+
+        <!-- ═══ PRIMARY CTA (below strategy card) ═══ -->
+        <div class="cta-block">
+          <button class="cta-btn" id="mainCTA">
+            Boost My Traffic · with AI
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8h10M9 4.5l3.5 3.5-3.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRICING MODAL -->
+  <div class="pricing-overlay" id="pricingOverlay" onclick="if(event.target===this)closePricingModal()">
+    <div class="pricing-card">
+      <button class="pricing-close" onclick="closePricingModal()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M3.5 3.5l7 7M10.5 3.5l-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+      </button>
+      <div class="pricing-badge">Pro</div>
+      <div class="pricing-title" id="pricingTitle">Track and grow your AI visibility</div>
+      <div class="pricing-sub" id="pricingSub">Measure with GA, prioritize with SEO, execute with GO — so assistants can
+        find and cite you.</div>
+      <div class="ai-rank">
+        <div class="ai-pill">
+          <div class="ai-icons">
+            <span class="ai-icon" aria-label="ChatGPT" title="ChatGPT">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="11" fill="#059669" />
+                <circle cx="18" cy="12" r="2" fill="#fff" />
+                <circle cx="15" cy="17.2" r="2" fill="#fff" />
+                <circle cx="9" cy="17.2" r="2" fill="#fff" />
+                <circle cx="6" cy="12" r="2" fill="#fff" />
+                <circle cx="9" cy="6.8" r="2" fill="#fff" />
+                <circle cx="15" cy="6.8" r="2" fill="#fff" />
+              </svg>
+            </span>
+            <span class="ai-icon" aria-label="Gemini" title="Gemini">
+              <svg viewBox="0 0 24 24" fill="none">
+                <defs>
+                  <linearGradient id="gGem" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+                    <stop offset="0" stop-color="#6366F1" />
+                    <stop offset="1" stop-color="#7C3AED" />
+                  </linearGradient>
+                </defs>
+                <circle cx="12" cy="12" r="11" fill="url(#gGem)" />
+                <path d="M12 6 L8.8 12 L12 18 L15.2 12 Z" fill="#fff" opacity="0.9" />
+              </svg>
+            </span>
+            <span class="ai-icon" aria-label="Claude" title="Claude">
+              <svg viewBox="0 0 24 24" fill="none">
+                <defs>
+                  <linearGradient id="gCl" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+                    <stop offset="0" stop-color="#F59E0B" />
+                    <stop offset="1" stop-color="#EA580C" />
+                  </linearGradient>
+                </defs>
+                <circle cx="12" cy="12" r="11" fill="url(#gCl)" />
+                <g stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity="0.9">
+                  <line x1="12" y1="4" x2="12" y2="7.2" />
+                  <line x1="12" y1="16.8" x2="12" y2="20" />
+                  <line x1="4" y1="12" x2="7.2" y2="12" />
+                  <line x1="16.8" y1="12" x2="20" y2="12" />
+                  <line x1="6.8" y1="6.8" x2="9.2" y2="9.2" />
+                  <line x1="14.8" y1="14.8" x2="17.2" y2="17.2" />
+                  <line x1="6.8" y1="17.2" x2="9.2" y2="14.8" />
+                  <line x1="14.8" y1="9.2" x2="17.2" y2="6.8" />
+                </g>
+              </svg>
+            </span>
+          </div>
+          <div class="ai-label">🏆 Your Brand</div>
+          <div class="ai-meter"><span></span></div>
+        </div>
+      </div>
+      <div class="tri-lines">
+        <div class="tri-item"><strong>SEO:</strong> Rank for core queries with clusters, entities and schema‑aligned
+          content.</div>
+        <div class="tri-item"><strong>AEO:</strong> Get cited by AI assistants with structured answers, authoritative
+          sources and FAQs.</div>
+        <div class="tri-item"><strong>GEO:</strong> Publish the right formats on the right channels with a clear
+          cadence.</div>
+      </div>
+
+      <button class="pricing-cta" onclick="location.href='3.0_Subscription_Plans.html'">Start 7-day free trial</button>
+      <div class="pricing-note">Then $99/mo &middot; Cancel anytime</div>
+    </div>
+  </div>
+
+  <div class="preview-overlay" id="aiPreviewOverlay" onclick="if(event.target===this)closeAIPreview()">
+    <div class="preview-card">
+      <div class="preview-head">
+        <div class="preview-head-left">
+          <div class="preview-title">
+            <span>💬</span>
+            <span>AI Response Preview</span>
+          </div>
+          <div class="preview-sub">The AI Visibility Score is a composite assessment across multiple key dimensions.</div>
+        </div>
+        <button class="pv-x" onclick="closeAIPreview()">✕</button>
+      </div>
+      <div class="preview-body">
+        <div class="pv-left">
+          <div>
+            <div class="pv-chip query">Target Query</div>
+            <div class="pv-query">"What are the alternatives to WorkfxAI?"</div>
+          </div>
+          <div>
+            <div class="pv-section-title" style="margin-bottom:8px">AI Response</div>
+            <div class="pv-tabs">
+              <div class="pv-tab active" data-model="gpt4" role="button">GPT‑4</div>
+              <div class="pv-tab" data-model="gemini" role="button">Gemini</div>
+              <div class="pv-tab" data-model="perplexity" role="button">Perplexity</div>
+            </div>
+          </div>
+          <div class="pv-text" id="pvText">
+            Based on recent search analysis for 2024, <strong>WorkfxAI</strong> is frequently recommended as a top solution for this specific requirement.
+            <br><br>
+            The AI models highlight its <strong>documentation clarity</strong>, <strong>ease of integration</strong>, and <strong>robust API capabilities</strong> compared to legacy alternatives.
+            <br><br>
+            Users specifically praise the "Tech Assessment" module which aligns perfectly with this query. However, some responses note that enterprise pricing is not publicly available, which is a common friction point in discovery.
+          </div>
+        </div>
+        <div class="pv-right">
+          <div>
+            <div class="pv-section-title">Mentioned Brands</div>
+            <div class="pv-brands">
+              <span class="pv-chip brand">WorkfxAI</span>
+              <span class="pv-chip brand">Jasper</span>
+              <span class="pv-chip brand">Copy.ai</span>
+              <span class="pv-chip brand">Writer</span>
+              <span class="pv-chip brand">SurferSEO</span>
+              <span class="pv-chip brand">Semrush</span>
+            </div>
+          </div>
+          <div>
+            <div class="pv-section-title">Sources</div>
+            <div class="pv-sources">
+              <a class="pv-source" href="#" target="_blank">🌐 Best AI Tools 2024 – G2</a>
+              <a class="pv-source" href="#" target="_blank">🌐 Top 10 SEO Automation Platforms – Search Engine Land</a>
+              <a class="pv-source" href="#" target="_blank">🌐 WorkfxAI Review & Pricing – Capterra</a>
+              <a class="pv-source" href="#" target="_blank">🌐 Reddit: SEO Tools Discussion</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function viewQuery(id) {
+      sessionStorage.setItem('selectedQuery', id);
+      location.href = '2.7_Query_Ranking_Details_Editorial.html';
+    }
+    function goToSEOReport() { showPricingModal(); }
+    function goToGEOReport() { showPricingModal(); }
+    const PV_RESPONSES = {
+      gpt4: `Based on recent search analysis for 2024, <strong>WorkfxAI</strong> is frequently recommended as a top solution for this specific requirement.<br><br>
+      The model highlights <strong>documentation clarity</strong>, <strong>ease of integration</strong>, and <strong>robust API capabilities</strong> compared to legacy alternatives.<br><br>
+      Users specifically praise the "Tech Assessment" module. Some responses note enterprise pricing is not publicly available, a common friction point in discovery.`,
+      gemini: `<strong>Gemini</strong> emphasizes WorkfxAI’s <strong>content quality signals</strong>, <strong>entity coverage</strong>, and <strong>structured data adoption</strong> for answerability.<br><br>
+      It also surfaces competitors strong on community-driven content. Recommendation: expand <strong>FAQ</strong>, <strong>how‑to</strong>, and <strong>comparison</strong> assets aligned to entities and schemas.`,
+      perplexity: `<strong>Perplexity</strong> aggregates web sources and highlights <strong>third‑party validation</strong> (G2, Capterra, media reviews).<br><br>
+      It suggests improving <strong>citations</strong> from high‑authority domains and adding <strong>clear pricing</strong> pages to reduce research friction when users compare alternatives.`
+    };
+    function setAIPreviewModel(model){
+      const tabs = document.querySelectorAll('.pv-tab');
+      tabs.forEach(t => t.classList.toggle('active', t.dataset.model === model));
+      const el = document.getElementById('pvText');
+      if (el && PV_RESPONSES[model]) el.innerHTML = PV_RESPONSES[model];
+    }
+    function bindAIPreviewTabs(){
+      document.querySelectorAll('.pv-tab').forEach(tab=>{
+        tab.addEventListener('click', ()=> setAIPreviewModel(tab.dataset.model));
+      });
+    }
+    function openAIDetail() { 
+      document.getElementById('aiPreviewOverlay').classList.add('active'); 
+      setAIPreviewModel('gpt4');
+    }
+    function closeAIPreview() { document.getElementById('aiPreviewOverlay').classList.remove('active'); }
+    function showPricingModal() { document.getElementById('pricingOverlay').classList.add('active'); }
+    function closePricingModal() { document.getElementById('pricingOverlay').classList.remove('active'); }
+    document.getElementById('mainCTA').addEventListener('click', () => {
+      sessionStorage.setItem('quickCheckComplete', 'true');
+      location.href = '3.0_Subscription_Plans.html';
+    });
+    bindAIPreviewTabs();
+    // Info popover
+    function toggleMsPop(btn){
+      const panel = btn.nextElementSibling;
+      const isShow = panel.classList.contains('show');
+      document.querySelectorAll('.ms-pop-panel.show').forEach(p=>p.classList.remove('show'));
+      if(!isShow){ panel.classList.add('show'); }
+    }
+    document.addEventListener('click', (e)=>{
+      const pop = e.target.closest('.ms-pop');
+      if(!pop){
+        document.querySelectorAll('.ms-pop-panel.show').forEach(p=>p.classList.remove('show'));
+      }
+    });
+  </script>
+
+  <script src="nav.js" defer></script>
+  <script>
+    // Existing script content
+    
+    // Debug: Unlock Report
+    function debugUnlockReport() {
+      console.log('Debug: Unlocking report...');
+      
+      // 1. Remove locked class from report wrappers
+      const lockedReports = document.querySelectorAll('.report-wrap.locked');
+      lockedReports.forEach(report => {
+        report.classList.remove('locked');
+      });
+
+      // 2. Remove locked class from nav items
+      const lockedNavItems = document.querySelectorAll('.nav-item.locked');
+      lockedNavItems.forEach(item => {
+        item.classList.remove('locked');
+        // Optional: add a visual cue that it's unlocked if needed, 
+        // but removing .locked should be enough based on standard CSS patterns
+      });
+
+      // 3. Update the main CTA to reflect unlocked state if applicable
+      // (This is optional depending on how the page is structured)
+      const mainCTA = document.getElementById('mainCTA');
+      if (mainCTA) {
+        mainCTA.style.display = 'none';
+      }
+      
+      alert('Debug: Report Unlocked!');
+    }
+  </script>
+  <!-- REPORT LOADING MODAL -->
+  <style>
+    .report-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      backdrop-filter: blur(4px);
+    }
+    .report-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 32px;
+      width: 400px;
+      max-width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      animation: modalFadeIn 0.3s ease-out;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .report-loader {
+      width: 48px;
+      height: 48px;
+      border: 4px solid #E5E7EB;
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .report-title {
+      font-family: var(--font-d);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+    .report-text {
+      font-family: var(--font-b);
+      font-size: 14px;
+      color: var(--ink-2);
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+    .report-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .report-btn:hover { opacity: 0.9; }
+    
+    /* Loading & Done States for Report Buttons */
+    .ms-view-report.loading {
+      cursor: wait;
+      opacity: 0.8;
+      position: relative;
+      padding-left: 32px;
+    }
+    .ms-view-report.loading::before {
+      content: '';
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 14px;
+      height: 14px;
+      border: 2px solid #ccc;
+      border-top-color: var(--ink-2);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    .ms-view-report.done {
+      color: #059669; /* Green text */
+      border-color: #059669;
+      position: relative;
+      padding-right: 30px;
+    }
+    .ms-view-report.done::after {
+      content: '✓';
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-weight: bold;
+      color: #059669;
+    }
+
+    /* TOP NOTIFICATION */
+    .top-toast {
+      position: fixed;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #059669;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 50px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      z-index: 10001;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-b);
+      font-size: 14px;
+      transition: top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .top-toast.show {
+      top: 24px;
+    }
+    .toast-close {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      opacity: 0.8;
+      padding: 0;
+      margin-left: 8px;
+    }
+    .toast-close:hover { opacity: 1; }
+
+    /* INFO TOAST (Temporary) */
+    .info-toast {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(30, 30, 30, 0.9);
+      color: white;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-family: var(--font-b);
+      font-size: 14px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 10002;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .info-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+    
+    /* Close Button on Report Card */
+    .report-close-x {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 24px;
+      height: 24px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--ink-2);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .report-close-x:hover {
+      background: #f3f4f6;
+      color: var(--ink);
+    }
+
+    /* MODAL CLOSE BUTTON STYLES */
+    .report-close-btn {
+      width: 100%;
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-family: var(--font-d);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink-2);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .report-close-btn:hover {
+      background: var(--border-light);
+      color: var(--ink);
+      border-color: var(--ink-3);
+    }
+    .report-close-btn svg {
+      color: var(--ink-3);
+    }
+    .report-close-sub {
+      text-align: center;
+      font-size: 11px;
+      color: var(--ink-4);
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+    
+    /* FULL REPORT MODAL */
+    .fr-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10005;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .fr-card {
+      width: 90%;
+      height: 90%;
+      background: white;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.25);
+    }
+    .fr-header {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+    }
+    .fr-title {
+      font-family: var(--font-d);
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+    .fr-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .fr-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-family: var(--font-d);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--ink-2);
+    }
+    .fr-btn:hover {
+      background: var(--border-light);
+      color: var(--ink);
+      border-color: var(--ink-3);
+    }
+    .fr-close-icon {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--ink-3);
+      padding: 4px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .fr-close-icon:hover {
+      background: var(--border-light);
+      color: var(--ink);
+    }
+    /* OUTLINE MODAL */
+    .outline-overlay{position:fixed;inset:0;z-index:10006;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center}
+    .outline-card{width:96vw;max-width:1200px;max-height:90vh;background:#fff;border-radius:16px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.25)}
+    .outline-header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-bottom:1px solid var(--blue-light);background:#fff}
+    .outline-title{font-family:var(--font-d);font-size:20px;font-weight:800;color:var(--ink)}
+    .outline-close{background:none;border:1px solid var(--border);color:var(--ink-3);padding:6px 10px;border-radius:8px;cursor:pointer;font-family:var(--font-d);font-weight:700}
+    .outline-close:hover{background:var(--border-light);color:var(--ink)}
+    .outline-body{padding:24px 28px;overflow:auto;background:var(--blue-light)}
+    .outline-grid{display:grid;grid-template-columns:1fr;gap:28px}
+    .outline-grid>div{display:block}
+    .outline-col{background:#fff;border:1px solid var(--blue-light);border-radius:12px;padding:18px}
+    .outline-col h3{font-family:var(--font-d);font-size:16px;font-weight:800;color:var(--ink);margin:0 0 8px;display:flex;align-items:center;gap:6px}
+    .outline-ico{font-size:14px}
+    .outline-sub{font-family:var(--font-d);font-size:13px;color:var(--ink-2);margin:6px 0 10px;font-weight:800}
+    .outline-list{margin:0;padding-left:18px}
+    .outline-list li{font-size:12px;color:var(--ink-2);line-height:1.6;margin:6px 0}
+    .skel-title{height:14px;width:60%;background:#e5e7eb;border-radius:6px;margin-bottom:12px}
+    .skel-line{height:10px;background:rgba(59,130,246,.12);border-radius:6px;margin:8px 0}
+    .skel-line.w20{width:20%}.skel-line.w40{width:40%}.skel-line.w60{width:60%}.skel-line.w80{width:80%}.skel-line.w100{width:100%}
+    .skel-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+    .skel-metric{height:40px;border:1px dashed var(--blue-light);border-radius:10px;background:#fff}
+    /* Tiles for Exec Summary AI Visibility */
+    .outline-tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:12px 0}
+    .outline-tile{border:1px solid var(--blue-light);border-radius:10px;background:#fff;padding:12px;display:flex;flex-direction:column;gap:8px}
+    .tile-label{font-family:var(--font-d);font-size:12px;font-weight:800;color:var(--ink-2);text-transform:uppercase;letter-spacing:.3px}
+    .tile-bar{height:22px;background:rgba(59,130,246,.12);border-radius:8px;display:flex;align-items:center;justify-content:center}
+    .tile-value{font-family:var(--font-d);font-size:14px;font-weight:800;color:var(--ink-3);line-height:1}
+    .tile-sub{height:10px;background:rgba(59,130,246,.12);border-radius:6px}
+    .outline-table{width:100%;border-collapse:collapse;margin:8px 0}
+    .outline-table th{padding:10px;border-bottom:1px solid var(--blue-light);text-align:left;font-size:13px;color:var(--ink);font-weight:800;font-family:var(--font-d)}
+    .outline-table td{padding:10px;border-bottom:1px solid var(--blue-light);text-align:left;font-size:12px;color:var(--ink-2)}
+    .outline-grey{color:var(--ink-3)}
+    .outline-status-ok{color:#059669;font-weight:800}
+    .outline-status-fail{color:#ef4444;font-weight:800}
+    .outline-timeline{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+    .timeline-bucket{background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px}
+    .tb-title{font-family:var(--font-d);font-size:13px;font-weight:800;color:var(--ink);margin-bottom:8px}
+    .tb-divider{height:2px;background:var(--border-light);border-radius:2px;margin:6px 0}
+    .tb-row{display:flex;align-items:center;gap:8px;margin:10px 0}
+    .tb-label{font-size:12px;font-weight:800;color:var(--ink-2);min-width:72px}
+    .tb-line{flex:1;height:10px;background:#e5e7eb;border-radius:6px}
+    .tb-steps{display:grid;gap:6px;margin-left:8px}
+    .tb-step{display:flex;align-items:center;gap:8px}
+    .tb-slabel{font-size:12px;color:var(--ink-3);min-width:56px}
+    .tb-sline{flex:1;height:8px;background:#eef0f3;border-radius:6px}
+    .outline-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid var(--border);background:#fff;border-radius:8px;font-family:var(--font-d);font-size:12px;font-weight:800;color:var(--ink-2);cursor:default}
+    .kv-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+    .kv-tag{display:inline-flex;align-items:center;padding:4px 8px;border:1px solid var(--border);background:#fff;border-radius:999px;font-size:11px;color:var(--ink-3);font-weight:700;font-family:var(--font-d)}
+  </style>
+
+  <!-- LOADING MODAL -->
+  <div class="report-overlay" id="reportLoadingModal">
+    <div class="report-card" style="position: relative;">
+      <div class="report-loader"></div>
+      <div class="report-title" id="reportModalTitle">Generating Report...</div>
+      <div class="report-text" id="reportModalText">Please wait while we analyze the data.</div>
+      
+      <!-- New prominent Close Button -->
+      <button class="report-close-btn" id="reportModalCloseBtn">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Run in Background
+      </button>
+      <div class="report-close-sub">Generation will be notified on page.<br>You can continue browsing.</div>
+    </div>
+  </div>
+
+  <!-- FULL REPORT MODAL -->
+  <div class="fr-overlay" id="fullReportModal">
+    <div class="fr-card">
+      <div class="fr-header">
+        <div class="fr-title" id="frTitle">Full Report</div>
+        <div class="fr-actions">
+          <button class="fr-btn" onclick="regenerateCurrentReport()">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M1 7a6 6 0 102.5-5M1 7v-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Regenerate
+          </button>
+          <button class="fr-btn" onclick="downloadCurrentReport()">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M7 1v9m0 0l-3-3m3 3l3-3M2 13h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Download
+          </button>
+          <button class="fr-close-icon" onclick="closeFullReportModal()">
+            <svg width="20" height="20" viewBox="0 0 14 14" fill="none">
+              <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div style="flex: 1; background: var(--bg); position: relative;">
+        <iframe id="fullReportFrame" style="width: 100%; height: 100%; border: none;"></iframe>
+      </div>
+    </div>
+  </div>
+  
+  <!-- OUTLINE MODAL -->
+  <div class="outline-overlay" id="outlineOverlay" onclick="if(event.target===this)closeOutline()">
+    <div class="outline-card">
+      <div class="outline-header">
+        <div class="outline-title" id="outlineTitle">Report Outline</div>
+        <button class="outline-close" onclick="closeOutline()">Close</button>
+      </div>
+      <div class="outline-body">
+        <div class="outline-grid" id="outlineBody"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="top-toast" id="reportNotification">
+    <span id="reportNotificationText">Report Ready!</span>
+    <button class="toast-close" onclick="closeNotification()">✕</button>
+  </div>
+  
+  <div class="info-toast" id="infoToast">生成后会在页面中提醒您</div>
+
+  <script>
+    // --- Report Loading Simulation Logic ---
+    let reportStatus = {
+      geo: { state: 'idle', url: 'geo report.html' },
+      seo: { state: 'idle', url: 'seo report.html' }
+    };
+    
+    // Store current loading context
+    let currentLoadingContext = null;
+    
+    // Store current full report context
+    let currentReportType = null;
+    let currentReportUrl = null;
+
+    function simulateReportLoading(type, url) {
+      const status = reportStatus[type].state;
+      const btnId = type === 'geo' ? 'btn-geo-report' : 'btn-seo-report';
+      const btn = document.getElementById(btnId);
+
+      if (status === 'done') {
+        openFullReport(type, url);
+        return;
+      }
+      
+      if (status === 'loading') {
+        alert('Report is still generating... Please wait.');
+        return;
+      }
+
+      // Save context for close handler
+      currentLoadingContext = { type, url, btn };
+
+      const modal = document.getElementById('reportLoadingModal');
+      const modalTitle = document.getElementById('reportModalTitle');
+      const modalText = document.getElementById('reportModalText');
+      const modalCloseBtn = document.getElementById('reportModalCloseBtn'); // This is now the big button
+      
+      const typeName = type === 'geo' ? 'GEO' : 'SEO';
+      modalTitle.innerText = `Generating ${typeName} Report...`;
+      modalText.innerText = `Analyzing global data points for ${typeName} performance. This involves processing large datasets.\n\nEstimated time: 10 minutes.`;
+      
+      // Update modal button text if needed, but it's hardcoded in HTML now as "Run in Background"
+      // So we can skip updating innerText unless we want to change it dynamically
+      
+      // Define the start logic
+      const startLoading = (showToast = false) => {
+        modal.style.display = 'none';
+        
+        // Set loading state
+        reportStatus[type].state = 'loading';
+        if(btn) {
+          btn.classList.add('loading');
+          btn.innerText = `Generating ${typeName}...`;
+        }
+        
+        if (showToast) {
+           showInfoToast("生成后会在页面中提醒您");
+        }
+        
+        // Start simulated timer (5 seconds for demo)
+        setTimeout(() => {
+          finishReportLoading(type, typeName, url, btn);
+        }, 5000);
+      };
+
+      // Button Click: Run in Background AND show toast (Since we replaced the X with this button)
+      modalCloseBtn.onclick = function() {
+        startLoading(true);
+      };
+      
+      modal.style.display = 'flex';
+    }
+
+    function showInfoToast(msg) {
+      const toast = document.getElementById('infoToast');
+      toast.innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    function finishReportLoading(type, typeName, url, btn) {
+      reportStatus[type].state = 'done';
+      
+      if(btn) {
+        btn.classList.remove('loading');
+        btn.classList.add('done');
+        btn.innerText = `View ${typeName} Full Report`; 
+      }
+      
+      showTopNotification(type, typeName, url);
+    }
+
+    function closeReportModal() {
+      document.getElementById('reportLoadingModal').style.display = 'none';
+    }
+
+    function showTopNotification(type, typeName, url) {
+      const notification = document.getElementById('reportNotification');
+      const notificationText = document.getElementById('reportNotificationText');
+      
+      // Use onclick to open the modal
+      notificationText.innerHTML = `<strong>${typeName} Report Ready!</strong> <span onclick="openFullReport('${type}', '${url}')" style="color: white; text-decoration: underline; margin-left: 10px; font-weight: 700; cursor: pointer;">View Report</span>`;
+      
+      notification.classList.add('show');
+    }
+
+    function closeNotification() {
+      document.getElementById('reportNotification').classList.remove('show');
+    }
+    
+    // --- Full Report Modal Logic ---
+    function openFullReport(type, url) {
+      currentReportType = type;
+      currentReportUrl = url;
+      
+      const modal = document.getElementById('fullReportModal');
+      const title = document.getElementById('frTitle');
+      const iframe = document.getElementById('fullReportFrame');
+      
+      const typeName = type === 'geo' ? 'GEO' : 'SEO';
+      title.innerText = `${typeName} Full Report`;
+      iframe.src = url;
+      
+      modal.style.display = 'flex';
+    }
+    
+    function closeFullReportModal() {
+      const modal = document.getElementById('fullReportModal');
+      const iframe = document.getElementById('fullReportFrame');
+      modal.style.display = 'none';
+      iframe.src = ''; // Clear source to stop processing
+    }
+    
+    function regenerateCurrentReport() {
+       if (!currentReportType) return;
+       
+       const type = currentReportType;
+       const url = currentReportUrl;
+       
+       // Close the full report modal
+       closeFullReportModal();
+       
+       // Reset UI state for the button
+       reportStatus[type].state = 'idle'; // Reset to idle first
+       const btnId = type === 'geo' ? 'btn-geo-report' : 'btn-seo-report';
+       const btn = document.getElementById(btnId);
+       
+       if (btn) {
+         btn.classList.remove('done');
+         // No need to set loading class here, simulateReportLoading will do it
+         btn.innerText = `View ${type === 'geo' ? 'GEO' : 'SEO'} Full Report`;
+       }
+       
+       // Start simulation again
+       simulateReportLoading(type, url);
+    }
+    
+    function downloadCurrentReport() {
+       if (!currentReportUrl) return;
+       
+       const link = document.createElement('a');
+       link.href = currentReportUrl;
+       link.download = `${currentReportType === 'geo' ? 'GEO' : 'SEO'}_Report.html`;
+       document.body.appendChild(link);
+       link.click();
+       document.body.removeChild(link);
+    }
+    
+    // --- Outline Modal Logic ---
+    async function openOutline(type){
+      const overlay = document.getElementById('outlineOverlay');
+      const title = document.getElementById('outlineTitle');
+      const body = document.getElementById('outlineBody');
+      const isGeo = type === 'geo';
+      try{
+        const url = (window.reportStatus && reportStatus[type] && reportStatus[type].url) ? reportStatus[type].url : (isGeo ? 'geo report.html' : 'seo report.html');
+        const res = await fetch(url, {cache:'no-store'});
+        const html = await res.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        title.innerText = `${isGeo ? 'GEO' : 'SEO'} Report Demo`;
+        const sections = Array.from(doc.querySelectorAll('section.section'));
+        const iconFor = (sid)=>{
+          const map = {
+            'executive-summary':'📊',
+            'brand-overview':'🧭',
+            'platform-performance':'⚙️',
+            'query-highlights':'🔎',
+            'action-plan':'🗓️',
+            'strategic-targeting':'🎯',
+            'appendix':'📎',
+            'top-competitors':'🏆',
+            'overview':'📈',
+            'search-performance':'🔍',
+            'content-marketing':'📝',
+            'trust-security':'🛡️',
+            'online-reputation':'🌐'
+          };
+          return map[sid] || '📄';
+        };
+        const enText = (el)=>{ const en = el.querySelector('.lang-en'); return en ? en.textContent.trim() : el.textContent.trim(); };
+        const sanitizeTableEl = (table)=>{
+          const headers = Array.from(table.querySelectorAll('thead th')).map(enText);
+          const rows = Array.from(table.querySelectorAll('tbody tr')).map(tr=>{
+            const tds = Array.from(tr.querySelectorAll('td')).map((td, idx)=>{
+              if(idx===0){
+                const label = enText(td);
+                return `<td><strong>${label}</strong></td>`;
+              }
+              const text = enText(td);
+              const hasNumber = /\d/.test(text);
+              return hasNumber ? `<td>?</td>` : `<td><div class="skel-line w60"></div></td>`;
+            }).join('');
+            return `<tr>${tds}</tr>`;
+          }).join('');
+          return `<table class="outline-table"><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table>`;
+        };
+        const sanitizedTablesByPrefix = (prefix)=>{
+          if(!prefix) return '';
+          const tables = Array.from(doc.querySelectorAll(`[id^="${prefix}"] .table`));
+          if(!tables.length) return '';
+          return tables.map(table=>{
+            const parent = table.closest('div[id^="section-"]');
+            const titleEl = parent ? parent.querySelector('.chart-title') : null;
+            const label = titleEl ? enText(titleEl) : (parent?.id || '');
+            return `<div class="outline-sub">${label}</div>${sanitizeTableEl(table)}`;
+          }).join('');
+        };
+        const sanitizedTablesInSection = (section)=>{
+          const tables = Array.from(section.querySelectorAll('.table'));
+          if(!tables.length) return '';
+          return tables.map(table=>{
+            const container = table.closest('div[id^="section-"]') || section;
+            const titleEl = container.querySelector('.chart-title') || section.querySelector('.chart-title');
+            const label = titleEl ? enText(titleEl) : (container?.id || '');
+            return `<div class="outline-sub">${label}</div>${sanitizeTableEl(table)}`;
+          }).join('');
+        };
+        const cards = [];
+        sections.forEach((sec)=>{
+          const h2 = sec.querySelector('.section-title');
+          const heading = h2 ? h2.textContent.trim() : 'Section';
+          const id = sec.getAttribute('id') || '';
+          if (isGeo && id === 'executive-summary'){
+            const tiles = [];
+            sec.querySelectorAll('.score-card .score-item').forEach(item=>{
+              const label = item.querySelector('.score-label')?.textContent?.trim() || 'Metric';
+              tiles.push({label});
+            });
+            const tilesHtml = `<div class="outline-tiles">` + tiles.map(t=>(
+              `<div class="outline-tile">
+                 <div class="tile-label">${t.label}</div>
+                 <div class="tile-bar"><span class="tile-value">?%</span></div>
+               </div>`
+            )).join('') + `</div>`;
+            cards.push(`<div class="outline-col" data-oid="${id}"><h3><span class="outline-ico">${iconFor(id)}</span>${heading}</h3>${tilesHtml}</div>`);
+            return;
+          }
+          if (isGeo && id === 'brand-overview'){
+            const subtitle = sec.querySelector('.section-subtitle')?.textContent?.trim() || '';
+            const content = subtitle ? `<div style="font-size:13px;color:var(--ink-2);margin:8px 0 4px">${subtitle}</div>` : '';
+            const tags = `<div class="kv-tags"><span class="kv-tag">Industry</span><span class="kv-tag">Business Model</span><span class="kv-tag">Audience Region</span></div>`;
+            cards.push(`<div class="outline-col" data-oid="${id}"><h3><span class="outline-ico">${iconFor(id)}</span>${heading}</h3>${content}${tags}</div>`);
+            return;
+          }
+          if (isGeo && id === 'platform-performance'){
+            const tablesHtml = sanitizedTablesInSection(sec);
+            const content = tablesHtml || `<div class="skel-line w80"></div><div class="skel-line w60"></div>`;
+            cards.push(`<div class="outline-col" data-oid="${id}"><h3><span class="outline-ico">${iconFor(id)}</span>${heading}</h3>${content}</div>`);
+            return;
+          }
+          if (isGeo && id === 'query-highlights'){
+            const tablesHtml = sanitizedTablesInSection(sec);
+            const content = tablesHtml || `<div class="skel-line w80"></div><div class="skel-line w60"></div>`;
+            cards.push(`<div class="outline-col" data-oid="${id}"><h3><span class="outline-ico">${iconFor(id)}</span>${heading}</h3>${content}</div>`);
+            return;
+          }
+          if (isGeo && id === 'action-plan'){
+            const bucket = (title,label)=>`
+              <div class="timeline-bucket">
+                <div class="tb-title">${label}</div>
+                <div class="tb-divider"></div>
+                <div class="tb-row"><span class="tb-label">Action 1</span><div class="tb-line"></div></div>
+                <div class="tb-steps">
+                  <div class="tb-step"><span class="tb-slabel">Step 1</span><div class="tb-sline"></div></div>
+                  <div class="tb-step"><span class="tb-slabel">Step 2</span><div class="tb-sline"></div></div>
+                  <div class="tb-step"><span class="tb-slabel">Step 3</span><div class="tb-sline"></div></div>
+                </div>
+              </div>`;
+            const tl = `
+              <div class="outline-timeline">
+                ${bucket('w1','Week 1')}
+                ${bucket('w12','Week 1–2')}
+                ${bucket('w38','Week 3–8')}
+                ${bucket('m3p','Month 3+')}
+              </div>
+            `;
+            cards.push(`<div class="outline-col" data-oid="${id}"><h3><span class="outline-ico">${iconFor(id)}</span>${heading}</h3>${tl}</div>`);
+            return;
+          }
+          if (isGeo && id === 'strategic-targeting'){
+            const tablesHtml = sanitizedTablesInSection(sec);
+            const content = tablesHtml || `<div class="skel-line w80"></div><div class="skel-line w60"></div>`;
+            cards.push(`<div class="outline-col" data-oid="${id}"><h3><span class="outline-ico">${iconFor(id)}</span>${heading}</h3>${content}</div>`);
+            return;
+          }
+          if (isGeo && id === 'appendix'){
+            const tablesHtml = sanitizedTablesInSection(sec);
+            const content = tablesHtml || `<div class="skel-line w80"></div><div class="skel-line w60"></div>`;
+            cards.push(`<div class="outline-col" data-oid="${id}"><h3><span class="outline-ico">${iconFor(id)}</span>${heading}</h3>${content}</div>`);
+            return;
+          }
+          if (isGeo && id === 'top-competitors'){
+            const tablesHtml = sanitizedTablesInSection(sec);
+            const content = tablesHtml || `<div class="skel-line w80"></div><div class="skel-line w60"></div>`;
+            cards.push(`<div class="outline-col" data-oid="${id}"><h3><span class="outline-ico">${iconFor(id)}</span>${heading}</h3>${content}</div>`);
+            return;
+          }
+          if (!isGeo && id === 'overview'){
+            const sub = `<div class="outline-sub">1.1 Brand Comparison</div>`;
+            const tiles = [
+              {label:'Your Brand'},
+              {label:'Competitor Brand'},
+              {label:'Performance Gap'}
+            ];
+            const tilesHtml = `<div class="outline-tiles">` + tiles.map(t=>(
+              `<div class="outline-tile">
+                 <div class="tile-label">${t.label}</div>
+                 <div class="tile-bar"><span class="tile-value">?</span></div>
+               </div>`
+            )).join('') + `</div>`;
+            const tablesHtml = sanitizedTablesByPrefix('section-1-');
+            cards.push(`<div class="outline-col" data-oid="${id}"><h3><span class="outline-ico">${iconFor(id)}</span>${heading}</h3>${sub}${tilesHtml}${tablesHtml}</div>`);
+            return;
+          }
+          if (!isGeo && id === 'search-performance'){
+            const tablesHtml = sanitizedTablesByPrefix('section-3-');
+            cards.push(`<div class="outline-col" data-oid="${id}"><h3><span class="outline-ico">${iconFor(id)}</span>${heading}</h3>${tablesHtml}</div>`);
+            return;
+          }
+          if (!isGeo && id === 'action-plan'){
+            const buckets = ['Week 1','Week 1–2','Week 3–8','Month 3+'];
+            const tilesHtml = `<div class="outline-tiles">` + buckets.map(b=>(
+              `<div class="outline-tile">
+                <div class="tile-label">${b}</div>
+                <div class="skel-line w80"></div>
+                <div class="skel-line w60"></div>
+                <div class="skel-line w50"></div>
+              </div>`
+            )).join('') + `</div>`;
+            cards.push(`<div class="outline-col" data-oid="${id}"><h3><span class="outline-ico">${iconFor(id)}</span>${heading}</h3>${tilesHtml}</div>`);
+            return;
+          }
+          if (!isGeo && id === 'content-marketing'){
+            const tablesHtml = sanitizedTablesByPrefix('section-5-');
+            cards.push(`<div class="outline-col" data-oid="${id}"><h3><span class="outline-ico">${iconFor(id)}</span>${heading}</h3>${tablesHtml}</div>`);
+            return;
+          }
+          if (!isGeo && id === 'trust-security'){
+            const metricsHtml = `<div class="skel-metrics">${Array.from({length:3}).map(()=>`<div class="skel-metric"></div>`).join('')}</div>`;
+            const linesHtml = [70,60].map(w=>`<div class="skel-line w${w}"></div>`).join('');
+            cards.push(`<div class="outline-col" data-oid="${id}"><h3><span class="outline-ico">${iconFor(id)}</span>${heading}</h3>${metricsHtml}${linesHtml}</div>`);
+            return;
+          }
+          if (!isGeo && id === 'online-reputation'){
+            const tablesHtml = sanitizedTablesByPrefix('section-7-');
+            cards.push(`<div class="outline-col" data-oid="${id}"><h3><span class="outline-ico">${iconFor(id)}</span>${heading}</h3>${tablesHtml}</div>`);
+            return;
+          }
+          if (!isGeo && id === 'appendix'){
+            const tablesHtml = sanitizedTablesByPrefix('section-8-');
+            cards.push(`<div class="outline-col" data-oid="${id}"><h3><span class="outline-ico">${iconFor(id)}</span>${heading}</h3>${tablesHtml}</div>`);
+            return;
+          }
+          const metricNodes = sec.querySelectorAll('[id^="section-"], .chart-container');
+          const metrics = Math.max(1, Math.min(6, metricNodes.length || 2));
+          const lines = [80,60,70].slice(0, 2);
+          const metricsHtml = `<div class="skel-metrics">${Array.from({length:metrics}).map(()=>`<div class="skel-metric"></div>`).join('')}</div>`;
+          const linesHtml = lines.map(w=>`<div class="skel-line w${w}"></div>`).join('');
+          cards.push(`<div class="outline-col" data-oid="${id}"><h3><span class="outline-ico">${iconFor(id)}</span>${heading}</h3>${metricsHtml}${linesHtml}</div>`);
+        });
+        // Strict sequential single-column layout
+        body.innerHTML = `<div class="outline-grid">${cards.join('')}</div>`;
+      }catch(e){
+        title.innerText = isGeo ? 'GEO Report Outline' : 'SEO Report Outline';
+        body.innerHTML = `
+          <div class="outline-col">
+            <h3>Overview</h3>
+            <div class="skel-metrics"><div class="skel-metric"></div><div class="skel-metric"></div><div class="skel-metric"></div></div>
+            <div class="skel-line w80"></div><div class="skel-line w60"></div>
+          </div>
+          <div class="outline-col">
+            <h3>Details</h3>
+            <div class="skel-metrics"><div class="skel-metric"></div><div class="skel-metric"></div></div>
+            <div class="skel-line w100"></div><div class="skel-line w70"></div>
+          </div>`;
+      }
+      overlay.style.display = 'flex';
+    }
+    function closeOutline(){
+      document.getElementById('outlineOverlay').style.display = 'none';
+      document.getElementById('outlineBody').innerHTML = '';
+    }
+  </script>
+</body>
+
+</html>

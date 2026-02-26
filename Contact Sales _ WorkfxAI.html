@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<!-- saved from url=(0281)file:///Volumes/MacOS%20SamSung/claude-test/4.%20SEO%20GEO%20%E7%9B%B8%E5%85%B3/%E4%BA%A7%E5%93%81%E4%BD%BF%E7%94%A8%E6%88%AA%E5%B1%8F/%E7%8E%B0%E6%9C%89%E4%BA%A7%E5%93%81%E5%8A%9F%E8%83%BD%E5%92%8C%E6%B5%81%E7%A8%8B/%E7%94%9F%E6%88%90%E7%9A%84%E9%A1%B5%E9%9D%A2/Contact_Sales.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Sales | WorkfxAI</title>
+<link href="./Contact Sales _ WorkfxAI_files/css2" rel="stylesheet">
+<style>
+:root {
+  --black: #0a0a0a;
+  --gray-900: #171717;
+  --gray-600: #525252;
+  --gray-500: #737373;
+  --gray-400: #a3a3a3;
+  --gray-300: #d4d4d4;
+  --gray-200: #e5e5e5;
+  --gray-100: #f5f5f5;
+  --gray-50: #fafafa;
+  --white: #ffffff;
+  --green: #16a34a;
+  --green-bg: #f0fdf4;
+  --fd: 'Manrope', sans-serif;
+  --fb: 'Inter', sans-serif;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:var(--fb); background:var(--white); color:var(--black); line-height:1.6; min-height:100vh; }
+
+/* Layout */
+.page-layout { min-height:100vh; display:grid; grid-template-columns:1fr 1fr; }
+
+/* LEFT SIDE */
+.info-side {
+  display:flex; flex-direction:column; justify-content:center;
+  padding:80px 64px; position:relative;
+  animation:fadeUp 0.6s var(--ease);
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+.info-side::after {
+  content:''; position:absolute; right:0; top:10%; bottom:10%;
+  width:1px; background:var(--gray-200);
+}
+
+.back-link {
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:13px; font-weight:500; color:var(--gray-400);
+  text-decoration:none; margin-bottom:32px; transition:color 0.2s;
+}
+.back-link:hover { color:var(--black); }
+
+.info-label {
+  font-family:var(--fd); font-size:11px; font-weight:700;
+  color:var(--gray-400); text-transform:uppercase;
+  letter-spacing:0.08em; margin-bottom:20px;
+}
+
+.info-title {
+  font-family:var(--fd); font-size:clamp(28px,4vw,38px); font-weight:800;
+  line-height:1.15; margin-bottom:14px; letter-spacing:-0.03em;
+}
+
+.info-desc {
+  font-size:15px; color:var(--gray-500);
+  margin-bottom:36px; line-height:1.7; max-width:420px;
+}
+
+/* Value props */
+.value-props { display:flex; flex-direction:column; gap:14px; margin-bottom:48px; }
+
+.value-prop {
+  display:flex; align-items:center; gap:12px;
+  font-size:14px; font-weight:500; color:var(--gray-600);
+}
+
+.value-check {
+  width:22px; height:22px; border-radius:50%;
+  background:var(--green); display:flex;
+  align-items:center; justify-content:center; flex-shrink:0;
+}
+
+/* Quote */
+.quote-block { padding-top:32px; border-top:1px solid var(--gray-200); }
+
+.quote-text {
+  font-size:16px; font-style:italic; color:var(--gray-500);
+  line-height:1.7; margin-bottom:20px;
+}
+
+.quote-text::before { content:'\201C '; font-size:24px; color:var(--gray-300); font-style:normal; }
+.quote-text::after { content:' \201D'; font-size:24px; color:var(--gray-300); font-style:normal; }
+
+.quote-author { display:flex; align-items:center; gap:12px; }
+
+.quote-avatar {
+  width:36px; height:36px; border-radius:50%;
+  background:var(--black); color:var(--white);
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; font-weight:700; font-family:var(--fd);
+}
+
+.quote-name { font-size:13px; font-weight:600; color:var(--black); }
+.quote-role { font-size:12px; color:var(--gray-400); }
+
+/* RIGHT SIDE - Form */
+.form-side {
+  display:flex; flex-direction:column; justify-content:center;
+  padding:80px 64px; background:var(--gray-50);
+  animation:fadeUp 0.6s var(--ease) 0.15s both;
+}
+
+.form-title {
+  font-family:var(--fd); font-size:22px; font-weight:700;
+  margin-bottom:32px; letter-spacing:-0.02em;
+}
+
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+.form-group { margin-bottom:14px; }
+
+.form-label {
+  display:block; font-size:12px; font-weight:600;
+  color:var(--gray-500); margin-bottom:6px;
+  text-transform:uppercase; letter-spacing:0.04em;
+}
+
+.form-input {
+  width:100%; padding:12px 16px;
+  background:var(--white); border:1.5px solid var(--gray-200);
+  border-radius:8px; color:var(--black);
+  font-family:var(--fb); font-size:14px;
+  transition:all 0.2s var(--ease);
+}
+
+.form-input:focus {
+  outline:none; border-color:var(--black);
+  box-shadow:0 0 0 3px rgba(10,10,10,0.06);
+}
+
+.form-input::placeholder { color:var(--gray-400); }
+
+.form-textarea { min-height:88px; resize:vertical; }
+
+/* Checkbox */
+.checkbox-group {
+  display:flex; align-items:center; gap:10px;
+  margin-top:8px; margin-bottom:28px;
+}
+
+.checkbox {
+  width:18px; height:18px;
+  border:1.5px solid var(--gray-300); background:var(--white);
+  border-radius:4px; cursor:pointer;
+  appearance:none; -webkit-appearance:none; transition:all 0.2s;
+}
+
+.checkbox:checked {
+  background:var(--black); border-color:var(--black);
+  background-image:url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 6L5 9L10 3' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:center;
+}
+
+.checkbox-label { font-size:13px; color:var(--gray-500); cursor:pointer; }
+
+/* Footer */
+.form-footer {
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+}
+
+.email-link { font-size:13px; color:var(--gray-400); }
+.email-link a { color:var(--gray-600); text-decoration:underline; text-underline-offset:2px; }
+.email-link a:hover { color:var(--black); }
+
+.btn-submit {
+  font-family:var(--fb); font-size:14px; font-weight:700;
+  padding:12px 28px; border-radius:8px; border:none;
+  background:var(--gray-200); color:var(--gray-400);
+  cursor:pointer; transition:all 0.25s var(--ease);
+  white-space:nowrap; display:inline-flex; align-items:center; gap:6px;
+}
+
+.btn-submit.active {
+  background:var(--black); color:var(--white);
+}
+
+.btn-submit.active:hover {
+  background:var(--gray-900); transform:translateY(-1px);
+  box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+
+.btn-submit.sending { background:var(--gray-500); color:var(--white); }
+
+.btn-submit.sent {
+  background:var(--green); color:var(--white);
+}
+
+/* Responsive */
+@media (max-width:968px) {
+  .page-layout { grid-template-columns:1fr; }
+  .info-side { padding:48px 24px; }
+  .info-side::after { display:none; }
+  .form-side { padding:48px 24px; }
+  .info-title { font-size:28px; }
+  .form-row { grid-template-columns:1fr; }
+  .form-footer { flex-direction:column; align-items:stretch; }
+  .btn-submit { text-align:center; justify-content:center; }
+}
+</style>
+</head>
+<body>
+
+<div class="page-layout">
+  <!-- LEFT: Info + Quote -->
+  <div class="info-side">
+    <a href="file:///Volumes/MacOS%20SamSung/claude-test/4.%20SEO%20GEO%20%E7%9B%B8%E5%85%B3/%E4%BA%A7%E5%93%81%E4%BD%BF%E7%94%A8%E6%88%AA%E5%B1%8F/%E7%8E%B0%E6%9C%89%E4%BA%A7%E5%93%81%E5%8A%9F%E8%83%BD%E5%92%8C%E6%B5%81%E7%A8%8B/%E7%94%9F%E6%88%90%E7%9A%84%E9%A1%B5%E9%9D%A2/1.3_Industry_Recognition_V2.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M10 4L6 8L10 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+      Back
+    </a>
+
+    <div class="info-label">Contact Sales</div>
+    <h1 class="info-title">Let's find the right plan for your team.</h1>
+    <p class="info-desc">Connect with our team to explore how WorkfxAI can support your use case and serve your clients at scale.</p>
+
+    <div class="value-props">
+      <div class="value-prop">
+        <div class="value-check">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </div>
+        Live demo of the WorkfxAI platform
+      </div>
+      <div class="value-prop">
+        <div class="value-check">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </div>
+        Custom report of your brand's AI visibility
+      </div>
+      <div class="value-prop">
+        <div class="value-check">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </div>
+        Multi-client pricing for agencies
+      </div>
+    </div>
+
+    <div class="quote-block">
+      <div class="quote-text">Identifying and analyzing LLM insights for AEO has been a key priority for the Ramp team. Profound allowed us to uncover behavioral patterns that traditional SEO tools couldn't fully capture.</div>
+      <div class="quote-author">
+        <div class="quote-avatar">AN</div>
+        <div>
+          <div class="quote-name">Ashley Nguyen</div>
+          <div class="quote-role">SEO Strategist at Ramp</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Contact Form -->
+  <div class="form-side">
+    <h2 class="form-title">How can we help?</h2>
+
+    <form id="salesForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Full name</label>
+          <input type="text" class="form-input" placeholder="Jane Smith" required="">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Work email</label>
+          <input type="email" class="form-input" placeholder="jane@company.com" required="">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Company</label>
+          <input type="text" class="form-input" placeholder="Acme Inc." required="">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Company size</label>
+          <input type="text" class="form-input" placeholder="e.g. 50-200" required="">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Anything else?</label>
+        <textarea class="form-input form-textarea" placeholder="Tell us about your use case, goals, or questions..."></textarea>
+      </div>
+
+      <div class="checkbox-group">
+        <input type="checkbox" class="checkbox" id="agencyCheck">
+        <label class="checkbox-label" for="agencyCheck">We're an agency managing multiple clients</label>
+      </div>
+
+      <div class="form-footer">
+        <div class="email-link">Or email <a href="mailto:sales@workfxai.com">sales@workfxai.com</a></div>
+        <button type="submit" class="btn-submit" id="submitBtn">
+          Send message
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+const form = document.getElementById('salesForm');
+const btn = document.getElementById('submitBtn');
+const inputs = document.querySelectorAll('.form-input');
+
+// Activate button when required fields filled
+function checkForm() {
+  const required = form.querySelectorAll('[required]');
+  const filled = Array.from(required).every(i => i.value.trim());
+  btn.classList.toggle('active', filled);
+}
+inputs.forEach(i => i.addEventListener('input', checkForm));
+
+// Submit
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  btn.textContent = 'Sending...';
+  btn.className = 'btn-submit sending';
+
+  setTimeout(() => {
+    btn.innerHTML = 'Sent \u2713';
+    btn.className = 'btn-submit sent';
+    setTimeout(() => {
+      btn.innerHTML = 'Send message <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M8 3.5L11.5 7 8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      btn.className = 'btn-submit active';
+    }, 2000);
+  }, 1200);
+});
+</script>
+
+
+
+</body></html>

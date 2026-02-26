@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confirm Competitors | WorkfxAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-warm: #fafafa;
+  --bg-warm-alt: #f5f5f5;
+  --text-primary: #0a0a0a;
+  --text-secondary: #525252;
+  --text-tertiary: #737373;
+  --accent-orange: #0a0a0a;
+  --border-soft: #e5e5e5;
+  --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-large: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --font-display: 'Manrope', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-warm);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+.page-layout {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+.form-side {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+}
+
+.form-card {
+  max-width: 560px;
+  width: 100%;
+  animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.progress-bar {
+  margin-bottom: 40px;
+  height: 2px;
+  background: #e5e5e5;
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #0a0a0a;
+  border-radius: 1px;
+  transition: width 0.6s ease;
+}
+
+.form-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 38px);
+  font-weight: 800;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.form-subtitle {
+  font-size: 17px;
+  color: var(--text-secondary);
+  margin-bottom: 36px;
+  line-height: 1.6;
+}
+
+/* Competitor List */
+.competitor-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.competitor-item {
+  background: white;
+  border: 2px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s;
+  opacity: 0;
+  animation: itemFadeIn 0.5s ease forwards;
+}
+.competitor-item:nth-child(1) { animation-delay: 0.1s; }
+.competitor-item:nth-child(2) { animation-delay: 0.2s; }
+.competitor-item:nth-child(3) { animation-delay: 0.3s; }
+.competitor-item:nth-child(4) { animation-delay: 0.4s; }
+@keyframes itemFadeIn { to { opacity: 1; } }
+.competitor-item:hover { border-color: var(--accent-orange); box-shadow: var(--shadow-medium); }
+
+.competitor-info { flex: 1; display: flex; align-items: center; gap: 16px; }
+.competitor-icon { width: 48px; height: 48px; background: var(--bg-warm); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+.competitor-name { font-family: var(--font-display); font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+.competitor-url { font-size: 14px; color: var(--text-secondary); }
+
+.remove-btn {
+  padding: 8px 16px; background: transparent; border: 1.5px solid var(--border-soft);
+  border-radius: 8px; color: var(--text-secondary); font-family: var(--font-body);
+  font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+}
+.remove-btn:hover { border-color: #EF4444; color: #EF4444; background: #FEF2F2; }
+
+/* Add Competitor */
+.add-competitor { border: 2px dashed var(--border-soft); border-radius: 12px; padding: 20px; margin-bottom: 20px; background: var(--bg-warm); transition: all 0.3s; }
+.add-competitor:hover { border-color: var(--accent-orange); background: white; }
+.add-form { display: flex; gap: 12px; align-items: center; }
+
+.add-input {
+  flex: 1; padding: 14px 20px; border: 2px solid var(--border-soft); border-radius: 10px;
+  font-family: var(--font-body); font-size: 15px; transition: all 0.2s;
+}
+.add-input:focus { outline: none; border-color: var(--accent-orange); box-shadow: 0 0 0 4px rgba(10, 10, 10, 0.1); }
+.add-input::placeholder { color: var(--text-tertiary); }
+
+.add-btn {
+  padding: 14px 24px; background: var(--accent-orange); color: white; border: none;
+  border-radius: 10px; font-family: var(--font-body); font-size: 15px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s; white-space: nowrap;
+}
+.add-btn:hover { background: #262626; transform: translateY(-2px); }
+
+.hint-text { font-size: 14px; color: var(--text-tertiary); text-align: center; margin-bottom: 28px; }
+
+.button-group { display: flex; gap: 12px; }
+.btn-secondary { font-family: var(--font-body); font-size: 15px; font-weight: 600; padding: 14px 24px; border-radius: 8px; border: 2px solid var(--border-soft); cursor: pointer; transition: all 0.3s; background: white; color: var(--text-primary); display: inline-flex; align-items: center; gap: 6px; }
+.btn-secondary:hover { border-color: var(--accent-orange); transform: translateY(-2px); }
+.btn-primary { font-family: var(--font-body); font-size: 15px; font-weight: 600; padding: 14px 32px; border-radius: 8px; border: none; cursor: pointer; transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px; background: var(--accent-orange); color: white; flex: 1; justify-content: center; }
+.btn-primary:hover { background: #262626; transform: translateY(-2px); box-shadow: var(--shadow-medium); }
+
+/* RIGHT SIDE — Competitive Intelligence Preview */
+.preview-side {
+  background: #0a0a0a;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 48px 56px;
+  position: relative;
+  overflow: hidden;
+}
+
+.preview-side::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.preview-content {
+  position: relative;
+  z-index: 1;
+  max-width: 420px;
+  width: 100%;
+}
+
+.preview-label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #525252;
+  margin-bottom: 10px;
+}
+
+.preview-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  line-height: 1.3;
+  margin-bottom: 32px;
+}
+
+/* Mock Ranking Table */
+.rank-table {
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: cardUp 0.5s ease 0.2s forwards;
+}
+
+@keyframes cardUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.rank-header {
+  display: grid;
+  grid-template-columns: 1fr 80px 80px;
+  padding: 0 0 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 6px;
+}
+
+.rank-header span {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #525252;
+}
+
+.rank-header span:not(:first-child) { text-align: center; }
+
+.rank-row {
+  display: grid;
+  grid-template-columns: 1fr 80px 80px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  opacity: 0;
+  transform: translateY(8px);
+  animation: cardUp 0.4s ease forwards;
+}
+.rank-row:nth-child(2) { animation-delay: 0.3s; }
+.rank-row:nth-child(3) { animation-delay: 0.45s; }
+.rank-row:nth-child(4) { animation-delay: 0.6s; }
+.rank-row:nth-child(5) { animation-delay: 0.75s; }
+
+.rank-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rank-pos {
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: white;
+  background: rgba(255,255,255,0.08);
+  flex-shrink: 0;
+}
+
+.rank-row:nth-child(2) .rank-pos { background: rgba(255,255,255,0.15); }
+
+.rank-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+}
+
+.rank-row.is-you .rank-name {
+  color: #4ade80;
+}
+.rank-row.is-you .rank-pos {
+  background: rgba(74, 222, 128, 0.15);
+  color: #4ade80;
+}
+
+.rank-val {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.5);
+  font-family: var(--font-display);
+}
+
+.rank-row.is-you .rank-val { color: #4ade80; }
+
+/* Bar visual for AI share */
+.share-bar-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.share-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.12);
+  transition: width 1s ease;
+}
+
+.rank-row:nth-child(2) .share-bar { background: rgba(255,255,255,0.25); }
+.rank-row.is-you .share-bar { background: rgba(74, 222, 128, 0.3); }
+
+/* Gap Insight Card */
+.gap-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: cardUp 0.5s ease 0.9s forwards;
+}
+
+.gap-icon {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.gap-stat {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 4px;
+}
+
+.gap-desc {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.5;
+}
+
+/* Bottom note */
+.preview-note {
+  font-size: 11px;
+  color: #525252;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  animation: cardUp 0.4s ease 1.1s forwards;
+}
+
+.preview-note svg { flex-shrink: 0; }
+
+@media (max-width: 968px) {
+  .page-layout { grid-template-columns: 1fr; }
+  .form-side { padding: 40px 20px; }
+  .social-side { min-height: 500px; }
+  .competitor-item { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .remove-btn { align-self: flex-end; }
+  .add-form { flex-direction: column; }
+  .add-btn { width: 100%; }
+  .button-group { flex-direction: column; }
+  .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="page-layout">
+  <!-- LEFT -->
+  <div class="form-side">
+    <div class="form-card">
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: 65%"></div>
+      </div>
+
+      <h1 class="form-title">Let's confirm your competitors</h1>
+      <p class="form-subtitle">We've detected these competitors based on your website. You can add or remove any to ensure accurate analysis.</p>
+
+      <div class="competitor-list" id="competitorList"></div>
+
+      <div class="add-competitor">
+        <div class="add-form">
+          <input type="text" class="add-input" id="newCompetitor" placeholder="Add another competitor (e.g., competitor.com)">
+          <button class="add-btn" onclick="addCompetitor()">+ Add</button>
+        </div>
+      </div>
+
+      <div class="hint-text">We'll analyze up to 4 competitors to give you the most accurate insights</div>
+
+      <div class="button-group">
+        <button class="btn-secondary" onclick="goBack()">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M11 4 L6 9 L11 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Back
+        </button>
+        <button class="btn-primary" onclick="continueToNext()">
+          Continue
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M7 4 L12 9 L7 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT — Competitive Intelligence Preview -->
+  <div class="preview-side">
+    <div class="preview-content">
+      <div class="preview-label">What you'll discover</div>
+      <div class="preview-title">How you compare in AI search</div>
+
+      <!-- Mock Ranking Table -->
+      <div class="rank-table">
+        <div class="rank-header">
+          <span>Brand</span>
+          <span>AI Citations</span>
+          <span>AI Share</span>
+        </div>
+
+        <div class="rank-row is-you">
+          <div class="rank-brand">
+            <div class="rank-pos">?</div>
+            <div class="rank-name">Nordstrom</div>
+          </div>
+          <div class="rank-val">—</div>
+          <div class="share-bar-wrap">
+            <div class="share-bar" style="width: 0; border: 1px dashed rgba(74,222,128,0.3);"></div>
+          </div>
+        </div>
+
+        <div class="rank-row">
+          <div class="rank-brand">
+            <div class="rank-pos">1</div>
+            <div class="rank-name">Macy's</div>
+          </div>
+          <div class="rank-val">156</div>
+          <div class="share-bar-wrap">
+            <div class="share-bar" style="width: 60px;"></div>
+          </div>
+        </div>
+
+        <div class="rank-row">
+          <div class="rank-brand">
+            <div class="rank-pos">2</div>
+            <div class="rank-name">Bloomingdale's</div>
+          </div>
+          <div class="rank-val">112</div>
+          <div class="share-bar-wrap">
+            <div class="share-bar" style="width: 42px;"></div>
+          </div>
+        </div>
+
+        <div class="rank-row">
+          <div class="rank-brand">
+            <div class="rank-pos">...</div>
+            <div class="rank-name" style="color: rgba(255,255,255,0.3);">Others</div>
+          </div>
+          <div class="rank-val" style="color: rgba(255,255,255,0.25);">—</div>
+          <div class="share-bar-wrap">
+            <div class="share-bar" style="width: 20px; opacity: 0.5;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gap Insight -->
+      <div class="gap-card">
+        <div class="gap-stat">40+</div>
+        <div class="gap-desc">Average number of AI queries where competitors rank but brands don't — until they see the data.</div>
+      </div>
+
+      <div class="preview-note">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1"/><path d="M7 4.5V7.5M7 9V9.01" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Your actual data will populate after analysis
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let competitors = [];
+
+function loadCompetitors() {
+  const saved = localStorage.getItem('workfxai_competitors');
+  if (saved && saved.trim()) {
+    competitors = saved.split(',').map(c => c.trim()).filter(c => c);
+  }
+  if (competitors.length < 2) {
+    const industry = localStorage.getItem('workfxai_industry') || 'ecommerce';
+    const aiDetected = getAIDetectedCompetitors(industry);
+    competitors = [...competitors, ...aiDetected].slice(0, 4);
+  }
+  renderCompetitors();
+}
+
+function getAIDetectedCompetitors(industry) {
+  const examples = {
+    'ecommerce': ['macys.com', 'bloomingdales.com'],
+    'saas': ['macys.com', 'bloomingdales.com'],
+    'agency': ['macys.com', 'bloomingdales.com'],
+    'retail': ['saksfifthavenue.com', 'neimanmarcus.com']
+  };
+  return examples[industry] || ['competitor1.com', 'competitor2.com'];
+}
+
+function renderCompetitors() {
+  const list = document.getElementById('competitorList');
+  list.innerHTML = '';
+  competitors.forEach((comp, index) => {
+    const item = document.createElement('div');
+    item.className = 'competitor-item';
+    item.innerHTML = `
+      <div class="competitor-info">
+        <div class="competitor-icon">\u{1F310}</div>
+        <div><div class="competitor-name">Competitor ${index + 1}</div><div class="competitor-url">${comp}</div></div>
+      </div>
+      <button class="remove-btn" onclick="removeCompetitor(${index})">Remove</button>
+    `;
+    list.appendChild(item);
+  });
+}
+
+function addCompetitor() {
+  const input = document.getElementById('newCompetitor');
+  const value = input.value.trim();
+  if (!value) return;
+  if (competitors.length >= 4) { alert('You can analyze up to 4 competitors'); return; }
+  let cleanUrl = value.replace(/^https?:\/\//, '').replace(/\/$/, '');
+  if (competitors.includes(cleanUrl)) { alert('This competitor is already in your list'); return; }
+  competitors.push(cleanUrl);
+  renderCompetitors();
+  input.value = '';
+}
+
+function removeCompetitor(index) { competitors.splice(index, 1); renderCompetitors(); }
+function goBack() { window.location.href = '1.3_Industry_Recognition_V2.html'; }
+
+function continueToNext() {
+  localStorage.setItem('workfxai_competitors', competitors.join(', '));
+  window.location.href = '1.5_Goal_Selection_V2.html';
+}
+
+loadCompetitors();
+document.getElementById('newCompetitor').addEventListener('keypress', (e) => { if (e.key === 'Enter') addCompetitor(); });
+</script>
+
+</body>
+</html>

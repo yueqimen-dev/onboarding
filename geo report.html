@@ -1,0 +1,3375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>GEO Performance Report: WorkfxAI</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* CSS Variables */
+        :root {
+            /* Aurora Blue palette */
+            --primary-color: #2F7BFF;
+            --secondary-color: #5DA6FF;
+            --accent-color: #A7DBFF;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --glass-primary: rgba(255, 255, 255, 0.97);
+            --glass-secondary: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(69, 128, 255, 0.18);
+            --glass-highlight: rgba(255, 255, 255, 0.99);
+            --glass-shadow: 0 16px 42px rgba(42, 90, 175, 0.12);
+            --glass-shadow-lg: 0 28px 68px rgba(42, 90, 175, 0.18);
+            --glass-shadow-xl: 0 38px 95px rgba(42, 90, 175, 0.25);
+            --gradient-primary: linear-gradient(135deg, #2F7BFF 0%, #5DA6FF 50%, #A7DBFF 100%);
+            --gradient-secondary: linear-gradient(135deg, #F2F8FF 0%, #EAF3FF 55%, #F5FBFF 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            --gradient-danger: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+            --gradient-info: linear-gradient(135deg, #2F7BFF 0%, #5DA6FF 100%);
+            --text-primary: #1a2342;
+            --text-secondary: #233155;
+            --text-muted: #5d6a88;
+            --text-light: #9DAED1;
+            --z-header: 200;
+            --z-sidebar: 1000;
+        }
+
+        /* Global Styles */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background:
+                radial-gradient(circle at 18% 18%, rgba(47, 123, 255, 0.12), transparent 55%),
+                radial-gradient(circle at 78% -8%, rgba(93, 166, 255, 0.16), transparent 40%),
+                radial-gradient(circle at 60% 90%, rgba(167, 219, 255, 0.14), transparent 45%),
+                linear-gradient(125deg, #F7FBFF 0%, #EFF6FF 45%, #F8FCFF 100%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            font-size: 16px;
+            width: 100%;
+            max-width: 100%;
+            position: relative;
+        }
+
+        /* Prevent horizontal overflow */
+        img,
+        video,
+        iframe,
+        embed,
+        object {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Improve text readability */
+        p {
+            line-height: 1.8;
+            margin-bottom: 1.25rem;
+            color: var(--text-secondary);
+            font-size: 1.0625rem;
+        }
+
+        /* Enhanced link styling */
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.2s;
+            border-bottom: 1px solid transparent;
+        }
+
+        a:hover {
+            color: var(--secondary-color);
+            border-bottom-color: var(--secondary-color);
+        }
+
+        ul, ol {
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        ol li {
+            padding-left: 0.5rem;
+        }
+
+        ul li {
+            list-style-type: disc;
+        }
+
+        /* Remove list style from sidebar items */
+        .sidebar-section-items li,
+        .sidebar-menu-item {
+            list-style: none !important;
+        }
+
+        /* Language Toggle Styles */
+        /* Default: show English, hide Chinese */
+        .lang-en {
+            display: inline;
+        }
+
+        .lang-zh {
+            display: none;
+        }
+
+        /* When Chinese is selected, show Chinese and hide English */
+        body[data-language="zh"] .lang-en {
+            display: none;
+        }
+
+        body[data-language="zh"] .lang-zh {
+            display: inline;
+        }
+
+        /* When English is selected (explicit), ensure English is shown */
+        body[data-language="en"] .lang-en {
+            display: inline;
+        }
+
+        body[data-language="en"] .lang-zh {
+            display: none;
+        }
+
+        strong {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Visual separators */
+        .divider {
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--glass-border), var(--primary-color), var(--glass-border), transparent);
+            margin: 2.5rem 0;
+            border-radius: 1px;
+        }
+
+        /* Highlight boxes */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(47, 123, 255, 0.1), rgba(167, 219, 255, 0.2));
+            border-left: 4px solid var(--primary-color);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 18px 32px rgba(42, 90, 175, 0.1);
+        }
+
+        /* Info callouts */
+        .info-callout {
+            background: linear-gradient(140deg, rgba(255,255,255,0.97), rgba(236,244,255,0.9));
+            border: 1px solid rgba(69, 128, 255, 0.22);
+            border-left: 4px solid var(--secondary-color);
+            padding: 1.35rem 1.65rem;
+            border-radius: 1rem;
+            margin: 1.5rem 0;
+            transition: all 0.25s ease;
+            box-shadow: 0 20px 36px rgba(42, 90, 175, 0.12);
+        }
+
+        .info-callout:hover {
+            background: linear-gradient(140deg, rgba(255,255,255,0.99), rgba(241,247,255,0.94));
+            border-left-width: 5px;
+        }
+
+        .info-callout strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        /* To-Do List Items Hover */
+        .chart-container ul li:hover {
+            background: rgba(47, 123, 255, 0.08) !important;
+            transform: translateX(4px);
+            box-shadow: 0 2px 8px rgba(47, 123, 255, 0.15);
+        }
+
+        /* Todo Checkbox Styles */
+        .todo-checkbox {
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            border: 2px solid var(--primary-color);
+            border-radius: 0.375rem;
+            background: white;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0.125rem;
+        }
+
+        .todo-checkbox:hover {
+            border-color: var(--secondary-color);
+            background: rgba(74, 159, 232, 0.05);
+        }
+
+        .todo-checkbox input[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .todo-checkbox .checkmark {
+            display: none;
+            color: white;
+            font-size: 0.875rem;
+            font-weight: 700;
+        }
+
+        .todo-checkbox.checked {
+            background: var(--gradient-success);
+            border-color: var(--success-color);
+        }
+
+        .todo-checkbox.checked .checkmark {
+            display: block;
+        }
+
+        /* Completed Todo Item */
+        .todo-item-completed {
+            background: rgba(16, 185, 129, 0.08) !important;
+            border-left-color: var(--success-color) !important;
+        }
+
+        .todo-item-completed span {
+            text-decoration: line-through;
+            opacity: 0.65;
+            color: var(--text-muted);
+        }
+
+        /* Enhanced todo item visual feedback */
+        .todo-item {
+            transition: all 0.2s ease;
+        }
+
+        .todo-item:hover:not(.todo-item-completed) {
+            background: rgba(74, 159, 232, 0.05) !important;
+        }
+
+        .todo-item-completed .todo-checkbox {
+            background: var(--gradient-success);
+            border-color: var(--success-color);
+        }
+
+        /* Category badge for tasks */
+        .category-badge {
+            display: inline-block;
+            margin-left: 0.5rem;
+            padding: 0.15rem 0.45rem;
+            border-radius: 0.35rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            background: rgba(47, 123, 255, 0.12);
+            color: var(--primary-color);
+        }
+        .category-badge.core-web-vitals {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success-color);
+        }
+        .category-badge.performance {
+            background: rgba(47, 123, 255, 0.15);
+            color: var(--primary-color);
+        }
+        .category-badge.seo {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning-color);
+        }
+        .category-badge.accessibility {
+            background: rgba(167, 219, 255, 0.3);
+            color: var(--secondary-color);
+        }
+        .category-badge.content {
+            background: rgba(94, 107, 137, 0.12);
+            color: var(--text-secondary);
+        }
+        .category-badge.geo {
+            background: rgba(47, 123, 255, 0.15);
+            color: var(--primary-color);
+        }
+
+        /* Guided step card */
+        .todo-steps-card {
+            margin-top: 0.85rem;
+            border: 1px solid rgba(47, 123, 255, 0.18);
+            border-radius: 0.9rem;
+            background: rgba(47, 123, 255, 0.06);
+            overflow: hidden;
+        }
+        .todo-steps-header {
+            padding: 0.7rem 1rem;
+            border-bottom: 1px solid rgba(47, 123, 255, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .todo-steps-header i {
+            color: var(--warning-color);
+        }
+        .todo-steps-list {
+            list-style: none;
+            margin: 0;
+            padding: 0.9rem 1.1rem 1rem;
+        }
+        .todo-step-row {
+            display: flex;
+            gap: 0.9rem;
+            padding: 0.6rem 0;
+            border-bottom: 1px dashed rgba(47, 123, 255, 0.22);
+        }
+        .todo-step-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .todo-step-number {
+            width: 60px;
+            min-width: 60px;
+            height: 60px;
+            border-radius: 0.75rem;
+            background: white;
+            border: 2px solid rgba(47, 123, 255, 0.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: rgba(47, 123, 255, 0.95);
+            font-size: 0.9rem;
+        }
+        .todo-step-body {
+            flex: 1;
+        }
+        .todo-step-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.3rem;
+        }
+        .todo-step-detail {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+        .todo-step-tip {
+            margin-top: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: rgba(16, 185, 129, 0.12);
+            border-radius: 0.7rem;
+            color: var(--success-color);
+            font-size: 0.9rem;
+        }
+
+        /* Agent link button styles */
+        .agent-link-btn {
+            position: relative;
+            overflow: hidden;
+            animation: agentPulse 1.8s ease-in-out infinite;
+            transition: all 0.25s ease;
+        }
+        .agent-link-btn:hover {
+            animation: none;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 22px rgba(47, 123, 255, 0.45);
+        }
+        .agent-link-btn::after {
+            content: 'CLICK TO OPEN';
+            position: absolute;
+            right: 0.9rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            opacity: 0.9;
+            color: rgba(255,255,255,0.9);
+            pointer-events: none;
+        }
+        @keyframes agentPulse {
+            0%   { box-shadow: 0 0 0 0 rgba(47, 123, 255, 0.6); }
+            50%  { box-shadow: 0 0 0 6px rgba(47, 123, 255, 0.0); }
+            100% { box-shadow: 0 0 0 0 rgba(47, 123, 255, 0.0); }
+        }
+
+        /* Status Column Styling - Multi-line Platform Status */
+        .status-platform {
+            display: block;
+            padding: 0.25rem 0;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .status-platform:first-child {
+            padding-top: 0;
+        }
+
+        .status-platform:last-child {
+            padding-bottom: 0;
+        }
+
+        .status-platform strong {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        .status-platform .status-value {
+            color: var(--text-secondary);
+        }
+
+        .status-platform .status-pos {
+            color: var(--success-color);
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .status-platform .status-miss {
+            color: var(--danger-color);
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* Enhanced status value visibility */
+        .status-platform .status-value {
+            font-size: 0.9375rem;
+        }
+
+        /* Competition Column Styling - Multi-line Competitors */
+        .competitor-item {
+            display: block;
+            padding: 0.25rem 0;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .competitor-item:hover {
+            color: var(--primary-color);
+        }
+
+        /* Bold key numbers and percentages in tables */
+        .table td strong {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .competitor-item:first-child {
+            padding-top: 0;
+        }
+
+        .competitor-item:last-child {
+            padding-bottom: 0;
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Touch optimization */
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Page Loader */
+        #page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.3s ease;
+        }
+
+        #page-loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--glass-border);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Layout */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 350px;
+            background: linear-gradient(190deg, rgba(255,255,255,0.98), rgba(232,241,255,0.9));
+            -webkit-backdrop-filter: blur(22px);
+            backdrop-filter: blur(22px);
+            border-right: 1px solid rgba(69, 128, 255, 0.22);
+            box-shadow: var(--glass-shadow-lg);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            z-index: var(--z-sidebar);
+        }
+
+        .sidebar-header {
+            padding: 2rem;
+            border-bottom: 1px solid rgba(69, 128, 255, 0.18);
+        }
+
+        .sidebar-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-subtitle {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .sidebar-menu {
+            padding: 1rem 0;
+        }
+
+        .sidebar-section {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-section-title {
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+            border-radius: 0.75rem;
+        }
+
+        .sidebar-section-title:hover {
+            background: rgba(93, 166, 255, 0.12);
+        }
+
+        .sidebar-section.collapsed .sidebar-section-items {
+            display: none;
+        }
+
+        .sidebar-section.collapsed .section-toggle {
+            transform: rotate(-90deg);
+        }
+
+        .section-toggle {
+            transition: transform 0.3s;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .sidebar-section-items {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .sidebar-menu-item {
+            margin: 0.25rem 0;
+            list-style: none;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 2rem 0.75rem 3rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+            border-radius: 0.65rem 0 0 0.65rem;
+        }
+
+        .sidebar-link:hover {
+            background: linear-gradient(120deg, rgba(95, 155, 255, 0.14), rgba(213, 237, 255, 0.45));
+            border-left-color: var(--primary-color);
+            color: var(--primary-color);
+            transform: translateX(4px);
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-link.active {
+            background: linear-gradient(120deg, rgba(47, 123, 255, 0.18), rgba(116, 178, 255, 0.26));
+            border-left-color: var(--primary-color);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .sidebar-link i {
+            width: 16px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 350px;
+            width: calc(100% - 350px);
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(130deg, rgba(255,255,255,0.97), rgba(234,244,255,0.9));
+            -webkit-backdrop-filter: blur(22px);
+            backdrop-filter: blur(22px);
+            border-bottom: 1px solid rgba(69, 128, 255, 0.18);
+            position: sticky;
+            top: 0;
+            z-index: var(--z-header);
+            box-shadow: var(--glass-shadow-lg);
+        }
+
+        .header-top {
+            padding: 1.5rem 1.75rem 1rem;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .header-info {
+            flex: 1 1 320px;
+        }
+
+        .language-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--glass-primary);
+            border: 1px solid var(--glass-border);
+            border-radius: 0.85rem;
+            padding: 0.65rem 1rem;
+            box-shadow: var(--glass-shadow);
+            align-self: flex-start;
+            flex-shrink: 0;
+            min-width: 220px;
+        }
+
+        .language-label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .language-buttons {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            flex-shrink: 0;
+        }
+
+        .language-btn {
+            border: 1px solid rgba(47, 123, 255, 0.4);
+            background: transparent;
+            color: var(--primary-color);
+            font-weight: 600;
+            border-radius: 999px;
+            padding: 0.3rem 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+            min-width: 52px;
+        }
+
+        .language-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--secondary-color);
+        }
+
+        .language-btn.active {
+            background: var(--gradient-primary);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 8px 18px rgba(47, 123, 255, 0.35);
+        }
+
+        .header-info h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.75rem;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+        }
+
+        .header-meta {
+            display: flex;
+            gap: 2rem;
+            margin-top: 0.5rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+            font-weight: 500;
+        }
+
+        .meta-item i {
+            color: var(--primary-color);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+            padding: 0.4rem 1.5rem 0.65rem;
+            position: sticky;
+            top: 0;
+            background: linear-gradient(125deg, rgba(255,255,255,0.96), rgba(236,244,255,0.92));
+            z-index: var(--z-header);
+            border-top: 1px solid rgba(255,255,255,0.55);
+            box-shadow: inset 0 -1px 0 rgba(69, 128, 255, 0.14);
+        }
+
+        .tab {
+            flex: 0 1 auto;
+            min-width: fit-content;
+            padding: 0.45rem 1.15rem;
+            background: linear-gradient(135deg, rgba(255,255,255,0.94), rgba(239,246,255,0.9));
+            border: 1px solid rgba(69, 128, 255, 0.2);
+            border-radius: 0.6rem;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 0.8125rem;
+            letter-spacing: 0.01em;
+            box-shadow: 0 10px 18px rgba(30, 53, 99, 0.08);
+            position: relative;
+        }
+
+        .tab:hover {
+            background: linear-gradient(135deg, rgba(93, 166, 255, 0.18), rgba(255,255,255,0.96));
+            border-color: rgba(47, 123, 255, 0.4);
+            transform: translateY(-1px);
+            box-shadow: 0 16px 28px rgba(47, 123, 255, 0.18);
+        }
+
+        .tab.active {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            box-shadow: 0 3px 12px rgba(47, 123, 255, 0.32);
+            font-weight: 600;
+            transform: translateY(-1px);
+            z-index: 1;
+        }
+
+        .tab:active {
+            transform: translateY(0);
+        }
+
+        .tab i {
+            font-size: 0.8125rem;
+            opacity: 0.8;
+            flex-shrink: 0;
+            color: var(--primary-color);
+        }
+
+        .tab.active i {
+            opacity: 1;
+            color: #fff;
+        }
+
+        .tab span {
+            flex-shrink: 1;
+            min-width: 0;
+        }
+
+        /* Content Area */
+        .content-area {
+            width: 100%;
+            max-width: min(1400px, calc(100% - 3rem));
+            margin: 0 auto;
+            padding: 3rem 2.5rem;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 4rem;
+            padding: 2rem 1.75rem;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            overflow-x: hidden;
+            background: linear-gradient(150deg, rgba(255,255,255,0.98), rgba(235,243,255,0.92));
+            border: 1px solid rgba(69, 128, 255, 0.12);
+            border-radius: 1.35rem;
+            box-shadow: 0 32px 65px rgba(21, 45, 89, 0.08);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-primary);
+            line-height: 1.2;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--glass-border);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 90px;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+            box-shadow: 0 6px 18px rgba(47, 123, 255, 0.3);
+        }
+
+        .section-title i {
+            font-size: 1.75rem;
+            color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 12px 28px rgba(47, 123, 255, 0.25);
+        }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: rgba(35, 49, 85, 0.85);
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            background: linear-gradient(165deg, rgba(255,255,255,0.98), rgba(235,243,255,0.92));
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(69, 128, 255, 0.22);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            box-shadow: var(--glass-shadow-lg);
+            transition: all 0.3s;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .chart-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 1.5rem 1.5rem 0 0;
+        }
+
+        .chart-container:hover {
+            box-shadow: var(--glass-shadow-xl);
+            transform: translateY(-4px);
+            border-color: rgba(47, 123, 255, 0.45);
+        }
+
+        /* Enhanced visual separation between sections */
+        .section:not(:first-child) {
+            border-top: 1px solid transparent;
+            padding-top: 2rem;
+        }
+
+        .chart-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--glass-border);
+            position: relative;
+        }
+
+        .chart-header::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--gradient-primary);
+            border-radius: 1px;
+        }
+
+        .chart-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+
+        .chart-title i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            text-shadow: 0 10px 22px rgba(47, 123, 255, 0.2);
+        }
+
+        .chart-subtitle {
+            color: rgba(35, 49, 85, 0.65);
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-top: 0.5rem;
+        }
+
+        /* Table */
+        .table-container {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: auto;
+            border-radius: 0.75rem;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) transparent;
+            box-sizing: border-box;
+        }
+
+        .table-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .table-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .table-container::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-color);
+        }
+
+        .table {
+            width: 100%;
+            min-width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: linear-gradient(145deg, rgba(255,255,255,0.98), rgba(239,246,255,0.95));
+            border-radius: 0.95rem;
+            overflow: hidden;
+            box-shadow: 0 20px 45px rgba(21, 34, 68, 0.08), 0 10px 20px rgba(47, 123, 255, 0.08);
+            box-sizing: border-box;
+            border: 1px solid rgba(69, 128, 255, 0.12);
+        }
+
+        .table thead {
+            background: var(--gradient-primary);
+            color: white;
+            position: relative;
+        }
+
+        .table thead::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .table th {
+            padding: 1.25rem 1rem;
+            text-align: left;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.75px;
+            font-size: 0.8125rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .table th:first-child {
+            padding-left: 1.5rem;
+        }
+
+        .table th:last-child {
+            padding-right: 1.5rem;
+        }
+
+        .table td {
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid var(--glass-border);
+            vertical-align: top;
+            line-height: 1.7;
+            word-wrap: break-word;
+            color: var(--text-secondary);
+        }
+
+        /* Better spacing for multi-line content in table cells */
+        .table td .status-platform,
+        .table td .competitor-item {
+            margin-bottom: 0.125rem;
+        }
+
+        .table td:first-child {
+            padding-left: 1.5rem;
+        }
+
+        .table td:last-child {
+            padding-right: 1.5rem;
+        }
+
+        .table tbody tr {
+            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .table tbody tr:nth-child(even) {
+            background: rgba(47, 123, 255, 0.03);
+        }
+
+        .table tbody tr:hover {
+            background: rgba(47, 123, 255, 0.08);
+            transform: translateX(4px);
+            box-shadow: 0 2px 8px rgba(47, 123, 255, 0.12);
+        }
+
+        /* Enhanced table row separation for better readability */
+        .table tbody tr {
+            border-top: 1px solid transparent;
+        }
+
+        .table tbody tr:not(:last-child) {
+            border-bottom: 1px solid rgba(47, 123, 255, 0.08);
+        }
+
+        .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 0.625rem;
+            font-size: 0.8125rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.75px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge-success {
+            background: var(--gradient-success);
+            color: white;
+        }
+
+        .badge-warning {
+            background: var(--gradient-warning);
+            color: white;
+        }
+
+        .badge-danger {
+            background: var(--gradient-danger);
+            color: white;
+        }
+
+        .badge-info {
+            background: var(--gradient-info);
+            color: white;
+        }
+
+        /* Score Card */
+        .score-card {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .score-item {
+            background: linear-gradient(150deg, rgba(255,255,255,0.97), rgba(234,244,255,0.9));
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(69, 128, 255, 0.18);
+            border-radius: 1.1rem;
+            padding: 1.5rem 1.25rem;
+            text-align: center;
+            box-shadow: var(--glass-shadow);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Enhanced score item with subtle background pattern */
+        .score-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at top right, rgba(47, 123, 255, 0.08), transparent 55%);
+            pointer-events: none;
+        }
+
+        .score-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-primary);
+        }
+
+        .score-item:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--glass-shadow-lg);
+            border-color: var(--primary-color);
+        }
+
+        .score-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.45px;
+        }
+
+        .score-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.15;
+            margin-bottom: 0.35rem;
+        }
+
+        .score-comparison {
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+        }
+
+        /* Enhanced score item visual hierarchy */
+        .score-item .score-label {
+            opacity: 0.9;
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1001;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            box-shadow: var(--glass-shadow);
+            font-size: 1.25rem;
+        }
+
+        .mobile-menu-btn:hover {
+            box-shadow: var(--glass-shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Design */
+        
+        /* Large Desktop (1440px+) */
+        @media (min-width: 1440px) {
+            .sidebar {
+                width: 380px;
+            }
+            .main-content {
+                margin-left: 380px;
+                width: calc(100% - 380px);
+                max-width: calc(100% - 380px);
+                overflow-x: hidden;
+            }
+            .content-area {
+                width: 100%;
+                max-width: min(1400px, calc(100% - 3rem));
+                margin: 0 auto;
+                box-sizing: border-box;
+            }
+        }
+
+        /* Desktop (1024px - 1439px) */
+        @media (min-width: 1024px) and (max-width: 1439px) {
+            .main-content {
+                width: calc(100% - 350px);
+                max-width: calc(100% - 350px);
+                overflow-x: hidden;
+            }
+            .content-area {
+                width: 100%;
+                max-width: min(1400px, calc(100% - 3rem));
+                padding: 2rem;
+                box-sizing: border-box;
+            }
+        }
+
+        /* Tablet (768px - 1023px) */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .sidebar {
+                width: 300px;
+            }
+            .main-content {
+                margin-left: 300px;
+                width: calc(100% - 300px);
+                max-width: calc(100% - 300px);
+                overflow-x: hidden;
+            }
+            .header {
+                width: 100%;
+                max-width: 100%;
+                overflow-x: hidden;
+                box-sizing: border-box;
+            }
+            .content-area {
+                width: 100%;
+                max-width: 100%;
+                padding: 1.75rem;
+                margin: 0;
+                overflow-x: hidden;
+                box-sizing: border-box;
+            }
+            .section {
+                width: 100%;
+                max-width: 100%;
+                overflow-x: hidden;
+                box-sizing: border-box;
+            }
+            .header-top {
+                padding: 1.5rem;
+            }
+            .section-title {
+                font-size: 1.75rem;
+            }
+            .chart-container {
+                padding: 1.5rem;
+            }
+            .score-card {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .table-container {
+                width: 100%;
+                max-width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                box-sizing: border-box;
+            }
+            .table {
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .table th,
+            .table td {
+                padding: 0.75rem;
+            }
+        }
+
+        /* Mobile (max-width: 767px) */
+        @media (max-width: 767px) {
+            html, body {
+                width: 100%;
+                max-width: 100%;
+                overflow-x: hidden;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .sidebar {
+                width: 280px;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                box-shadow: var(--glass-shadow-xl);
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                max-width: 100%;
+                overflow-x: hidden;
+            }
+
+            .header {
+                padding-top: 4rem;
+                width: 100%;
+                max-width: 100%;
+                overflow-x: hidden;
+                box-sizing: border-box;
+            }
+
+            .header-top {
+                padding: 1rem;
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+
+            .header-info h1 {
+                font-size: 1.5rem;
+            }
+
+            .header-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .tabs {
+                padding: 0.5rem 0.75rem 0.75rem;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                position: sticky;
+                top: 0;
+                background: var(--glass-primary);
+                z-index: var(--z-header);
+                width: 100%;
+                max-width: 100%;
+                overflow-x: hidden;
+                box-sizing: border-box;
+            }
+
+            .tabs::-webkit-scrollbar {
+                display: none;
+            }
+
+            .tab {
+                flex-shrink: 0;
+                padding: 0.45rem 0.5rem;
+                font-size: 0.75rem;
+                min-width: fit-content;
+            }
+
+            .content-area {
+                width: 100%;
+                max-width: 100%;
+                padding: 1rem;
+                margin: 0;
+                overflow-x: hidden;
+                box-sizing: border-box;
+            }
+            
+            .section {
+                width: 100%;
+                max-width: 100%;
+                padding: 1.5rem 1rem;
+                margin: 0 auto 1.5rem;
+                box-sizing: border-box;
+                overflow-x: hidden;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+                flex-wrap: wrap;
+                padding-bottom: 0.75rem;
+            }
+
+            .section-title i {
+                font-size: 1.5rem;
+            }
+
+            .section-subtitle {
+                font-size: 1rem;
+            }
+
+            .chart-container {
+                padding: 1rem;
+                border-radius: 1rem;
+            }
+
+            .chart-title {
+                font-size: 1.375rem;
+                flex-wrap: wrap;
+            }
+
+            .chart-title i {
+                font-size: 1.25rem;
+            }
+
+            .chart-subtitle {
+                font-size: 0.8125rem;
+            }
+
+            .score-card {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                width: 100%;
+                max-width: 100%;
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            .score-item {
+                padding: 1.25rem;
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+
+            .score-value {
+                font-size: 2rem;
+            }
+
+            .table-container {
+                width: 100%;
+                max-width: 100%;
+                overflow-x: auto;
+                margin: 0 -1rem;
+                padding: 0 1rem;
+                -webkit-overflow-scrolling: touch;
+                box-sizing: border-box;
+            }
+
+            .table {
+                font-size: 0.8125rem;
+                min-width: 600px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .table th,
+            .table td {
+                padding: 0.625rem 0.5rem;
+                white-space: nowrap;
+            }
+
+            /* For query columns, allow text wrapping */
+            .table td:nth-child(2),
+            .table td:nth-child(6) {
+                white-space: normal;
+                word-break: break-word;
+                max-width: 300px;
+            }
+
+            .table th:first-child,
+            .table td:first-child {
+                position: sticky;
+                left: 0;
+                background: white;
+                z-index: 10;
+                box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .table thead th:first-child {
+                background: var(--gradient-primary);
+                color: white;
+                box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .table tbody tr td:first-child {
+                background: white;
+            }
+
+            .table tbody tr:hover td:first-child {
+                background: rgba(74, 159, 232, 0.05);
+            }
+
+            .sidebar-header {
+                padding: 1.5rem;
+            }
+
+            .sidebar-title {
+                font-size: 1.25rem;
+            }
+
+            .sidebar-link {
+                padding: 0.625rem 1.5rem 0.625rem 2.5rem;
+                font-size: 0.875rem;
+            }
+
+            .badge {
+                font-size: 0.6875rem;
+                padding: 0.25rem 0.5rem;
+            }
+        }
+
+        /* Small Mobile (max-width: 480px) */
+        @media (max-width: 480px) {
+            .header-info h1 {
+                font-size: 1.25rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .section-title i {
+                font-size: 1.25rem;
+            }
+
+            .chart-container {
+                padding: 1rem;
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+
+            .chart-title {
+                font-size: 1.125rem;
+            }
+
+            .chart-title i {
+                font-size: 1rem;
+            }
+
+            .table-container {
+                width: 100%;
+                max-width: 100%;
+                overflow-x: auto;
+                box-sizing: border-box;
+            }
+
+            .table {
+                font-size: 0.75rem;
+                min-width: 500px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .table th,
+            .table td {
+                padding: 0.5rem 0.375rem;
+            }
+            
+            .score-card {
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+            
+            .score-item {
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+
+            /* Allow text wrapping for query columns on small screens */
+            .table td:nth-child(2),
+            .table td:nth-child(6) {
+                white-space: normal;
+                word-break: break-word;
+                max-width: 250px;
+            }
+
+            .score-value {
+                font-size: 1.75rem;
+            }
+
+            .mobile-menu-btn {
+                top: 0.5rem;
+                left: 0.5rem;
+                padding: 0.625rem 0.875rem;
+                font-size: 1.125rem;
+            }
+        }
+
+        /* Mobile Overlay */
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        @media (max-width: 767px) {
+            .mobile-overlay.active {
+                display: block;
+            }
+        }
+
+        /* Landscape Mobile */
+        @media (max-width: 767px) and (orientation: landscape) {
+            .header {
+                padding-top: 3rem;
+            }
+
+            .sidebar {
+                width: 300px;
+            }
+        }
+    </style>
+</head>
+<body data-language="en" data-website="WorkfxAI">
+    <!-- Page Loader -->
+    <div id="page-loader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle menu">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Overlay for mobile menu -->
+    <div class="mobile-overlay" id="mobile-overlay"></div>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2 class="sidebar-title">
+                    <i class="fas fa-chart-line"></i>
+                    <span data-i18n-key="sidebar.title">GEO Report</span>
+                </h2>
+                <p class="sidebar-subtitle" data-i18n-key="sidebar.subtitle">Performance Analysis</p>
+            </div>
+            <nav class="sidebar-menu">
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title" onclick="toggleSection(this)">
+                        <span><i class="fas fa-chart-pie"></i> <span data-i18n-key="sidebar.section.overview">Overview</span></span>
+                        <i class="fas fa-chevron-down section-toggle"></i>
+                    </div>
+                    <ul class="sidebar-section-items">
+                        <li class="sidebar-menu-item">
+                            <a href="#executive-summary" class="sidebar-link" data-tab="overview">
+                                <i class="fas fa-file-alt"></i>
+                                <span data-i18n-key="sidebar.link.executive_summary">1. Executive Summary</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-item">
+                            <a href="#brand-overview" class="sidebar-link" data-tab="overview">
+                                <i class="fas fa-building"></i>
+                                <span data-i18n-key="sidebar.link.brand_overview">1.1. Brand Overview</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-item">
+                            <a href="#platform-performance" class="sidebar-link" data-tab="overview">
+                                <i class="fas fa-chart-bar"></i>
+                                <span data-i18n-key="sidebar.link.platform_performance">1.2. Platform Performance</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-item">
+                            <a href="#query-highlights" class="sidebar-link" data-tab="overview">
+                                <i class="fas fa-star"></i>
+                                <span data-i18n-key="sidebar.link.query_highlights">1.3. Query Performance Highlights</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title" onclick="toggleSection(this)">
+                        <span><i class="fas fa-tasks"></i> <span data-i18n-key="sidebar.section.todo">To-Do List</span></span>
+                        <i class="fas fa-chevron-down section-toggle"></i>
+                    </div>
+                    <ul class="sidebar-section-items">
+                        <li class="sidebar-menu-item">
+                            <a href="#action-plan" class="sidebar-link" data-tab="action-plan">
+                                <i class="fas fa-clipboard-list"></i>
+                                <span data-i18n-key="sidebar.link.todo">2. To-Do List</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-item">
+                            <a href="#section-2-1" class="sidebar-link" data-tab="action-plan" style="padding-left: 4rem;">
+                                <i class="fas fa-calendar-week"></i>
+                                <span data-i18n-key="sidebar.link.week_1_2">2.1 Week 1-2</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-item">
+                            <a href="#section-2-2" class="sidebar-link" data-tab="action-plan" style="padding-left: 4rem;">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span data-i18n-key="sidebar.link.week_3_8">2.2 Week 3-8</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-item">
+                            <a href="#section-2-3" class="sidebar-link" data-tab="action-plan" style="padding-left: 4rem;">
+                                <i class="fas fa-calendar-check"></i>
+                                <span data-i18n-key="sidebar.link.month_3_plus">2.3 Month 3+</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-item">
+                            <a href="#section-2-4" class="sidebar-link" data-tab="action-plan" style="padding-left: 4rem;">
+                                <i class="fas fa-table"></i>
+                                <span data-i18n-key="sidebar.link.success_targets">2.4 Success Targets</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title" onclick="toggleSection(this)">
+                        <span><i class="fas fa-bullseye"></i> <span data-i18n-key="sidebar.section.compete">COMPETE</span></span>
+                        <i class="fas fa-chevron-down section-toggle"></i>
+                    </div>
+                    <ul class="sidebar-section-items">
+                        <li class="sidebar-menu-item">
+                            <a href="#strategic-targeting" class="sidebar-link" data-tab="compete">
+                                <i class="fas fa-crosshairs"></i>
+                                <span data-i18n-key="sidebar.link.strategic_targeting">3. Strategic Query Targeting</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-item">
+                            <a href="#section-3-1" class="sidebar-link" data-tab="compete" style="padding-left: 4rem;">
+                                <i class="fas fa-bullseye"></i>
+                                <span data-i18n-key="sidebar.link.advantage_queries">3.1 Advantage Queries</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-item">
+                            <a href="#section-3-2" class="sidebar-link" data-tab="compete" style="padding-left: 4rem;">
+                                <i class="fas fa-fist-raised"></i>
+                                <span data-i18n-key="sidebar.link.potential_queries">3.2 Potential Queries</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-item">
+                            <a href="#section-3-3" class="sidebar-link" data-tab="compete" style="padding-left: 4rem;">
+                                <i class="fas fa-flask"></i>
+                                <span data-i18n-key="sidebar.link.competitive_queries">3.3 Competitive Queries</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-item">
+                            <a href="#top-competitors" class="sidebar-link" data-tab="compete">
+                                <i class="fas fa-users"></i>
+                                <span data-i18n-key="sidebar.link.top_competitors">3.4 Top Competitors</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title" onclick="toggleSection(this)">
+                        <span><i class="fas fa-database"></i> <span data-i18n-key="sidebar.section.appendix">Appendix</span></span>
+                        <i class="fas fa-chevron-down section-toggle"></i>
+                    </div>
+                    <ul class="sidebar-section-items">
+                        <li class="sidebar-menu-item">
+                            <a href="#appendix" class="sidebar-link" data-tab="appendix">
+                                <i class="fas fa-table"></i>
+                                <span data-i18n-key="sidebar.link.appendix">4. Raw Data - All Tested Queries</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-top">
+                    <div class="header-info">
+                        <h1><span data-i18n-key="header.title">GEO Performance Report: WorkfxAI</span></h1>
+                    </div>
+                    <div class="language-toggle" role="group" aria-label="Language toggle">
+                        <span class="language-label" data-i18n-key="language.label">Language</span>
+                        <div class="language-buttons">
+                            <button class="language-btn active" data-language="en">EN</button>
+                            <button class="language-btn" data-language="zh">中文</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tabs">
+                    <div class="tab active" data-tab="overview">
+                        <i class="fas fa-chart-pie"></i>
+                        <span data-i18n-key="tabs.overview">Overview</span>
+                    </div>
+                    <div class="tab" data-tab="action-plan">
+                        <i class="fas fa-tasks"></i>
+                        <span data-i18n-key="tabs.action_plan">To-Do List</span>
+                    </div>
+                    <div class="tab" data-tab="compete">
+                        <i class="fas fa-bullseye"></i>
+                        <span data-i18n-key="tabs.compete">COMPETE</span>
+                    </div>
+                    <div class="tab" data-tab="appendix">
+                        <i class="fas fa-database"></i>
+                        <span data-i18n-key="tabs.appendix">Appendix</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Tab 1: Overview -->
+                <div id="overview" class="tab-content active">
+                    <!-- Section 1: Executive Summary -->
+                    <section id="executive-summary" class="section">
+                        <h2 class="section-title">
+                            <i class="fas fa-file-alt"></i>
+                            <span data-i18n-key="section1.title">1. Executive Summary</span>
+                        </h2>
+                        <p class="section-subtitle" data-i18n-key="section1.subtitle">Overall performance overview and key priorities</p>
+                        
+                        <div class="chart-container">
+                            <p><span class="lang-en">This GEO performance analysis reveals a critical visibility gap for WorkfxAI. Across 8 core queries targeting its key value propositions—including &#x27;Generative Engine Optimization&#x27; and &#x27;no-code AI agents&#x27;—WorkfxAI achieved 0% visibility on ChatGPT, Gemini, and Claude. The brand was not mentioned a single time. Competitors such as Semrush, Profound, and AthenaHQ consistently dominate these conversations. This lack of presence represents a significant missed opportunity and requires an immediate and aggressive content and GEO strategy to establish a foundational presence and begin capturing market share.</span><span class="lang-zh">本次 GEO 性能分析揭示了 WorkfxAI 存在一个严重的可见性差距。在针对其核心价值主张（包括“生成式引擎优化”和“无代码AI代理”）的 8 个核心查询中，WorkfxAI 在 ChatGPT、Gemini 和 Claude 上的可见性为 0%。该品牌一次也未被提及。Semrush、Profound 和 AthenaHQ 等竞争对手持续主导这些对话。这种缺失意味着重大的市场机会流失，需要立即采取积极的内容和 GEO 战略，以建立基础性的市场存在并开始抢占市场份额。</span></p>
+<div class="score-card" style="margin-top: 2rem;">
+    <div class="score-item">
+        <div class="score-label">ChatGPT</div>
+        <div class="score-value">0%</div>
+        <div class="score-comparison">0/8 queries</div>
+    </div>
+    <div class="score-item">
+        <div class="score-label">Gemini</div>
+        <div class="score-value">0%</div>
+        <div class="score-comparison">0/8 queries</div>
+    </div>
+    <div class="score-item">
+        <div class="score-label">Claude</div>
+        <div class="score-value">0%</div>
+        <div class="score-comparison">0/8 queries</div>
+    </div>
+    <div class="score-item">
+        <div class="score-label">Overall</div>
+        <div class="score-value">⭐</div>
+        <div class="score-comparison"><span class="lang-en">Critical Gap</span><span class="lang-zh">严重差距</span></div>
+    </div>
+</div>
+<div class="divider"></div>
+<h3>Top Priorities</h3>
+<ol>
+    <li><strong><span class="lang-en">Launch a foundational content strategy to establish a baseline presence for core GEO and AI agent concepts.</span><span class="lang-zh">启动基础内容战略，为核心 GEO 和 AI 代理概念建立基准可见性。</span></strong></li>
+    <li><strong><span class="lang-en">Create high-authority pillar content and definitive guides for &#x27;Generative Engine Optimization&#x27; and &#x27;No-Code AI Agents for SEO&#x27;.</span><span class="lang-zh">为“生成式引擎优化”和“用于 SEO 的无代码 AI 代理”创建高权威性的支柱内容和终极指南。</span></strong></li>
+    <li><strong><span class="lang-en">Develop competitive comparison content to directly address queries where Profound, Semrush, and AthenaHQ currently dominate.</span><span class="lang-zh">开发竞争性比较内容，直接应对 Profound、Semrush 和 AthenaHQ 目前主导的查询。</span></strong></li>
+</ol>
+                        </div>
+                    </section>
+
+                    <!-- Section 1.1: Brand Overview -->
+                    <section id="brand-overview" class="section">
+                        <h2 class="section-title">
+                            <i class="fas fa-building"></i>
+                            <span data-i18n-key="section1_1.title">1.1. Brand Overview</span>
+                        </h2>
+                        <p class="section-subtitle" data-i18n-key="section1_1.subtitle">Brand information and positioning</p>
+                        
+                        <div class="chart-container">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+    <div>
+        <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;" data-i18n-key="brand.brand_name">Brand Name</div>
+        <div style="color: var(--text-primary); line-height: 1.7; font-size: 1.25rem; font-weight: 700;">WorkfxAI</div>
+    </div>
+    <div>
+        <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;" data-i18n-key="brand.website">Website</div>
+        <div style="color: var(--text-secondary); line-height: 1.7; font-size: 1.0625rem;">
+            <a href="https://www.workfx.ai" target="_blank" rel="noopener noreferrer">https://www.workfx.ai</a>
+        </div>
+    </div>
+    <div>
+        <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;" data-i18n-key="brand.industry">Industry</div>
+        <div style="color: var(--text-secondary); line-height: 1.7; font-size: 1.0625rem;">AI-Powered SEO and Generative Engine Optimization (GEO)</div>
+    </div>
+    <div>
+        <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;" data-i18n-key="brand.website_type">Website Type</div>
+        <div style="color: var(--text-secondary); line-height: 1.7; font-size: 1.0625rem;">SaaS</div>
+    </div>
+    <div>
+        <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;" data-i18n-key="brand.business_model">Business Model</div>
+        <div style="color: var(--text-secondary); line-height: 1.7; font-size: 1.0625rem;">B2B</div>
+    </div>
+    <div>
+        <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;" data-i18n-key="brand.target_audience">Target Audience</div>
+        <div style="color: var(--text-secondary); line-height: 1.7; font-size: 1.0625rem;">E-commerce, SaaS, and digital-first brands seeking to improve their visibility in AI-driven search and automate SEO processes.</div>
+    </div>
+    <div>
+        <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;" data-i18n-key="brand.core_functions">Core Functions</div>
+        <div style="color: var(--text-secondary); line-height: 1.7; font-size: 1.0625rem;">Generative Engine Optimization (GEO), SEO Automation with AI Agents, No-Code AI Agent Building, AI-Powered Content Generation</div>
+    </div>
+    <div>
+        <div style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;" data-i18n-key="brand.target_locations">Target Locations</div>
+        <div style="color: var(--text-secondary); line-height: 1.7; font-size: 1.0625rem;"></div>
+    </div>
+</div>
+                        </div>
+                    </section>
+
+                    <!-- Section 1.2: Platform Performance -->
+                    <section id="platform-performance" class="section">
+                        <h2 class="section-title">
+                            <i class="fas fa-chart-bar"></i>
+                            <span data-i18n-key="section1_2.title">1.2. Platform Performance</span>
+                        </h2>
+                        <p class="section-subtitle" data-i18n-key="section1_2.subtitle">Performance comparison across AI platforms</p>
+                        
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3 class="chart-title">
+                                    <i class="fas fa-table"></i>
+                                    <span data-i18n-key="section1_2.table_title">Table 1.2.1: Platform Performance Comparison</span>
+                                </h3>
+                            </div>
+                            
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th data-i18n-key="table.platform">Platform</th>
+                                            <th data-i18n-key="table.visibility">Visibility</th>
+                                            <th data-i18n-key="table.avg_position">Avg Position</th>
+                                            <th data-i18n-key="table.rating">Rating</th>
+                                            <th data-i18n-key="table.key_insight">Key Insight</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                                <tr>
+            <td><strong>ChatGPT</strong></td>
+            <td><strong>0/8 (0%)</strong></td>
+            <td><strong>N/A</strong></td>
+            <td>⭐</td>
+            <td><span class="lang-en">Zero visibility. The platform consistently favors established, broad-spectrum SEO tools like Semrush, even for specialized queries.</span><span class="lang-zh">零可见性。该平台始终偏爱像 Semrush 这样成熟的、广谱的 SEO 工具，即使是对于专业查询也是如此。</span></td>
+        </tr>
+        <tr>
+            <td><strong>Gemini</strong></td>
+            <td><strong>0/8 (0%)</strong></td>
+            <td><strong>N/A</strong></td>
+            <td>⭐</td>
+            <td><span class="lang-en">Complete absence from all results. Gemini recommends a mix of GEO-specific competitors (Profound, AthenaHQ) and content tools (Writesonic), highlighting a major awareness gap.</span><span class="lang-zh">在所有结果中完全缺席。Gemini 推荐了 GEO 专业竞争对手（Profound, AthenaHQ）和内容工具（Writesonic）的组合，突显了严重的品牌认知差距。</span></td>
+        </tr>
+        <tr>
+            <td><strong>Claude</strong></td>
+            <td><strong>0/8 (0%)</strong></td>
+            <td><strong>N/A</strong></td>
+            <td>⭐</td>
+            <td><span class="lang-en">Failed to appear in any query, even those directly related to core offerings like no-code AI agents. This indicates a critical lack of authoritative content connecting the brand to its solutions.</span><span class="lang-zh">在任何查询中都未能出现，即使是与无代码 AI 代理等核心产品直接相关的查询。这表明品牌与其解决方案之间缺乏权威性内容的连接。</span></td>
+        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div style="margin-top: 2.5rem; padding-top: 2rem; border-top: 2px solid var(--glass-border);">
+                                <h4 style="font-weight: 700; margin-bottom: 1.5rem; font-size: 1.125rem; color: var(--text-primary);" data-i18n-key="section1_2.rating_scale">Performance Rating Scale:</h4>
+                                <div style="display: grid; gap: 0.75rem;">
+                                    <div style="padding: 0.875rem 1.25rem; background: rgba(74, 159, 232, 0.05); border-radius: 0.5rem; display: flex; align-items: center; gap: 1rem;">
+                                        <span style="font-size: 1.25rem;">⭐⭐⭐⭐⭐</span>
+                                        <span style="color: var(--text-secondary); font-weight: 500;" data-i18n-key="section1_2.excellent">Excellent (80%+ visibility)</span>
+                                    </div>
+                                    <div style="padding: 0.875rem 1.25rem; background: rgba(74, 159, 232, 0.05); border-radius: 0.5rem; display: flex; align-items: center; gap: 1rem;">
+                                        <span style="font-size: 1.25rem;">⭐⭐⭐⭐</span>
+                                        <span style="color: var(--text-secondary); font-weight: 500;" data-i18n-key="section1_2.good">Good (60-80%)</span>
+                                    </div>
+                                    <div style="padding: 0.875rem 1.25rem; background: rgba(74, 159, 232, 0.05); border-radius: 0.5rem; display: flex; align-items: center; gap: 1rem;">
+                                        <span style="font-size: 1.25rem;">⭐⭐⭐</span>
+                                        <span style="color: var(--text-secondary); font-weight: 500;" data-i18n-key="section1_2.fair">Fair (40-60%)</span>
+                                    </div>
+                                    <div style="padding: 0.875rem 1.25rem; background: rgba(74, 159, 232, 0.05); border-radius: 0.5rem; display: flex; align-items: center; gap: 1rem;">
+                                        <span style="font-size: 1.25rem;">⭐⭐</span>
+                                        <span style="color: var(--text-secondary); font-weight: 500;" data-i18n-key="section1_2.poor">Poor (20-40%)</span>
+                                    </div>
+                                    <div style="padding: 0.875rem 1.25rem; background: rgba(74, 159, 232, 0.05); border-radius: 0.5rem; display: flex; align-items: center; gap: 1rem;">
+                                        <span style="font-size: 1.25rem;">⭐</span>
+                                        <span style="color: var(--text-secondary); font-weight: 500;" data-i18n-key="section1_2.very_poor">Very Poor (<20%)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Section 1.3: Query Performance Highlights -->
+                    <section id="query-highlights" class="section">
+                        <h2 class="section-title">
+                            <i class="fas fa-star"></i>
+                            <span data-i18n-key="section1_3.title">1.3. Query Performance Highlights</span>
+                        </h2>
+                        <p class="section-subtitle" data-i18n-key="section1_3.subtitle">Wins and misses analysis</p>
+                        
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3 class="chart-title">
+                                    <i class="fas fa-check-circle" style="color: var(--success-color);"></i>
+                                    <span data-i18n-key="section1_3.wins_title">✅ Wins (Brand mentioned)</span>
+                                </h3>
+                                <p class="chart-subtitle" data-i18n-key="section1_3.wins_subtitle">Table 1.3.1: Query Wins - Brand Mentioned</p>
+                            </div>
+                            
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th data-i18n-key="table.query">Query</th>
+                                            <th data-i18n-key="table.chatgpt">ChatGPT</th>
+                                            <th data-i18n-key="table.gemini">Gemini</th>
+                                            <th data-i18n-key="table.claude">Claude</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-container" style="margin-top: 2rem;">
+                            <div class="chart-header">
+                                <h3 class="chart-title">
+                                    <i class="fas fa-times-circle" style="color: var(--danger-color);"></i>
+                                    <span data-i18n-key="section1_3.misses_title">❌ Misses (Brand not mentioned)</span>
+                                </h3>
+                                <p class="chart-subtitle" data-i18n-key="section1_3.misses_subtitle">Table 1.3.2: Query Misses - Brand Not Mentioned</p>
+                            </div>
+                            
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th data-i18n-key="table.query">Query</th>
+                                            <th data-i18n-key="table.why_important">Why Important</th>
+                                            <th data-i18n-key="table.who_won">Who Won</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                                <tr>
+            <td>I&#x27;m looking for a generative engine optimization platform that can improve our SaaS company&#x27;s visibility in AI search results while staying within our marketing budget - what are the top options in 2024?</td>
+            <td><span class="lang-en">This is a high-intent query from the exact target audience (budget-conscious SaaS) looking for a direct solution that is WorkfxAI&#x27;s core offering.</span><span class="lang-zh">这是一个来自精准目标受众（注重预算的 SaaS 公司）的高意图查询，他们正在寻找 WorkfxAI 核心产品所提供的直接解决方案。</span></td>
+            <td>
+        <span class="competitor-item">Profound</span>
+        <span class="competitor-item">Semrush</span>
+        <span class="competitor-item">AthenaHQ</span>
+        <span class="competitor-item">Scalenut</span>
+        <span class="competitor-item">Surfer SEO</span>
+        <span class="competitor-item">Writesonic</span>
+        
+            </td>
+        </tr>
+        <tr>
+            <td>What are the best AI SEO platforms for SaaS companies in 2024?</td>
+            <td><span class="lang-en">A fundamental, high-volume query to capture SaaS companies at the start of their buying journey. Visibility here is essential for brand consideration.</span><span class="lang-zh">这是一个基础性的、高搜索量的查询，旨在捕获处于购买旅程初期的 SaaS 公司。在此处的可见性对于品牌被纳入考虑至关重要。</span></td>
+            <td>
+        <span class="competitor-item">Semrush</span>
+        <span class="competitor-item">Profound</span>
+        <span class="competitor-item">Ahrefs</span>
+        <span class="competitor-item">Surfer SEO</span>
+        <span class="competitor-item">MarketMuse</span>
+        
+            </td>
+        </tr>
+        <tr>
+            <td>How do no-code AI agent builders work for SEO automation?</td>
+            <td><span class="lang-en">This educational query targets users trying to understand a core, unique feature of WorkfxAI. Owning this query establishes thought leadership.</span><span class="lang-zh">此教育性查询针对的是试图理解 WorkfxAI 核心、独特功能的用户。主导此查询能够建立思想领袖地位。</span></td>
+            <td>
+        <span class="competitor-item">Gumloop</span>
+        <span class="competitor-item">Lyzr</span>
+        <span class="competitor-item">V7Labs</span>
+        <span class="competitor-item">Bika.ai</span>
+        
+            </td>
+        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Tab 2: To-Do List -->
+                <div id="action-plan" class="tab-content">
+                    <!-- Section 2: To-Do List -->
+                    <section id="action-plan" class="section">
+                        <h2 class="section-title">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span data-i18n-key="section2.title">2. To-Do List</span>
+                        </h2>
+                        <p class="section-subtitle" data-i18n-key="section2.subtitle">Strategic action items and success targets</p>
+                        
+                        <!-- 2.1 Week 1-2 -->
+                        <div class="chart-container" id="section-2-1">
+                            <div class="chart-header">
+                                <h3 class="chart-title">
+                                    <i class="fas fa-calendar-week"></i>
+                                    <span data-i18n-key="section2.week_1_2.title">2.1 Week 1-2: Focus on Advantage Queries</span>
+                                </h3>
+                            </div>
+                            
+                            <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+    <li class="todo-item" style="padding: 1.25rem; margin-bottom: 0.75rem; background: rgba(74, 159, 232, 0.03); border-left: 4px solid var(--primary-color); border-radius: 0.5rem; display: flex; align-items: flex-start; gap: 1rem; transition: all 0.2s;">
+        <div class="todo-checkbox">
+            <input type="checkbox" class="todo-checkbox-input">
+            <i class="fas fa-check checkmark"></i>
+        </div>
+        <span style="color: var(--text-secondary); line-height: 1.7; font-size: 1.0625rem; flex: 1;"><span class="lang-en">Create Pillar Content for &#x27;Generative Engine Optimization (GEO)&#x27;</span><span class="lang-zh">为“生成式引擎优化 (GEO)”创建支柱内容</span> <span class="category-badge content">[Content]</span> <div class="todo-agent-links" style="margin-top: 0.9rem; padding: 0.9rem 1rem; border-radius: 0.9rem; background: rgba(47, 123, 255, 0.07); border: 1px dashed rgba(47, 123, 255, 0.55);"><div style="font-weight: 700; color: var(--primary-color); margin-bottom: 0.55rem; display: flex; align-items: center; gap: 0.4rem; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.05em;"><i class="fas fa-plug"></i><span class="lang-en">Click a blue button to open a GEO Agent</span><span class="lang-zh">点击蓝色按钮打开 GEO Agent</span></div><ul style="margin: 0; padding: 0; line-height: 1.6;"><li style="margin-bottom: 0.5rem; list-style:none;"><a href="https://platform.workfx.ai/agents/chat/iWCFR3BbH4xLw9KB" target="_blank" rel="noopener" class="agent-link-btn" style="display:block; padding: 0.6rem 0.85rem; border-radius: 0.6rem; background: linear-gradient(135deg, #2F7BFF, #5DA6FF); color: #ffffff; font-weight: 600; font-size: 0.9rem; cursor: pointer; text-decoration: none; box-shadow: 0 8px 18px rgba(47,123,255,0.35);"><span style="display:flex; align-items:center; gap:0.4rem;"><i class="fas fa-external-link-alt" style="font-size:0.8rem;"></i><span><span class="lang-en">Reddit Research</span><span class="lang-zh">Reddit 研究</span></span></span><div style="margin-top: 0.25rem; color: rgba(255,255,255,0.9); font-size: 0.85rem;"><span class="lang-en">Discover current Reddit pain points and user intent signals.</span><span class="lang-zh">发现当前 Reddit 痛点和用户意图信号。</span></div></a></li><li style="margin-bottom: 0.5rem; list-style:none;"><a href="https://platform.workfx.ai/agents/chat/EizjiJYlw71x80lF" target="_blank" rel="noopener" class="agent-link-btn" style="display:block; padding: 0.6rem 0.85rem; border-radius: 0.6rem; background: linear-gradient(135deg, #2F7BFF, #5DA6FF); color: #ffffff; font-weight: 600; font-size: 0.9rem; cursor: pointer; text-decoration: none; box-shadow: 0 8px 18px rgba(47,123,255,0.35);"><span style="display:flex; align-items:center; gap:0.4rem;"><i class="fas fa-external-link-alt" style="font-size:0.8rem;"></i><span><span class="lang-en">Keyword &amp; Topic Strategist</span><span class="lang-zh">关键词与主题策略师</span></span></span><div style="margin-top: 0.25rem; color: rgba(255,255,255,0.9); font-size: 0.85rem;"><span class="lang-en">Transform research into prioritized topic clusters and target keywords.</span><span class="lang-zh">将研究转化为优先主题集群和目标关键词。</span></div></a></li><li style="margin-bottom: 0.5rem; list-style:none;"><a href="https://platform.workfx.ai/agents/chat/Wn5CbpqjbGzYHBdq" target="_blank" rel="noopener" class="agent-link-btn" style="display:block; padding: 0.6rem 0.85rem; border-radius: 0.6rem; background: linear-gradient(135deg, #2F7BFF, #5DA6FF); color: #ffffff; font-weight: 600; font-size: 0.9rem; cursor: pointer; text-decoration: none; box-shadow: 0 8px 18px rgba(47,123,255,0.35);"><span style="display:flex; align-items:center; gap:0.4rem;"><i class="fas fa-external-link-alt" style="font-size:0.8rem;"></i><span><span class="lang-en">GEO Content Generator</span><span class="lang-zh">GEO 内容生成器</span></span></span><div style="margin-top: 0.25rem; color: rgba(255,255,255,0.9); font-size: 0.85rem;"><span class="lang-en">Produce long-form multi-format content using structured GEO workflows.</span><span class="lang-zh">使用结构化 GEO 工作流程生成长篇多格式内容。</span></div></a></li></ul></div> <span style="color: var(--text-muted);"><span class="lang-en">(Priority: High)</span><span class="lang-zh">(优先级: High)</span></span> <span style="color: var(--text-muted);"><span class="lang-en">(Time: 5 hours)</span><span class="lang-zh">(时间: 5 hours)</span></span> 
+            <div class="todo-steps-card">
+                <div class="todo-steps-header">
+                    <i class="fas fa-lightbulb"></i> <span class="lang-en">How to complete this task</span><span class="lang-zh">如何完成此任务</span>
+                </div>
+                <ol class="todo-steps-list">
+                    
+                <li class="todo-step-row">
+                    <div class="todo-step-number"><span class="lang-en">Step 1</span><span class="lang-zh">步骤 1</span></div>
+                    <div class="todo-step-body">
+                        <div class="todo-step-title"><span class="lang-en">Discover Audience Questions with Reddit Research</span><span class="lang-zh">使用 Reddit Research 发现受众问题</span><a href="https://platform.workfx.ai/agents/chat/iWCFR3BbH4xLw9KB" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:0.25rem; padding: 0.15rem 0.45rem; margin-left: 0.35rem; border-radius: 999px; background: rgba(47,123,255,0.10); border: 1px solid rgba(47,123,255,0.7); font-size: 0.75rem; font-weight: 600; color: var(--primary-color); text-decoration:none;"><i class="fas fa-external-link-alt" style="font-size:0.7rem;"></i><span>Reddit Research</span></a></div>
+                        <div class="todo-step-detail"><span class="lang-en">Open the Reddit Research agent. Input &#x27;Generative Engine Optimization&#x27; and &#x27;AI SEO&#x27; as topics. Analyze the generated report for common questions, pain points, and misunderstandings to address in your content.</span><span class="lang-zh">打开 Reddit Research 代理。输入“生成式引擎优化”和“AI SEO”作为主题。分析生成的报告，找出常见问题、痛点和误解，以便在您的内容中加以解决。</span></div>
+                    </div>
+                </li>
+            
+                <li class="todo-step-row">
+                    <div class="todo-step-number"><span class="lang-en">Step 2</span><span class="lang-zh">步骤 2</span></div>
+                    <div class="todo-step-body">
+                        <div class="todo-step-title"><span class="lang-en">Build a Content Outline with Keyword &amp; Topic Strategist</span><span class="lang-zh">使用关键词与主题策略师构建内容大纲</span><a href="https://platform.workfx.ai/agents/chat/iWCFR3BbH4xLw9KB" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:0.25rem; padding: 0.15rem 0.45rem; margin-left: 0.35rem; border-radius: 999px; background: rgba(47,123,255,0.10); border: 1px solid rgba(47,123,255,0.7); font-size: 0.75rem; font-weight: 600; color: var(--primary-color); text-decoration:none;"><i class="fas fa-external-link-alt" style="font-size:0.7rem;"></i><span>Reddit Research</span></a><a href="https://platform.workfx.ai/agents/chat/EizjiJYlw71x80lF" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:0.25rem; padding: 0.15rem 0.45rem; margin-left: 0.35rem; border-radius: 999px; background: rgba(47,123,255,0.10); border: 1px solid rgba(47,123,255,0.7); font-size: 0.75rem; font-weight: 600; color: var(--primary-color); text-decoration:none;"><i class="fas fa-external-link-alt" style="font-size:0.7rem;"></i><span>Keyword &amp; Topic Strategist</span></a></div>
+                        <div class="todo-step-detail"><span class="lang-en">Open the Keyword &amp; Topic Strategist agent. Provide the insights from your Reddit research. The agent will generate a topic cluster map and a detailed outline for your pillar page, including H1, H2s, and key terms to include.</span><span class="lang-zh">打开 Keyword &amp; Topic Strategist 代理。提供您从 Reddit 研究中得到的见解。该代理将为您的支柱页面生成一个主题集群图和详细大纲，包括 H1、H2 和要包含的关键术语。</span></div>
+                    </div>
+                </li>
+            
+                <li class="todo-step-row">
+                    <div class="todo-step-number"><span class="lang-en">Step 3</span><span class="lang-zh">步骤 3</span></div>
+                    <div class="todo-step-body">
+                        <div class="todo-step-title"><span class="lang-en">Write the Pillar Page with GEO Content Generator</span><span class="lang-zh">使用 GEO 内容生成器撰写支柱页面</span><a href="https://platform.workfx.ai/agents/chat/Wn5CbpqjbGzYHBdq" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:0.25rem; padding: 0.15rem 0.45rem; margin-left: 0.35rem; border-radius: 999px; background: rgba(47,123,255,0.10); border: 1px solid rgba(47,123,255,0.7); font-size: 0.75rem; font-weight: 600; color: var(--primary-color); text-decoration:none;"><i class="fas fa-external-link-alt" style="font-size:0.7rem;"></i><span>GEO Content Generator</span></a></div>
+                        <div class="todo-step-detail"><span class="lang-en">Open the GEO Content Generator agent. Input the outline and keywords from the previous step. Follow the agent&#x27;s guidance to produce a comprehensive, 3000-word article that covers the topic in-depth and is optimized for AI visibility.</span><span class="lang-zh">打开 GEO Content Generator 代理。输入上一步中的大纲和关键词。遵循代理的指导，撰写一篇 3000 字的综合性文章，深入涵盖该主题并针对 AI 可见性进行优化。</span></div>
+                    </div>
+                </li>
+            
+                </ol>
+            </div>
+         <br><span style="color: var(--success-color); font-size: 0.9375rem; font-weight: 600;"><span class="lang-en">Expected: <span class="lang-en">Establish baseline authority and begin ranking for the primary industry term, creating a foundation for all other GEO content.</span><span class="lang-zh">建立基础权威，并开始为主要行业术语获得排名，为所有其他 GEO 内容奠定基础。</span></span><span class="lang-zh">预期: <span class="lang-en">Establish baseline authority and begin ranking for the primary industry term, creating a foundation for all other GEO content.</span><span class="lang-zh">建立基础权威，并开始为主要行业术语获得排名，为所有其他 GEO 内容奠定基础。</span></span></span></span>
+    </li>
+    <li class="todo-item" style="padding: 1.25rem; margin-bottom: 0.75rem; background: rgba(74, 159, 232, 0.03); border-left: 4px solid var(--primary-color); border-radius: 0.5rem; display: flex; align-items: flex-start; gap: 1rem; transition: all 0.2s;">
+        <div class="todo-checkbox">
+            <input type="checkbox" class="todo-checkbox-input">
+            <i class="fas fa-check checkmark"></i>
+        </div>
+        <span style="color: var(--text-secondary); line-height: 1.7; font-size: 1.0625rem; flex: 1;"><span class="lang-en">Publish a Definitive Guide for &#x27;No-Code AI Agents for SEO&#x27;</span><span class="lang-zh">发布关于“用于SEO的无代码AI代理”的权威指南</span> <span class="category-badge content">[Content]</span> <div class="todo-agent-links" style="margin-top: 0.9rem; padding: 0.9rem 1rem; border-radius: 0.9rem; background: rgba(47, 123, 255, 0.07); border: 1px dashed rgba(47, 123, 255, 0.55);"><div style="font-weight: 700; color: var(--primary-color); margin-bottom: 0.55rem; display: flex; align-items: center; gap: 0.4rem; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.05em;"><i class="fas fa-plug"></i><span class="lang-en">Click a blue button to open a GEO Agent</span><span class="lang-zh">点击蓝色按钮打开 GEO Agent</span></div><ul style="margin: 0; padding: 0; line-height: 1.6;"><li style="margin-bottom: 0.5rem; list-style:none;"><a href="https://platform.workfx.ai/agents/chat/iWCFR3BbH4xLw9KB" target="_blank" rel="noopener" class="agent-link-btn" style="display:block; padding: 0.6rem 0.85rem; border-radius: 0.6rem; background: linear-gradient(135deg, #2F7BFF, #5DA6FF); color: #ffffff; font-weight: 600; font-size: 0.9rem; cursor: pointer; text-decoration: none; box-shadow: 0 8px 18px rgba(47,123,255,0.35);"><span style="display:flex; align-items:center; gap:0.4rem;"><i class="fas fa-external-link-alt" style="font-size:0.8rem;"></i><span><span class="lang-en">Reddit Research</span><span class="lang-zh">Reddit 研究</span></span></span><div style="margin-top: 0.25rem; color: rgba(255,255,255,0.9); font-size: 0.85rem;"><span class="lang-en">Discover current Reddit pain points and user intent signals.</span><span class="lang-zh">发现当前 Reddit 痛点和用户意图信号。</span></div></a></li><li style="margin-bottom: 0.5rem; list-style:none;"><a href="https://platform.workfx.ai/agents/chat/EizjiJYlw71x80lF" target="_blank" rel="noopener" class="agent-link-btn" style="display:block; padding: 0.6rem 0.85rem; border-radius: 0.6rem; background: linear-gradient(135deg, #2F7BFF, #5DA6FF); color: #ffffff; font-weight: 600; font-size: 0.9rem; cursor: pointer; text-decoration: none; box-shadow: 0 8px 18px rgba(47,123,255,0.35);"><span style="display:flex; align-items:center; gap:0.4rem;"><i class="fas fa-external-link-alt" style="font-size:0.8rem;"></i><span><span class="lang-en">Keyword &amp; Topic Strategist</span><span class="lang-zh">关键词与主题策略师</span></span></span><div style="margin-top: 0.25rem; color: rgba(255,255,255,0.9); font-size: 0.85rem;"><span class="lang-en">Transform research into prioritized topic clusters and target keywords.</span><span class="lang-zh">将研究转化为优先主题集群和目标关键词。</span></div></a></li><li style="margin-bottom: 0.5rem; list-style:none;"><a href="https://platform.workfx.ai/agents/chat/Wn5CbpqjbGzYHBdq" target="_blank" rel="noopener" class="agent-link-btn" style="display:block; padding: 0.6rem 0.85rem; border-radius: 0.6rem; background: linear-gradient(135deg, #2F7BFF, #5DA6FF); color: #ffffff; font-weight: 600; font-size: 0.9rem; cursor: pointer; text-decoration: none; box-shadow: 0 8px 18px rgba(47,123,255,0.35);"><span style="display:flex; align-items:center; gap:0.4rem;"><i class="fas fa-external-link-alt" style="font-size:0.8rem;"></i><span><span class="lang-en">GEO Content Generator</span><span class="lang-zh">GEO 内容生成器</span></span></span><div style="margin-top: 0.25rem; color: rgba(255,255,255,0.9); font-size: 0.85rem;"><span class="lang-en">Produce long-form multi-format content using structured GEO workflows.</span><span class="lang-zh">使用结构化 GEO 工作流程生成长篇多格式内容。</span></div></a></li></ul></div> <span style="color: var(--text-muted);"><span class="lang-en">(Priority: High)</span><span class="lang-zh">(优先级: High)</span></span> <span style="color: var(--text-muted);"><span class="lang-en">(Time: 4 hours)</span><span class="lang-zh">(时间: 4 hours)</span></span> 
+            <div class="todo-steps-card">
+                <div class="todo-steps-header">
+                    <i class="fas fa-lightbulb"></i> <span class="lang-en">How to complete this task</span><span class="lang-zh">如何完成此任务</span>
+                </div>
+                <ol class="todo-steps-list">
+                    
+                <li class="todo-step-row">
+                    <div class="todo-step-number"><span class="lang-en">Step 1</span><span class="lang-zh">步骤 1</span></div>
+                    <div class="todo-step-body">
+                        <div class="todo-step-title"><span class="lang-en">Research User Needs with Reddit Research</span><span class="lang-zh">使用 Reddit Research 研究用户需求</span><a href="https://platform.workfx.ai/agents/chat/iWCFR3BbH4xLw9KB" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:0.25rem; padding: 0.15rem 0.45rem; margin-left: 0.35rem; border-radius: 999px; background: rgba(47,123,255,0.10); border: 1px solid rgba(47,123,255,0.7); font-size: 0.75rem; font-weight: 600; color: var(--primary-color); text-decoration:none;"><i class="fas fa-external-link-alt" style="font-size:0.7rem;"></i><span>Reddit Research</span></a></div>
+                        <div class="todo-step-detail"><span class="lang-en">Open the Reddit Research agent. Input &#x27;no-code AI automation&#x27; and &#x27;SEO automation tools&#x27; as topics. Identify what non-technical users are trying to achieve and where they get stuck.</span><span class="lang-zh">打开 Reddit Research 代理。输入“无代码AI自动化”和“SEO自动化工具”作为主题。确定非技术用户试图实现什么目标以及他们在哪里遇到困难。</span></div>
+                    </div>
+                </li>
+            
+                <li class="todo-step-row">
+                    <div class="todo-step-number"><span class="lang-en">Step 2</span><span class="lang-zh">步骤 2</span></div>
+                    <div class="todo-step-body">
+                        <div class="todo-step-title"><span class="lang-en">Plan the Guide with Keyword &amp; Topic Strategist</span><span class="lang-zh">使用关键词与主题策略师规划指南</span><a href="https://platform.workfx.ai/agents/chat/EizjiJYlw71x80lF" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:0.25rem; padding: 0.15rem 0.45rem; margin-left: 0.35rem; border-radius: 999px; background: rgba(47,123,255,0.10); border: 1px solid rgba(47,123,255,0.7); font-size: 0.75rem; font-weight: 600; color: var(--primary-color); text-decoration:none;"><i class="fas fa-external-link-alt" style="font-size:0.7rem;"></i><span>Keyword &amp; Topic Strategist</span></a></div>
+                        <div class="todo-step-detail"><span class="lang-en">Feed the user needs into the Keyword &amp; Topic Strategist agent. It will help you structure a practical, step-by-step guide that directly answers user questions and targets relevant long-tail keywords.</span><span class="lang-zh">将用户需求输入到 Keyword &amp; Topic Strategist 代理中。它将帮助您构建一个实用的、分步的指南，直接回答用户问题并定位相关的长尾关键词。</span></div>
+                    </div>
+                </li>
+            
+                <li class="todo-step-row">
+                    <div class="todo-step-number"><span class="lang-en">Step 3</span><span class="lang-zh">步骤 3</span></div>
+                    <div class="todo-step-body">
+                        <div class="todo-step-title"><span class="lang-en">Produce the Guide with GEO Content Generator</span><span class="lang-zh">使用 GEO 内容生成器制作指南</span><a href="https://platform.workfx.ai/agents/chat/Wn5CbpqjbGzYHBdq" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:0.25rem; padding: 0.15rem 0.45rem; margin-left: 0.35rem; border-radius: 999px; background: rgba(47,123,255,0.10); border: 1px solid rgba(47,123,255,0.7); font-size: 0.75rem; font-weight: 600; color: var(--primary-color); text-decoration:none;"><i class="fas fa-external-link-alt" style="font-size:0.7rem;"></i><span>GEO Content Generator</span></a></div>
+                        <div class="todo-step-detail"><span class="lang-en">Use the GEO Content Generator agent with the generated outline to write a comprehensive guide. Ensure it includes practical examples, screenshots of the WorkfxAI platform, and clear calls-to-action.</span><span class="lang-zh">使用 GEO Content Generator 代理和生成的大纲来撰写一份全面的指南。确保它包含实际示例、WorkfxAI 平台的截图和明确的行动号召。</span></div>
+                    </div>
+                </li>
+            
+                </ol>
+            </div>
+         <br><span style="color: var(--success-color); font-size: 0.9375rem; font-weight: 600;"><span class="lang-en">Expected: <span class="lang-en">Capture traffic for a core differentiator and establish WorkfxAI as the go-to solution for non-technical teams seeking SEO automation.</span><span class="lang-zh">为核心差异化优势捕获流量，并将 WorkfxAI 建立为寻求 SEO 自动化的非技术团队的首选解决方案。</span></span><span class="lang-zh">预期: <span class="lang-en">Capture traffic for a core differentiator and establish WorkfxAI as the go-to solution for non-technical teams seeking SEO automation.</span><span class="lang-zh">为核心差异化优势捕获流量，并将 WorkfxAI 建立为寻求 SEO 自动化的非技术团队的首选解决方案。</span></span></span></span>
+    </li>
+    <li class="todo-item" style="padding: 1.25rem; margin-bottom: 0.75rem; background: rgba(74, 159, 232, 0.03); border-left: 4px solid var(--primary-color); border-radius: 0.5rem; display: flex; align-items: flex-start; gap: 1rem; transition: all 0.2s;">
+        <div class="todo-checkbox">
+            <input type="checkbox" class="todo-checkbox-input">
+            <i class="fas fa-check checkmark"></i>
+        </div>
+        <span style="color: var(--text-secondary); line-height: 1.7; font-size: 1.0625rem; flex: 1;"><span class="lang-en">Launch daily content distribution (2-3 posts/day) to LinkedIn, blog, Reddit, and Twitter/X</span><span class="lang-zh">在 LinkedIn、博客、Reddit 和 Twitter/X 上启动每日内容分发（每天2-3篇）</span> <span class="category-badge content">[Content]</span> <span style="color: var(--text-muted);"><span class="lang-en">(Priority: High)</span><span class="lang-zh">(优先级: High)</span></span> <span style="color: var(--text-muted);"><span class="lang-en">(Time: 2 hours daily)</span><span class="lang-zh">(时间: 2 hours daily)</span></span> 
+            <div class="todo-steps-card">
+                <div class="todo-steps-header">
+                    <i class="fas fa-lightbulb"></i> <span class="lang-en">How to complete this task</span><span class="lang-zh">如何完成此任务</span>
+                </div>
+                <ol class="todo-steps-list">
+                    
+                <li class="todo-step-row">
+                    <div class="todo-step-number"><span class="lang-en">Step 1</span><span class="lang-zh">步骤 1</span></div>
+                    <div class="todo-step-body">
+                        <div class="todo-step-title"><span class="lang-en">Establish a Content Calendar</span><span class="lang-zh">建立内容日历</span></div>
+                        <div class="todo-step-detail"><span class="lang-en">Take the pillar content and guides you&#x27;ve created. Break them down into dozens of smaller, bite-sized pieces of content: short posts, infographics, key stats, quotes, and questions for social media.</span><span class="lang-zh">将您创建的支柱内容和指南分解成数十个更小的、易于消化的内容片段：短文、信息图、关键数据、引言和用于社交媒体的问题。</span></div>
+                    </div>
+                </li>
+            
+                <li class="todo-step-row">
+                    <div class="todo-step-number"><span class="lang-en">Step 2</span><span class="lang-zh">步骤 2</span></div>
+                    <div class="todo-step-body">
+                        <div class="todo-step-title"><span class="lang-en">Schedule daily content distribution</span><span class="lang-zh">安排每日内容分发</span></div>
+                        <div class="todo-step-detail"><span class="lang-en">Publish 2-3 pieces of content per day across your blog, LinkedIn, relevant Reddit communities (like r/marketing, r/seo), and Twitter/X. Adapt each piece for the platform&#x27;s format and best practices. Use a scheduling tool like Buffer or Hootsuite to consistently post at optimal times (e.g., 9 AM, 2 PM, 6 PM).</span><span class="lang-zh">每天在您的博客、LinkedIn、相关的 Reddit 社区（如 r/marketing, r/seo）和 Twitter/X 上发布2-3篇内容。根据平台的格式和最佳实践调整每篇内容。使用像 Buffer 或 Hootsuite 这样的调度工具，在最佳时间（例如上午9点、下午2点、下午6点）持续发布。</span></div>
+                    </div>
+                </li>
+            
+                <li class="todo-step-row">
+                    <div class="todo-step-number"><span class="lang-en">Step 3</span><span class="lang-zh">步骤 3</span></div>
+                    <div class="todo-step-body">
+                        <div class="todo-step-title"><span class="lang-en">Engage with the Community</span><span class="lang-zh">与社区互动</span></div>
+                        <div class="todo-step-detail"><span class="lang-en">Don&#x27;t just post and run. Monitor comments and discussions on your posts. Respond to questions and participate in relevant conversations to build brand presence and authority.</span><span class="lang-zh">不要只发布就走。监控您帖子上的评论和讨论。回应问题并参与相关对话，以建立品牌存在感和权威性。</span></div>
+                    </div>
+                </li>
+            
+                </ol>
+            </div>
+         <br><span style="color: var(--success-color); font-size: 0.9375rem; font-weight: 600;"><span class="lang-en">Expected: <span class="lang-en">Dramatically increase brand signals and awareness, creating a consistent presence that AI models will begin to recognize and associate with GEO topics.</span><span class="lang-zh">显著增加品牌信号和认知度，创造一个持续的存在感，使 AI 模型开始识别并将其与 GEO 主题相关联。</span></span><span class="lang-zh">预期: <span class="lang-en">Dramatically increase brand signals and awareness, creating a consistent presence that AI models will begin to recognize and associate with GEO topics.</span><span class="lang-zh">显著增加品牌信号和认知度，创造一个持续的存在感，使 AI 模型开始识别并将其与 GEO 主题相关联。</span></span></span></span>
+    </li>
+</ul>
+                        </div>
+                        
+                        <!-- 2.2 Week 3-8 -->
+                        <div class="chart-container" style="margin-top: 2rem;" id="section-2-2">
+                            <div class="chart-header">
+                                <h3 class="chart-title">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span data-i18n-key="section2.week_3_8.title">2.2 Week 3-8: Potential Queries</span>
+                                </h3>
+                            </div>
+                            
+                            <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+    <li class="todo-item" style="padding: 1.25rem; margin-bottom: 0.75rem; background: rgba(74, 159, 232, 0.03); border-left: 4px solid var(--primary-color); border-radius: 0.5rem; display: flex; align-items: flex-start; gap: 1rem; transition: all 0.2s;">
+        <div class="todo-checkbox">
+            <input type="checkbox" class="todo-checkbox-input">
+            <i class="fas fa-check checkmark"></i>
+        </div>
+        <span style="color: var(--text-secondary); line-height: 1.7; font-size: 1.0625rem; flex: 1;"><span class="lang-en">Create Comparison Pages: WorkfxAI vs. Profound and vs. Semrush</span><span class="lang-zh">创建比较页面：WorkfxAI vs. Profound 和 vs. Semrush</span> <span class="category-badge geo">[GEO]</span> <div class="todo-agent-links" style="margin-top: 0.9rem; padding: 0.9rem 1rem; border-radius: 0.9rem; background: rgba(47, 123, 255, 0.07); border: 1px dashed rgba(47, 123, 255, 0.55);"><div style="font-weight: 700; color: var(--primary-color); margin-bottom: 0.55rem; display: flex; align-items: center; gap: 0.4rem; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.05em;"><i class="fas fa-plug"></i><span class="lang-en">Click a blue button to open a GEO Agent</span><span class="lang-zh">点击蓝色按钮打开 GEO Agent</span></div><ul style="margin: 0; padding: 0; line-height: 1.6;"><li style="margin-bottom: 0.5rem; list-style:none;"><a href="https://platform.workfx.ai/agents/chat/7Z2BCWf0thAErHZT" target="_blank" rel="noopener" class="agent-link-btn" style="display:block; padding: 0.6rem 0.85rem; border-radius: 0.6rem; background: linear-gradient(135deg, #2F7BFF, #5DA6FF); color: #ffffff; font-weight: 600; font-size: 0.9rem; cursor: pointer; text-decoration: none; box-shadow: 0 8px 18px rgba(47,123,255,0.35);"><span style="display:flex; align-items:center; gap:0.4rem;"><i class="fas fa-external-link-alt" style="font-size:0.8rem;"></i><span><span class="lang-en">SEO Content Optimizer</span><span class="lang-zh">SEO 内容优化器</span></span></span><div style="margin-top: 0.25rem; color: rgba(255,255,255,0.9); font-size: 0.85rem;"><span class="lang-en">Regenerate on-page copy, structure, FAQ schema, and CTA guidance.</span><span class="lang-zh">重新生成页面文案、结构、FAQ 架构和 CTA 指导。</span></div></a></li><li style="margin-bottom: 0.5rem; list-style:none;"><a href="https://platform.workfx.ai/agents/chat/Wn5CbpqjbGzYHBdq" target="_blank" rel="noopener" class="agent-link-btn" style="display:block; padding: 0.6rem 0.85rem; border-radius: 0.6rem; background: linear-gradient(135deg, #2F7BFF, #5DA6FF); color: #ffffff; font-weight: 600; font-size: 0.9rem; cursor: pointer; text-decoration: none; box-shadow: 0 8px 18px rgba(47,123,255,0.35);"><span style="display:flex; align-items:center; gap:0.4rem;"><i class="fas fa-external-link-alt" style="font-size:0.8rem;"></i><span><span class="lang-en">GEO Content Generator</span><span class="lang-zh">GEO 内容生成器</span></span></span><div style="margin-top: 0.25rem; color: rgba(255,255,255,0.9); font-size: 0.85rem;"><span class="lang-en">Produce long-form multi-format content using structured GEO workflows.</span><span class="lang-zh">使用结构化 GEO 工作流程生成长篇多格式内容。</span></div></a></li></ul></div> <span style="color: var(--text-muted);"><span class="lang-en">(Priority: High)</span><span class="lang-zh">(优先级: High)</span></span> <span style="color: var(--text-muted);"><span class="lang-en">(Time: 6 hours)</span><span class="lang-zh">(时间: 6 hours)</span></span> 
+            <div class="todo-steps-card">
+                <div class="todo-steps-header">
+                    <i class="fas fa-lightbulb"></i> <span class="lang-en">How to complete this task</span><span class="lang-zh">如何完成此任务</span>
+                </div>
+                <ol class="todo-steps-list">
+                    
+                <li class="todo-step-row">
+                    <div class="todo-step-number"><span class="lang-en">Step 1</span><span class="lang-zh">步骤 1</span></div>
+                    <div class="todo-step-body">
+                        <div class="todo-step-title"><span class="lang-en">Analyze Competitor Positioning</span><span class="lang-zh">分析竞争对手定位</span></div>
+                        <div class="todo-step-detail"><span class="lang-en">Visit the websites for Profound and Semrush. Identify their key marketing messages, target audiences, and feature sets. Note their strengths and weaknesses.</span><span class="lang-zh">访问 Profound 和 Semrush 的网站。确定他们的关键营销信息、目标受众和功能集。记录他们的优势和劣势。</span></div>
+                    </div>
+                </li>
+            
+                <li class="todo-step-row">
+                    <div class="todo-step-number"><span class="lang-en">Step 2</span><span class="lang-zh">步骤 2</span></div>
+                    <div class="todo-step-body">
+                        <div class="todo-step-title"><span class="lang-en">Structure the Comparison Page</span><span class="lang-zh">构建比较页面结构</span><a href="https://platform.workfx.ai/agents/chat/7Z2BCWf0thAErHZT" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:0.25rem; padding: 0.15rem 0.45rem; margin-left: 0.35rem; border-radius: 999px; background: rgba(47,123,255,0.10); border: 1px solid rgba(47,123,255,0.7); font-size: 0.75rem; font-weight: 600; color: var(--primary-color); text-decoration:none;"><i class="fas fa-external-link-alt" style="font-size:0.7rem;"></i><span>SEO Content Optimizer</span></a></div>
+                        <div class="todo-step-detail"><span class="lang-en">Use the SEO Content Optimizer agent to structure a high-performing comparison page. Include elements like a summary table, detailed feature breakdowns, and a section on &#x27;Who is it for?&#x27;.</span><span class="lang-zh">使用 SEO Content Optimizer 代理来构建一个高性能的比较页面。包括摘要表、详细的功能分解和“适用于谁？”部分等元素。</span></div>
+                    </div>
+                </li>
+            
+                <li class="todo-step-row">
+                    <div class="todo-step-number"><span class="lang-en">Step 3</span><span class="lang-zh">步骤 3</span></div>
+                    <div class="todo-step-body">
+                        <div class="todo-step-title"><span class="lang-en">Write Compelling Copy</span><span class="lang-zh">撰写引人注目的文案</span><a href="https://platform.workfx.ai/agents/chat/Wn5CbpqjbGzYHBdq" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:0.25rem; padding: 0.15rem 0.45rem; margin-left: 0.35rem; border-radius: 999px; background: rgba(47,123,255,0.10); border: 1px solid rgba(47,123,255,0.7); font-size: 0.75rem; font-weight: 600; color: var(--primary-color); text-decoration:none;"><i class="fas fa-external-link-alt" style="font-size:0.7rem;"></i><span>GEO Content Generator</span></a></div>
+                        <div class="todo-step-detail"><span class="lang-en">Use the GEO Content Generator to write the page copy. Frame the comparison to highlight WorkfxAI&#x27;s unique strengths, particularly the no-code AI agent builder, as the key differentiator.</span><span class="lang-zh">使用 GEO Content Generator 撰写页面文案。构建比较框架，突出 WorkfxAI 的独特优势，特别是无代码 AI 代理构建器，作为关键差异化因素。</span></div>
+                    </div>
+                </li>
+            
+                </ol>
+            </div>
+         <br><span style="color: var(--success-color); font-size: 0.9375rem; font-weight: 600;"><span class="lang-en">Expected: <span class="lang-en">Capture high-intent traffic from users actively evaluating solutions and directly position WorkfxAI against its main competitors.</span><span class="lang-zh">捕获正在积极评估解决方案的高意图用户流量，并直接将 WorkfxAI 与其主要竞争对手进行定位。</span></span><span class="lang-zh">预期: <span class="lang-en">Capture high-intent traffic from users actively evaluating solutions and directly position WorkfxAI against its main competitors.</span><span class="lang-zh">捕获正在积极评估解决方案的高意图用户流量，并直接将 WorkfxAI 与其主要竞争对手进行定位。</span></span></span></span>
+    </li>
+</ul>
+                        </div>
+                        
+                        <!-- 2.3 Month 3+ -->
+                        <div class="chart-container" style="margin-top: 2rem;" id="section-2-3">
+                            <div class="chart-header">
+                                <h3 class="chart-title">
+                                    <i class="fas fa-calendar-check"></i>
+                                    <span data-i18n-key="section2.month_3_plus.title">2.3 Month 3+: Competitive Queries</span>
+                                </h3>
+                            </div>
+                            
+                            <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+    <li class="todo-item" style="padding: 1.25rem; margin-bottom: 0.75rem; background: rgba(74, 159, 232, 0.03); border-left: 4px solid var(--primary-color); border-radius: 0.5rem; display: flex; align-items: flex-start; gap: 1rem; transition: all 0.2s;">
+        <div class="todo-checkbox">
+            <input type="checkbox" class="todo-checkbox-input">
+            <i class="fas fa-check checkmark"></i>
+        </div>
+        <span style="color: var(--text-secondary); line-height: 1.7; font-size: 1.0625rem; flex: 1;"><span class="lang-en">Launch Digital PR &amp; Guest Posting Campaign</span><span class="lang-zh">启动数字公关和客座博客活动</span> <span class="category-badge link-building">[Link Building]</span> <span style="color: var(--text-muted);"><span class="lang-en">(Priority: Medium)</span><span class="lang-zh">(优先级: Medium)</span></span> <span style="color: var(--text-muted);"><span class="lang-en">(Time: Ongoing)</span><span class="lang-zh">(时间: Ongoing)</span></span> 
+            <div class="todo-steps-card">
+                <div class="todo-steps-header">
+                    <i class="fas fa-lightbulb"></i> <span class="lang-en">How to complete this task</span><span class="lang-zh">如何完成此任务</span>
+                </div>
+                <ol class="todo-steps-list">
+                    
+                <li class="todo-step-row">
+                    <div class="todo-step-number"><span class="lang-en">Step 1</span><span class="lang-zh">步骤 1</span></div>
+                    <div class="todo-step-body">
+                        <div class="todo-step-title"><span class="lang-en">Identify Target Publications</span><span class="lang-zh">确定目标出版物</span></div>
+                        <div class="todo-step-detail"><span class="lang-en">Create a list of high-authority blogs, online magazines, and news sites in the SaaS, e-commerce, and digital marketing industries. Prioritize sites where competitors have been mentioned.</span><span class="lang-zh">创建一个在 SaaS、电子商务和数字营销行业内具有高权威性的博客、在线杂志和新闻网站的列表。优先考虑那些曾提及竞争对手的网站。</span></div>
+                    </div>
+                </li>
+            
+                <li class="todo-step-row">
+                    <div class="todo-step-number"><span class="lang-en">Step 2</span><span class="lang-zh">步骤 2</span></div>
+                    <div class="todo-step-body">
+                        <div class="todo-step-title"><span class="lang-en">Develop Pitch Angles</span><span class="lang-zh">开发投稿角度</span></div>
+                        <div class="todo-step-detail"><span class="lang-en">Use your pillar content as a source for unique story ideas and data points. Develop compelling pitches to journalists and editors about the rise of GEO and AI automation in SEO.</span><span class="lang-zh">以您的支柱内容为来源，寻找独特的报道思路和数据点。向记者和编辑提出关于 GEO 和 AI 自动化在 SEO 领域兴起的引人注目的投稿提案。</span></div>
+                    </div>
+                </li>
+            
+                <li class="todo-step-row">
+                    <div class="todo-step-number"><span class="lang-en">Step 3</span><span class="lang-zh">步骤 3</span></div>
+                    <div class="todo-step-body">
+                        <div class="todo-step-title"><span class="lang-en">Secure Backlinks and Mentions</span><span class="lang-zh">获取反向链接和提及</span></div>
+                        <div class="todo-step-detail"><span class="lang-en">Execute an outreach campaign to secure guest post opportunities, brand mentions in expert roundups, and backlinks to your pillar content. This will build domain authority and brand signals.</span><span class="lang-zh">执行外联活动，以获得客座文章机会、在专家综述中的品牌提及以及指向您支柱内容的反向链接。这将建立域名权威和品牌信号。</span></div>
+                    </div>
+                </li>
+            
+                </ol>
+            </div>
+         <br><span style="color: var(--success-color); font-size: 0.9375rem; font-weight: 600;"><span class="lang-en">Expected: <span class="lang-en">Build off-site authority and generate trusted third-party citations, which are critical signals for AI models to recognize and recommend a brand.</span><span class="lang-zh">建立站外权威并生成可信的第三方引文，这是 AI 模型识别和推荐一个品牌的关键信号。</span></span><span class="lang-zh">预期: <span class="lang-en">Build off-site authority and generate trusted third-party citations, which are critical signals for AI models to recognize and recommend a brand.</span><span class="lang-zh">建立站外权威并生成可信的第三方引文，这是 AI 模型识别和推荐一个品牌的关键信号。</span></span></span></span>
+    </li>
+</ul>
+                        </div>
+                        
+                        <!-- 2.4 Success Targets -->
+                        <div class="chart-container" style="margin-top: 2rem;" id="section-2-4">
+                            <div class="chart-header">
+                                <h3 class="chart-title">
+                                    <i class="fas fa-table"></i>
+                                    <span data-i18n-key="section2.success_targets.title">2.4 Success Targets</span>
+                                </h3>
+                            </div>
+                            
+                            <div style="margin-bottom: 1.5rem; padding: 1rem 1.5rem; background: rgba(74, 159, 232, 0.05); border-left: 4px solid var(--primary-color); border-radius: 0.5rem;">
+                                <strong style="font-size: 1rem; color: var(--text-primary);" data-i18n-key="section2.success_targets.table_title">Table 2.4: Success Targets</strong>
+                            </div>
+                            
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th data-i18n-key="table.timeline">Timeline</th>
+                                            <th data-i18n-key="table.advantage">Advantage</th>
+                                            <th data-i18n-key="table.potential">Potential</th>
+                                            <th data-i18n-key="table.competitive">Competitive</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Month 1</strong></td>
+                                            <td><strong>80% visibility</strong></td>
+                                            <td><strong>30% visibility</strong></td>
+                                            <td><strong>5% visibility</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Month 3</strong></td>
+                                            <td><strong>Top 3 position</strong></td>
+                                            <td><strong>60% visibility</strong></td>
+                                            <td><strong>15% visibility</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Month 6</strong></td>
+                                            <td><strong>Top 2 position</strong></td>
+                                            <td><strong>Top 5 position</strong></td>
+                                            <td><strong>30% visibility</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Tab 3: COMPETE -->
+                <div id="compete" class="tab-content">
+                    <!-- Section 3: Strategic Query Targeting -->
+                    <section id="strategic-targeting" class="section">
+                        <h2 class="section-title">
+                            <i class="fas fa-crosshairs"></i>
+                            <span data-i18n-key="section3.title">3. Strategic Query Targeting</span>
+                        </h2>
+                        <p class="section-subtitle" data-i18n-key="section3.subtitle">Query classification and strategic recommendations</p>
+                        
+                        <!-- 3.1 Advantage Queries -->
+                        <div class="chart-container" id="section-3-1">
+                            <div class="chart-header">
+                                <h3 class="chart-title">
+                                    <i class="fas fa-target"></i>
+                                    <span data-i18n-key="section3_1.title">3.1 🎯 Advantage Queries - Win These First (2-4 weeks)</span>
+                                </h3>
+                                <p class="chart-subtitle" data-i18n-key="section3_1.subtitle">Low competition, high relevance. You should dominate here.</p>
+                            </div>
+                            
+                            <div style="margin-bottom: 1.5rem; padding: 1rem 1.5rem; background: rgba(74, 159, 232, 0.05); border-left: 4px solid var(--primary-color); border-radius: 0.5rem;">
+                                <strong style="font-size: 1rem; color: var(--text-primary);" data-i18n-key="section3_1.table_title">Table 3.1: Advantage Queries - Win These First</strong>
+                            </div>
+                            
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th data-i18n-key="table.query">Query</th>
+                                            <th data-i18n-key="table.status">Status</th>
+                                            <th data-i18n-key="table.explanation">Explanation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                                <tr>
+            <td>How do no-code AI agent builders work for SEO automation?</td>
+            <td>
+        <span class="status-platform"><strong>ChatGPT:</strong> <span class="status-value status-miss">❌</span></span>
+        <span class="status-platform"><strong>Gemini:</strong> <span class="status-value status-miss">❌</span></span>
+        <span class="status-platform"><strong>Claude:</strong> <span class="status-value status-miss">❌</span></span>
+            </td>
+            <td><span class="lang-en">This is a core, unique value proposition for WorkfxAI. Competition is low and specialized. This query should be an easy win to establish expertise.</span><span class="lang-zh">这是 WorkfxAI 的一个核心、独特的价值主张。竞争程度低且专业化。这个查询应该能轻松获胜以建立专业知识。</span> <span class="lang-en">Create the definitive &#x27;how-to&#x27; guide on this topic, including video tutorials, use cases, and a clear explanation of the benefits for SEO tasks.</span><span class="lang-zh">创建关于此主题的权威“操作指南”，包括视频教程、用例以及对 SEO 任务益处的清晰解释。</span></td>
+        </tr>
+        <tr>
+            <td>Our digital marketing team needs to automate content creation and SEO processes with AI agents but we lack technical expertise - what&#x27;s the best way to get started with no-code solutions?</td>
+            <td>
+        <span class="status-platform"><strong>ChatGPT:</strong> <span class="status-value status-miss">❌</span></span>
+        <span class="status-platform"><strong>Gemini:</strong> <span class="status-value status-miss">❌</span></span>
+        <span class="status-platform"><strong>Claude:</strong> <span class="status-value status-miss">❌</span></span>
+            </td>
+            <td><span class="lang-en">This query perfectly describes the ideal WorkfxAI customer persona: a non-technical marketing team looking for no-code automation. Competition is very low.</span><span class="lang-zh">这个查询完美地描述了理想的 WorkfxAI 客户画像：一个寻求无代码自动化的非技术营销团队。竞争非常低。</span> <span class="lang-en">Develop a dedicated landing page and case study targeting this exact pain point. Highlight ease-of-use, quick setup, and successful outcomes for similar teams.</span><span class="lang-zh">针对此痛点开发专门的登录页面和案例研究。重点突出易用性、快速设置以及为类似团队带来的成功结果。</span></td>
+        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- 3.2 Potential Queries -->
+                        <div class="chart-container" style="margin-top: 2rem;" id="section-3-2">
+                            <div class="chart-header">
+                                <h3 class="chart-title">
+                                    <i class="fas fa-fist-raised"></i>
+                                    <span data-i18n-key="section3_2.title">3.2 ⚔️ Potential Queries - Fight For These (6-8 weeks)</span>
+                                </h3>
+                                <p class="chart-subtitle" data-i18n-key="section3_2.subtitle">Moderate competition. Winnable with consistent effort.</p>
+                            </div>
+                            
+                            <div style="margin-bottom: 1.5rem; padding: 1rem 1.5rem; background: rgba(74, 159, 232, 0.05); border-left: 4px solid var(--primary-color); border-radius: 0.5rem;">
+                                <strong style="font-size: 1rem; color: var(--text-primary);" data-i18n-key="section3_2.table_title">Table 3.2: Potential Queries - Fight For These</strong>
+                            </div>
+                            
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th data-i18n-key="table.query">Query</th>
+                                            <th data-i18n-key="table.status">Status</th>
+                                            <th data-i18n-key="table.competition">Competition</th>
+                                            <th data-i18n-key="table.action">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                                <tr>
+            <td>I&#x27;m deciding between traditional SEO tools and newer GEO platforms for our e-commerce brand - which approach delivers better ROI and is worth the investment?</td>
+            <td>
+        <span class="status-platform"><strong>ChatGPT:</strong> <span class="status-value status-miss">❌</span></span>
+        <span class="status-platform"><strong>Gemini:</strong> <span class="status-value status-miss">❌</span></span>
+        <span class="status-platform"><strong>Claude:</strong> <span class="status-value status-miss">❌</span></span>
+            </td>
+            <td>
+        <span class="competitor-item">AthenaHQ</span>
+        <span class="competitor-item">Neil Patel</span>
+        <span class="competitor-item">Backlinko</span>
+        
+            </td>
+            <td><span class="lang-en">Publish a thought leadership article titled &#x27;GEO vs. SEO: The New ROI Equation for E-commerce in 2026&#x27;. Use data and case studies to demonstrate the value of GEO platforms.</span><span class="lang-zh">发表一篇题为“GEO 对比 SEO：2026年电子商务的新投资回报率方程式”的思想领袖文章。使用数据和案例研究来证明 GEO 平台的价值。</span></td>
+        </tr>
+        <tr>
+            <td>Which GEO tools offer automated content generation for e-commerce?</td>
+            <td>
+        <span class="status-platform"><strong>ChatGPT:</strong> <span class="status-value status-miss">❌</span></span>
+        <span class="status-platform"><strong>Gemini:</strong> <span class="status-value status-miss">❌</span></span>
+        <span class="status-platform"><strong>Claude:</strong> <span class="status-value status-miss">❌</span></span>
+            </td>
+            <td>
+        <span class="competitor-item">Semrush</span>
+        <span class="competitor-item">Writesonic</span>
+        <span class="competitor-item">BrightEdge</span>
+        <span class="competitor-item">Contently</span>
+        
+            </td>
+            <td><span class="lang-en">Create a detailed comparison page highlighting WorkfxAI&#x27;s specialized e-commerce features for GEO and content automation versus more generalist tools like Semrush and Writesonic.</span><span class="lang-zh">创建一个详细的比较页面，突出 WorkfxAI 针对电子商务的 GEO 和内容自动化的专业功能，以区别于像 Semrush 和 Writesonic 这样更通用的工具。</span></td>
+        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- 3.3 Competitive Queries -->
+                        <div class="chart-container" style="margin-top: 2rem;" id="section-3-3">
+                            <div class="chart-header">
+                                <h3 class="chart-title">
+                                    <i class="fas fa-flask"></i>
+                                    <span data-i18n-key="section3_3.title">3.3 🧪 Competitive Queries - Monitor (12+ weeks)</span>
+                                </h3>
+                                <p class="chart-subtitle" data-i18n-key="section3_3.subtitle">Dominated by big brands. Long-term play.</p>
+                            </div>
+                            
+                            <div style="margin-bottom: 1.5rem; padding: 1rem 1.5rem; background: rgba(74, 159, 232, 0.05); border-left: 4px solid var(--primary-color); border-radius: 0.5rem;">
+                                <strong style="font-size: 1rem; color: var(--text-primary);" data-i18n-key="section3_3.table_title">Table 3.3: Competitive Queries - Monitor</strong>
+                            </div>
+                            
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th data-i18n-key="table.query">Query</th>
+                                            <th data-i18n-key="table.status">Status</th>
+                                            <th data-i18n-key="table.difficulty">Difficulty</th>
+                                            <th data-i18n-key="table.approach">Approach</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                                <tr>
+            <td>What are the best AI SEO platforms for SaaS companies in 2024?</td>
+            <td>
+        <span class="status-platform"><strong>ChatGPT:</strong> <span class="status-value status-miss">❌</span></span>
+        <span class="status-platform"><strong>Gemini:</strong> <span class="status-value status-miss">❌</span></span>
+        <span class="status-platform"><strong>Claude:</strong> <span class="status-value status-miss">❌</span></span>
+            </td>
+            <td>
+        <span class="competitor-item">Semrush - Dominates</span>
+        <span class="competitor-item">Profound - Strong Niche Player</span>
+        <span class="competitor-item">Ahrefs - Established Authority</span>
+        
+            </td>
+            <td><span class="lang-en">This is a long-term goal. The strategy is to first win &#x27;OWN&#x27; and &#x27;COMPETE&#x27; queries to build authority, then target this broader category through digital PR, guest posts on SaaS blogs, and case studies.</span><span class="lang-zh">这是一个长期目标。策略是首先赢得“OWN”和“COMPETE”查询以建立权威，然后通过数字公关、在 SaaS 博客上发表客座文章和案例研究来瞄准这个更广泛的类别。</span></td>
+        </tr>
+        <tr>
+            <td>I&#x27;m looking for a generative engine optimization platform that can improve our SaaS company&#x27;s visibility in AI search results while staying within our marketing budget - what are the top options in 2024?</td>
+            <td>
+        <span class="status-platform"><strong>ChatGPT:</strong> <span class="status-value status-miss">❌</span></span>
+        <span class="status-platform"><strong>Gemini:</strong> <span class="status-value status-miss">❌</span></span>
+        <span class="status-platform"><strong>Claude:</strong> <span class="status-value status-miss">❌</span></span>
+            </td>
+            <td>
+        <span class="competitor-item">Profound - Direct Competitor</span>
+        <span class="competitor-item">Semrush - All-in-one Giant</span>
+        <span class="competitor-item">AthenaHQ - GEO Competitor</span>
+        <span class="competitor-item">High volume of competitors (10+)</span>
+        
+            </td>
+            <td><span class="lang-en">This high-intent query is flooded with competition. Avoid direct targeting initially. Focus on creating content for long-tail variations like &#x27;affordable GEO platform for startups&#x27; to gain a foothold before tackling the main term.</span><span class="lang-zh">这个高意图查询充满了竞争。初期避免直接定位。专注于为长尾变体（如“初创公司可负担的 GEO 平台”）创建内容，以在处理主要术语之前站稳脚跟。</span></td>
+        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Section 3.4: Top Competitors -->
+                    <section id="top-competitors" class="section">
+                        <h2 class="section-title">
+                            <i class="fas fa-users"></i>
+                            <span data-i18n-key="section3_4.title">3.4. Top Competitors</span>
+                        </h2>
+                        <p class="section-subtitle" data-i18n-key="section3_4.subtitle">Competitive landscape analysis</p>
+                        
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3 class="chart-title">
+                                    <i class="fas fa-table"></i>
+                                    <span data-i18n-key="section3_4.table_title">Table 3.4.1: Top Competitors Analysis</span>
+                                </h3>
+                            </div>
+                            
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th data-i18n-key="table.competitor">Competitor</th>
+                                            <th data-i18n-key="table.mentions">Mentions</th>
+                                            <th data-i18n-key="table.where_they_win">Where They Win</th>
+                                            <th data-i18n-key="table.your_advantage">Your Advantage</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                                <tr>
+            <td><strong>Semrush</strong></td>
+            <td>
+        <span class="status-platform"><strong><span class="lang-en">7 mentions on:</span><span class="lang-zh">7 次提及于：</span></strong></span>
+        <span class="status-platform"><strong>ChatGPT</strong></span>
+        <span class="status-platform"><strong>Gemini</strong></span>
+        <span class="status-platform"><strong>Claude</strong></span>
+        
+            </td>
+            <td><span class="lang-en">Wins on broad &#x27;AI SEO&#x27; and general marketing platform queries. It is the default, trusted, all-in-one answer for users not yet familiar with the specialized GEO category.</span><span class="lang-zh">在广泛的“AI SEO”和通用营销平台查询中获胜。对于尚不熟悉专业 GEO 类别的用户来说，它是默认的、值得信赖的一站式答案。</span></td>
+            <td><span class="lang-en">WorkfxAI&#x27;s advantage is its specialization in GEO and the unique no-code AI agent builder. Position WorkfxAI as the expert solution for brands serious about next-generation AI visibility, not just traditional SEO.</span><span class="lang-zh">WorkfxAI 的优势在于其在 GEO 领域的专业化以及独特的无代码 AI 代理构建器。将 WorkfxAI 定位为专为那些认真对待下一代 AI 可见性，而不仅仅是传统 SEO 的品牌提供的专家解决方案。</span></td>
+        </tr>
+        <tr>
+            <td><strong>Profound</strong></td>
+            <td>
+        <span class="status-platform"><strong><span class="lang-en">5 mentions on:</span><span class="lang-zh">5 次提及于：</span></strong></span>
+        <span class="status-platform"><strong>Gemini</strong></span>
+        <span class="status-platform"><strong>Claude</strong></span>
+        
+            </td>
+            <td><span class="lang-en">Dominates specific &#x27;Generative Engine Optimization&#x27; queries. It is recognized as a direct player in the GEO space and is recommended for users already searching for GEO solutions.</span><span class="lang-zh">在特定的“生成式引擎优化”查询中占据主导地位。它被公认为 GEO 领域的直接参与者，并被推荐给已经开始搜索 GEO 解决方案的用户。</span></td>
+            <td><span class="lang-en">WorkfxAI&#x27;s no-code agent builder for SEO automation is a key differentiator. While Profound focuses on visibility analytics, WorkfxAI offers actionable automation, which can be a stronger value proposition for resource-strapped teams.</span><span class="lang-zh">WorkfxAI 用于 SEO 自动化的无代码代理构建器是一个关键的差异化优势。Profound 专注于可见性分析，而 WorkfxAI 提供可操作的自动化，这对于资源紧张的团队来说可能是一个更强大的价值主张。</span></td>
+        </tr>
+        <tr>
+            <td><strong>AthenaHQ</strong></td>
+            <td>
+        <span class="status-platform"><strong><span class="lang-en">4 mentions on:</span><span class="lang-zh">4 次提及于：</span></strong></span>
+        <span class="status-platform"><strong>Gemini</strong></span>
+        <span class="status-platform"><strong>Claude</strong></span>
+        
+            </td>
+            <td><span class="lang-en">Appears in GEO-specific and GEO-vs-SEO comparison queries. It has successfully positioned itself as a key player and thought leader in the emerging GEO category.</span><span class="lang-zh">出现在特定的 GEO 查询和 GEO 与 SEO 的比较查询中。它已成功将自己定位为新兴 GEO 类别中的关键参与者和思想领袖。</span></td>
+            <td><span class="lang-en">WorkfxAI&#x27;s focus on automation and integration through AI agents can be framed as a more advanced, &#x27;do-it-for-me&#x27; solution compared to AthenaHQ&#x27;s focus on predictive insights and dashboards which may be more &#x27;show-me&#x27; focused.</span><span class="lang-zh">与 AthenaHQ 专注于预测性洞察和仪表板（可能更侧重于“展示给我看”）相比，WorkfxAI 对通过 AI 代理实现自动化和集成的关注可以被塑造成一个更先进的“为我做”解决方案。</span></td>
+        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Tab 4: Appendix -->
+                <div id="appendix" class="tab-content">
+                    <!-- Section 4: Appendix -->
+                    <section id="appendix" class="section">
+                        <h2 class="section-title">
+                            <i class="fas fa-database"></i>
+                            <span data-i18n-key="section4.title">4. Appendix: Raw Data - All Tested Queries</span>
+                        </h2>
+                        <p class="section-subtitle" data-i18n-key="section4.subtitle">Complete data for all tested queries across platforms</p>
+                        
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3 class="chart-title">
+                                    <i class="fas fa-table"></i>
+                                    <span data-i18n-key="section4.table_title">Table 4.1: All Tested Queries - Complete Data</span>
+                                </h3>
+                            </div>
+                            
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th data-i18n-key="table.number">Number</th>
+                                            <th data-i18n-key="table.query">Query</th>
+                                            <th data-i18n-key="table.chatgpt">ChatGPT</th>
+                                            <th data-i18n-key="table.gemini">Gemini</th>
+                                            <th data-i18n-key="table.claude">Claude</th>
+                                            <th data-i18n-key="table.competitors_mentioned">Competitors Mentioned</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                                <tr>
+            <td><strong>1</strong></td>
+            <td>What are the best AI SEO platforms for SaaS companies in 2024?</td>
+            <td><strong>❌ Not mentioned</strong></td>
+            <td><strong>❌ Not mentioned</strong></td>
+            <td><strong>❌ Not mentioned</strong></td>
+            <td>
+        <span class="competitor-item">Semrush</span>
+        <span class="competitor-item">Ahrefs</span>
+        <span class="competitor-item">Moz</span>
+        <span class="competitor-item">MarketMuse</span>
+        <span class="competitor-item">SurferSEO</span>
+        <span class="competitor-item">Profound</span>
+        <span class="competitor-item">Search Atlas</span>
+        <span class="competitor-item">Scrunch AI</span>
+        <span class="competitor-item">Growthner</span>
+        <span class="competitor-item">OptinMonster</span>
+        <span class="competitor-item">SingleGrain</span>
+        
+            </td>
+        </tr>
+        <tr>
+            <td><strong>2</strong></td>
+            <td>Which GEO tools offer automated content generation for e-commerce?</td>
+            <td><strong>❌ Not mentioned</strong></td>
+            <td><strong>❌ Not mentioned</strong></td>
+            <td><strong>❌ Not mentioned</strong></td>
+            <td>
+        <span class="competitor-item">Semrush</span>
+        <span class="competitor-item">Writesonic</span>
+        <span class="competitor-item">Zoovu</span>
+        <span class="competitor-item">SingleGrain</span>
+        <span class="competitor-item">NoGood</span>
+        <span class="competitor-item">Hall</span>
+        <span class="competitor-item">Contently</span>
+        <span class="competitor-item">BrightEdge</span>
+        <span class="competitor-item">Goodie</span>
+        
+            </td>
+        </tr>
+        <tr>
+            <td><strong>3</strong></td>
+            <td>How do no-code AI agent builders work for SEO automation?</td>
+            <td><strong>❌ Not mentioned</strong></td>
+            <td><strong>❌ Not mentioned</strong></td>
+            <td><strong>❌ Not mentioned</strong></td>
+            <td>
+        <span class="competitor-item">Gumloop</span>
+        <span class="competitor-item">Lyzr</span>
+        <span class="competitor-item">V7Labs</span>
+        <span class="competitor-item">Bika.ai</span>
+        
+            </td>
+        </tr>
+        <tr>
+            <td><strong>4</strong></td>
+            <td>I&#x27;m looking for a generative engine optimization platform that can improve our SaaS company&#x27;s visibility in AI search results while staying within our marketing budget - what are the top options in 2024?</td>
+            <td><strong>❌ Not mentioned</strong></td>
+            <td><strong>❌ Not mentioned</strong></td>
+            <td><strong>❌ Not mentioned</strong></td>
+            <td>
+        <span class="competitor-item">Scalenut</span>
+        <span class="competitor-item">Semrush</span>
+        <span class="competitor-item">Surfer SEO</span>
+        <span class="competitor-item">Search Atlas</span>
+        <span class="competitor-item">Profound</span>
+        <span class="competitor-item">AthenaHQ</span>
+        <span class="competitor-item">Contently</span>
+        <span class="competitor-item">Writesonic</span>
+        <span class="competitor-item">Otterly</span>
+        <span class="competitor-item">Rankscale.ai</span>
+        <span class="competitor-item">Goodie AI</span>
+        <span class="competitor-item">Scrunch AI</span>
+        
+            </td>
+        </tr>
+        <tr>
+            <td><strong>5</strong></td>
+            <td>I&#x27;m deciding between traditional SEO tools and newer GEO platforms for our e-commerce brand - which approach delivers better ROI and is worth the investment?</td>
+            <td><strong>❌ Not mentioned</strong></td>
+            <td><strong>❌ Not mentioned</strong></td>
+            <td><strong>❌ Not mentioned</strong></td>
+            <td>
+        <span class="competitor-item">AthenaHQ</span>
+        <span class="competitor-item">Neil Patel</span>
+        <span class="competitor-item">Backlinko</span>
+        <span class="competitor-item">SellerMetrics</span>
+        <span class="competitor-item">Amplifyed</span>
+        
+            </td>
+        </tr>
+        <tr>
+            <td><strong>6</strong></td>
+            <td>Our digital marketing team needs to automate content creation and SEO processes with AI agents but we lack technical expertise - what&#x27;s the best way to get started with no-code solutions?</td>
+            <td><strong>❌ Not mentioned</strong></td>
+            <td><strong>❌ Not mentioned</strong></td>
+            <td><strong>❌ Not mentioned</strong></td>
+            <td>
+        <span class="competitor-item">FlowhuntIO</span>
+        <span class="competitor-item">NoCodeStartup</span>
+        
+            </td>
+        </tr>
+        <tr>
+            <td><strong>7</strong></td>
+            <td>What are the most trusted AI-powered SEO automation platforms that enterprise SaaS companies are using successfully in 2024?</td>
+            <td><strong>❌ Not mentioned</strong></td>
+            <td><strong>❌ Not mentioned</strong></td>
+            <td><strong>❌ Not mentioned</strong></td>
+            <td>
+        <span class="competitor-item">Google</span>
+        <span class="competitor-item">Microsoft</span>
+        <span class="competitor-item">Salesforce</span>
+        <span class="competitor-item">OpenAI</span>
+        <span class="competitor-item">Anthropic</span>
+        <span class="competitor-item">Databricks</span>
+        <span class="competitor-item">Marvelous</span>
+        <span class="competitor-item">Gumloop</span>
+        <span class="competitor-item">SingleGrain</span>
+        
+            </td>
+        </tr>
+        <tr>
+            <td><strong>8</strong></td>
+            <td>I need an AI SEO platform that offers generative engine optimization, automated content creation, integrates with our existing tech stack, and provides measurable ROI tracking - which solutions meet these requirements?</td>
+            <td><strong>❌ Not mentioned</strong></td>
+            <td><strong>❌ Not mentioned</strong></td>
+            <td><strong>❌ Not mentioned</strong></td>
+            <td>
+        <span class="competitor-item">Surfer SEO</span>
+        <span class="competitor-item">Writesonic</span>
+        <span class="competitor-item">Profound</span>
+        <span class="competitor-item">WebFX</span>
+        <span class="competitor-item">Contently</span>
+        <span class="competitor-item">Contentpen.ai</span>
+        <span class="competitor-item">Semrush Copilot</span>
+        
+            </td>
+        </tr>
+<div class="info-callout">
+    <strong>Note:</strong>
+    Data reflects a unified analysis of 8 unique queries tested across all three platforms. A query is counted for a platform&#x27;s total if it was part of the test set for that platform.
+</div>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--glass-border);">
+                                <h4 style="font-weight: 600; margin-bottom: 1rem;" data-i18n-key="legend.title">Legend:</h4>
+                                <ul style="list-style: none; padding: 0;">
+                                    <li style="padding: 0.5rem 0;" data-i18n-key="legend.pos_x"><strong>Pos X</strong> = Brand mentioned at position X (1st, 2nd, 3rd brand mentioned in response)</li>
+                                    <li style="padding: 0.5rem 0;" data-i18n-key="legend.not_mentioned"><strong>❌ Not mentioned</strong> = Brand not mentioned in response</li>
+                                    <li style="padding: 0.5rem 0;" data-i18n-key="legend.competitors"><strong>AllQueries_CompetitorsMentioned</strong> = All other brands/companies mentioned in responses across all 3 platforms</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const LANGUAGE_STORAGE_KEY = 'geo_language_preference';
+        const DEFAULT_LANGUAGE = 'en';
+        const I18N_DICTIONARY = {
+            en: {
+                'language.label': 'Language',
+                'header.title': 'GEO Performance Report: {website}',
+                'sidebar.title': 'GEO Report',
+                'sidebar.subtitle': 'Performance Analysis',
+                'sidebar.section.overview': 'Overview',
+                'sidebar.link.executive_summary': '1. Executive Summary',
+                'sidebar.link.brand_overview': '1.1. Brand Overview',
+                'sidebar.link.platform_performance': '1.2. Platform Performance',
+                'sidebar.link.query_highlights': '1.3. Query Performance Highlights',
+                'sidebar.section.todo': 'To-Do List',
+                'sidebar.link.todo': '2. To-Do List',
+                'sidebar.link.week_1_2': '2.1 Week 1-2',
+                'sidebar.link.week_3_8': '2.2 Week 3-8',
+                'sidebar.link.month_3_plus': '2.3 Month 3+',
+                'sidebar.link.success_targets': '2.4 Success Targets',
+                'sidebar.section.compete': 'COMPETE',
+                'sidebar.link.strategic_targeting': '3. Strategic Query Targeting',
+                'sidebar.link.advantage_queries': '3.1 Advantage Queries',
+                'sidebar.link.potential_queries': '3.2 Potential Queries',
+                'sidebar.link.competitive_queries': '3.3 Competitive Queries',
+                'sidebar.link.top_competitors': '3.4 Top Competitors',
+                'sidebar.section.appendix': 'Appendix',
+                'sidebar.link.appendix': '4. Raw Data - All Tested Queries',
+                'tabs.overview': 'Overview',
+                'tabs.action_plan': 'To-Do List',
+                'tabs.compete': 'COMPETE',
+                'tabs.appendix': 'Appendix',
+                'section1.title': '1. Executive Summary',
+                'section1.subtitle': 'Overall performance overview and key priorities',
+                'section1_1.title': '1.1. Brand Overview',
+                'section1_1.subtitle': 'Brand information and positioning',
+                'section1_2.title': '1.2. Platform Performance',
+                'section1_2.subtitle': 'Performance comparison across AI platforms',
+                'section1_2.table_title': 'Table 1.2.1: Platform Performance Comparison',
+                'section1_2.rating_scale': 'Performance Rating Scale:',
+                'section1_2.excellent': 'Excellent (80%+ visibility)',
+                'section1_2.good': 'Good (60-80%)',
+                'section1_2.fair': 'Fair (40-60%)',
+                'section1_2.poor': 'Poor (20-40%)',
+                'section1_2.very_poor': 'Very Poor (<20%)',
+                'section1_3.title': '1.3. Query Performance Highlights',
+                'section1_3.subtitle': 'Wins and misses analysis',
+                'section1_3.wins_title': '✅ Wins (Brand mentioned)',
+                'section1_3.wins_subtitle': 'Table 1.3.1: Query Wins - Brand Mentioned',
+                'section1_3.misses_title': '❌ Misses (Brand not mentioned)',
+                'section1_3.misses_subtitle': 'Table 1.3.2: Query Misses - Brand Not Mentioned',
+                'section2.title': '2. To-Do List',
+                'section2.subtitle': 'Strategic action items and success targets',
+                'section2.week_1_2.title': '2.1 Week 1-2: Focus on Advantage Queries',
+                'section2.week_3_8.title': '2.2 Week 3-8: Potential Queries',
+                'section2.month_3_plus.title': '2.3 Month 3+: Competitive Queries',
+                'section2.success_targets.title': '2.4 Success Targets',
+                'section2.success_targets.table_title': 'Table 2.4: Success Targets',
+                'section3.title': '3. Strategic Query Targeting',
+                'section3.subtitle': 'Query classification and strategic recommendations',
+                'section3_1.title': '3.1 🎯 Advantage Queries - Win These First (2-4 weeks)',
+                'section3_1.subtitle': 'Low competition, high relevance. You should dominate here.',
+                'section3_1.table_title': 'Table 3.1: Advantage Queries - Win These First',
+                'section3_2.title': '3.2 ⚔️ Potential Queries - Fight For These (6-8 weeks)',
+                'section3_2.subtitle': 'Moderate competition. Winnable with consistent effort.',
+                'section3_2.table_title': 'Table 3.2: Potential Queries - Fight For These',
+                'section3_3.title': '3.3 🧪 Competitive Queries - Monitor (12+ weeks)',
+                'section3_3.subtitle': 'Dominated by big brands. Long-term play.',
+                'section3_3.table_title': 'Table 3.3: Competitive Queries - Monitor',
+                'section3_4.title': '3.4. Top Competitors',
+                'section3_4.subtitle': 'Competitive landscape analysis',
+                'section3_4.table_title': 'Table 3.4.1: Top Competitors Analysis',
+                'section4.title': '4. Appendix: Raw Data - All Tested Queries',
+                'section4.subtitle': 'Complete data for all tested queries across platforms',
+                'section4.table_title': 'Table 4.1: All Tested Queries - Complete Data',
+                'table.platform': 'Platform',
+                'table.visibility': 'Visibility',
+                'table.avg_position': 'Avg Position',
+                'table.rating': 'Rating',
+                'table.key_insight': 'Key Insight',
+                'table.query': 'Query',
+                'table.chatgpt': 'ChatGPT',
+                'table.gemini': 'Gemini',
+                'table.claude': 'Claude',
+                'table.why_important': 'Why Important',
+                'table.who_won': 'Who Won',
+                'table.status': 'Status',
+                'table.explanation': 'Explanation',
+                'table.competition': 'Competition',
+                'table.action': 'Action',
+                'table.difficulty': 'Difficulty',
+                'table.approach': 'Approach',
+                'table.competitor': 'Competitor',
+                'table.mentions': 'Mentions',
+                'table.where_they_win': 'Where They Win',
+                'table.your_advantage': 'Your Advantage',
+                'table.number': 'Number',
+                'table.competitors_mentioned': 'Competitors Mentioned',
+                'legend.title': 'Legend:',
+                'legend.pos_x': 'Pos X = Brand mentioned at position X (1st, 2nd, 3rd brand mentioned in response)',
+                'legend.not_mentioned': '❌ Not mentioned = Brand not mentioned in response',
+                'legend.competitors': 'AllQueries_CompetitorsMentioned = All other brands/companies mentioned in responses across all 3 platforms',
+                'table.timeline': 'Timeline',
+                'table.advantage': 'Advantage',
+                'table.potential': 'Potential',
+                'table.competitive': 'Competitive',
+                'brand.brand_name': 'Brand Name',
+                'brand.website': 'Website',
+                'brand.industry': 'Industry',
+                'brand.website_type': 'Website Type',
+                'brand.business_model': 'Business Model',
+                'brand.target_audience': 'Target Audience',
+                'brand.core_functions': 'Core Functions',
+                'brand.target_locations': 'Target Locations'
+            },
+            zh: {
+                'language.label': '语言',
+                'header.title': 'GEO 性能报告: {website}',
+                'sidebar.title': 'GEO 报告',
+                'sidebar.subtitle': '性能分析',
+                'sidebar.section.overview': '概览',
+                'sidebar.link.executive_summary': '1. 执行摘要',
+                'sidebar.link.brand_overview': '1.1. 品牌概览',
+                'sidebar.link.platform_performance': '1.2. 平台性能',
+                'sidebar.link.query_highlights': '1.3. 查询性能亮点',
+                'sidebar.section.todo': '待办事项',
+                'sidebar.link.todo': '2. 待办事项',
+                'sidebar.link.week_1_2': '2.1 第 1-2 周',
+                'sidebar.link.week_3_8': '2.2 第 3-8 周',
+                'sidebar.link.month_3_plus': '2.3 第 3 个月+',
+                'sidebar.link.success_targets': '2.4 成功目标',
+                'sidebar.section.compete': '竞争',
+                'sidebar.link.strategic_targeting': '3. 战略查询定位',
+                'sidebar.link.advantage_queries': '3.1 优势查询',
+                'sidebar.link.potential_queries': '3.2 潜力查询',
+                'sidebar.link.competitive_queries': '3.3 竞争查询',
+                'sidebar.link.top_competitors': '3.4 主要竞争对手',
+                'sidebar.section.appendix': '附录',
+                'sidebar.link.appendix': '4. 原始数据 - 所有测试查询',
+                'tabs.overview': '概览',
+                'tabs.action_plan': '待办事项',
+                'tabs.compete': '竞争',
+                'tabs.appendix': '附录',
+                'section1.title': '1. 执行摘要',
+                'section1.subtitle': '整体性能概览和关键优先级',
+                'section1_1.title': '1.1. 品牌概览',
+                'section1_1.subtitle': '品牌信息和定位',
+                'section1_2.title': '1.2. 平台性能',
+                'section1_2.subtitle': '跨 AI 平台的性能对比',
+                'section1_2.table_title': '表 1.2.1：平台性能对比',
+                'section1_2.rating_scale': '性能评级标准：',
+                'section1_2.excellent': '优秀（80%+ 可见度）',
+                'section1_2.good': '良好（60-80%）',
+                'section1_2.fair': '一般（40-60%）',
+                'section1_2.poor': '较差（20-40%）',
+                'section1_2.very_poor': '很差（<20%）',
+                'section1_3.title': '1.3. 查询性能亮点',
+                'section1_3.subtitle': '成功与失败分析',
+                'section1_3.wins_title': '✅ 成功（品牌被提及）',
+                'section1_3.wins_subtitle': '表 1.3.1：查询成功 - 品牌被提及',
+                'section1_3.misses_title': '❌ 失败（品牌未被提及）',
+                'section1_3.misses_subtitle': '表 1.3.2：查询失败 - 品牌未被提及',
+                'section2.title': '2. 待办事项',
+                'section2.subtitle': '战略行动项和成功目标',
+                'section2.week_1_2.title': '2.1 第 1-2 周：专注于优势查询',
+                'section2.week_3_8.title': '2.2 第 3-8 周：潜力查询',
+                'section2.month_3_plus.title': '2.3 第 3 个月+：竞争查询',
+                'section2.success_targets.title': '2.4 成功目标',
+                'section2.success_targets.table_title': '表 2.4：成功目标',
+                'section3.title': '3. 战略查询定位',
+                'section3.subtitle': '查询分类和战略建议',
+                'section3_1.title': '3.1 🎯 优势查询 - 优先赢得（2-4 周）',
+                'section3_1.subtitle': '低竞争，高相关性。您应该在这里占据主导地位。',
+                'section3_1.table_title': '表 3.1：优势查询 - 优先赢得',
+                'section3_2.title': '3.2 ⚔️ 潜力查询 - 努力争取（6-8 周）',
+                'section3_2.subtitle': '中等竞争。通过持续努力可以获胜。',
+                'section3_2.table_title': '表 3.2：潜力查询 - 努力争取',
+                'section3_3.title': '3.3 🧪 竞争查询 - 监控（12+ 周）',
+                'section3_3.subtitle': '由大品牌主导。长期策略。',
+                'section3_3.table_title': '表 3.3：竞争查询 - 监控',
+                'section3_4.title': '3.4. 主要竞争对手',
+                'section3_4.subtitle': '竞争格局分析',
+                'section3_4.table_title': '表 3.4.1：主要竞争对手分析',
+                'section4.title': '4. 附录：原始数据 - 所有测试查询',
+                'section4.subtitle': '跨平台所有测试查询的完整数据',
+                'section4.table_title': '表 4.1：所有测试查询 - 完整数据',
+                'table.platform': '平台',
+                'table.visibility': '可见度',
+                'table.avg_position': '平均位置',
+                'table.rating': '评级',
+                'table.key_insight': '关键洞察',
+                'table.query': '查询',
+                'table.chatgpt': 'ChatGPT',
+                'table.gemini': 'Gemini',
+                'table.claude': 'Claude',
+                'table.why_important': '重要性',
+                'table.who_won': '获胜者',
+                'table.status': '状态',
+                'table.explanation': '说明',
+                'table.competition': '竞争',
+                'table.action': '行动',
+                'table.difficulty': '难度',
+                'table.approach': '方法',
+                'table.competitor': '竞争对手',
+                'table.mentions': '提及',
+                'table.where_they_win': '获胜领域',
+                'table.your_advantage': '您的优势',
+                'table.number': '编号',
+                'table.competitors_mentioned': '提及的竞争对手',
+                'legend.title': '图例：',
+                'legend.pos_x': 'Pos X = 品牌在位置 X 被提及（响应中第 1、2、3 个被提及的品牌）',
+                'legend.not_mentioned': '❌ 未提及 = 品牌在响应中未被提及',
+                'legend.competitors': 'AllQueries_CompetitorsMentioned = 所有 3 个平台响应中提及的所有其他品牌/公司',
+                'table.timeline': '时间线',
+                'table.advantage': '优势',
+                'table.potential': '潜力',
+                'table.competitive': '竞争',
+                'brand.brand_name': '品牌名称',
+                'brand.website': '网站',
+                'brand.industry': '行业',
+                'brand.website_type': '网站类型',
+                'brand.business_model': '商业模式',
+                'brand.target_audience': '目标受众',
+                'brand.core_functions': '核心功能',
+                'brand.target_locations': '目标地区'
+            }
+        };
+
+        function resolvePlaceholders(text) {
+            const website = document.body.getAttribute('data-website') || 'WorkfxAI';
+            return text.replace('{website}', website);
+        }
+
+        function applyLanguage(lang) {
+            const targetLang = I18N_DICTIONARY[lang] ? lang : DEFAULT_LANGUAGE;
+            const fallbackDictionary = I18N_DICTIONARY[DEFAULT_LANGUAGE] || {};
+            const dictionary = I18N_DICTIONARY[targetLang] || {};
+
+            document.documentElement.setAttribute('lang', targetLang === 'zh' ? 'zh' : 'en');
+            document.documentElement.setAttribute('data-language', targetLang);
+            if (document.body) {
+                document.body.setAttribute('data-language', targetLang);
+            }
+
+            localStorage.setItem(LANGUAGE_STORAGE_KEY, targetLang);
+
+            document.querySelectorAll('[data-i18n-key]').forEach(element => {
+                const key = element.getAttribute('data-i18n-key');
+                const translation = dictionary[key] || fallbackDictionary[key] || key;
+                element.textContent = resolvePlaceholders(translation);
+            });
+
+            document.querySelectorAll('.language-btn').forEach(button => {
+                const buttonLang = button.getAttribute('data-language');
+                button.classList.toggle('active', buttonLang === targetLang);
+            });
+        }
+
+        function initializeLanguageToggle() {
+            const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+            const initialLanguage = (savedLanguage && I18N_DICTIONARY[savedLanguage]) ? savedLanguage : DEFAULT_LANGUAGE;
+            applyLanguage(initialLanguage);
+
+            const buttons = document.querySelectorAll('.language-btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const selectedLang = button.getAttribute('data-language');
+                    applyLanguage(selectedLang);
+                });
+            });
+        }
+
+        // Initialize on DOM load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide loader
+            setTimeout(function() {
+                document.getElementById('page-loader').classList.add('hidden');
+            }, 500);
+
+            // Initialize all features
+            initializeLanguageToggle();
+            initializeTabs();
+            initializeSidebar();
+            initializeMobileMenu();
+            initializeTodoCheckboxes();
+        });
+
+        // Tab switching
+        function initializeTabs() {
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    const targetContent = document.getElementById(tabName);
+                    if (targetContent) {
+                        targetContent.classList.add('active');
+                    }
+                });
+            });
+        }
+
+        // Sidebar navigation and section collapsing
+        function initializeSidebar() {
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetTab = this.getAttribute('data-tab');
+                    
+                    // Switch to correct tab first
+                    if (targetTab) {
+                        const tabs = document.querySelectorAll('.tab');
+                        const tabContents = document.querySelectorAll('.tab-content');
+                        
+                        tabs.forEach(t => {
+                            if (t.getAttribute('data-tab') === targetTab) {
+                                t.classList.add('active');
+                            } else {
+                                t.classList.remove('active');
+                            }
+                        });
+                        
+                        tabContents.forEach(c => {
+                            if (c.id === targetTab) {
+                                c.classList.add('active');
+                            } else {
+                                c.classList.remove('active');
+                            }
+                        });
+                    }
+                    
+                    // Smooth scroll to target
+                    setTimeout(() => {
+                        const targetElement = document.getElementById(targetId);
+                        if (targetElement) {
+                            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    }, 100);
+                });
+            });
+        }
+
+        // Toggle sidebar sections
+        function toggleSection(element) {
+            const section = element.parentElement;
+            section.classList.toggle('collapsed');
+        }
+
+        // Mobile menu functionality
+        function initializeMobileMenu() {
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+
+            if (mobileMenuBtn && sidebar && overlay) {
+                // Toggle menu
+                mobileMenuBtn.addEventListener('click', function() {
+                    sidebar.classList.toggle('mobile-open');
+                    overlay.classList.toggle('active');
+                    const icon = this.querySelector('i');
+                    if (sidebar.classList.contains('mobile-open')) {
+                        icon.classList.remove('fa-bars');
+                        icon.classList.add('fa-times');
+                    } else {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+
+                // Close menu when clicking overlay
+                overlay.addEventListener('click', function() {
+                    sidebar.classList.remove('mobile-open');
+                    overlay.classList.remove('active');
+                    const icon = mobileMenuBtn.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                });
+
+                // Close menu when clicking sidebar links on mobile
+                const sidebarLinks = document.querySelectorAll('.sidebar-link');
+                sidebarLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        if (window.innerWidth <= 767) {
+                            setTimeout(() => {
+                                sidebar.classList.remove('mobile-open');
+                                overlay.classList.remove('active');
+                                const icon = mobileMenuBtn.querySelector('i');
+                                icon.classList.remove('fa-times');
+                                icon.classList.add('fa-bars');
+                            }, 300);
+                        }
+                    });
+                });
+
+                // Close menu on window resize if desktop
+                window.addEventListener('resize', function() {
+                    if (window.innerWidth > 767) {
+                        sidebar.classList.remove('mobile-open');
+                        overlay.classList.remove('active');
+                        const icon = mobileMenuBtn.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+            }
+        }
+
+        // Initialize todo checkboxes
+        function initializeTodoCheckboxes() {
+            const todoCheckboxes = document.querySelectorAll('.todo-checkbox-input');
+            
+            todoCheckboxes.forEach(checkbox => {
+                const todoItem = checkbox.closest('.todo-item');
+                const todoCheckbox = checkbox.closest('.todo-checkbox');
+                const todoText = todoItem.querySelector('span').textContent.trim();
+                
+                // Load saved state from localStorage
+                const savedState = localStorage.getItem('todo_' + todoText);
+                
+                if (savedState === 'completed') {
+                    checkbox.checked = true;
+                    todoItem.classList.add('todo-item-completed');
+                    todoCheckbox.classList.add('checked');
+                }
+                
+                // Handle checkbox change
+                checkbox.addEventListener('change', function() {
+                    const item = this.closest('.todo-item');
+                    const checkboxDiv = this.closest('.todo-checkbox');
+                    const text = item.querySelector('span').textContent.trim();
+                    
+                    if (this.checked) {
+                        item.classList.add('todo-item-completed');
+                        checkboxDiv.classList.add('checked');
+                        localStorage.setItem('todo_' + text, 'completed');
+                    } else {
+                        item.classList.remove('todo-item-completed');
+                        checkboxDiv.classList.remove('checked');
+                        localStorage.removeItem('todo_' + text);
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>
+
+
+

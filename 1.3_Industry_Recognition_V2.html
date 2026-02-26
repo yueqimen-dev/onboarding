@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Industry Recognition | WorkfxAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-warm: #fafafa;
+  --text-primary: #0a0a0a;
+  --text-secondary: #525252;
+  --text-tertiary: #737373;
+  --accent-orange: #0a0a0a;
+  --accent-orange-light: #d4d4d4;
+  --accent-purple: #737373;
+  --border-soft: #e5e5e5;
+  --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-large: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --font-display: 'Manrope', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-warm);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+.page-layout {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 55% 45%;
+}
+
+/* LEFT SIDE */
+.form-side {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+}
+
+.form-card {
+  max-width: 560px;
+  width: 100%;
+  animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.progress-bar {
+  margin-bottom: 40px;
+  height: 2px;
+  background: #e5e5e5;
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #0a0a0a;
+  border-radius: 1px;
+  transition: width 0.6s ease;
+}
+
+.form-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 38px);
+  font-weight: 800;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.form-subtitle {
+  font-size: 17px;
+  color: var(--text-secondary);
+  margin-bottom: 36px;
+  line-height: 1.6;
+}
+
+/* Industry Cards */
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.industry-option {
+  background: white;
+  border: 2px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 24px 20px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  opacity: 0;
+  animation: cardFadeIn 0.5s ease forwards;
+}
+
+.industry-option:nth-child(1) { animation-delay: 0.1s; }
+.industry-option:nth-child(2) { animation-delay: 0.2s; }
+.industry-option:nth-child(3) { animation-delay: 0.3s; }
+.industry-option:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes cardFadeIn { to { opacity: 1; } }
+
+.industry-option:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-large);
+  border-color: var(--accent-orange);
+}
+
+.industry-option.selected {
+  border-color: var(--accent-orange);
+  background: linear-gradient(135deg, #f5f5f5 0%, #f5f5f5 100%);
+  box-shadow: var(--shadow-medium);
+}
+
+.industry-option[data-industry="agency"]::after {
+  content: 'Enterprise';
+  position: absolute;
+  top: 10px; right: 10px;
+  font-size: 10px; font-weight: 700;
+  color: var(--accent-purple);
+  background: #f5f5f5;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.industry-icon { font-size: 36px; margin-bottom: 12px; height: 48px; display: flex; align-items: center; justify-content: center; }
+.industry-name { font-family: var(--font-display); font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.industry-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.4; }
+
+/* Buttons */
+.button-group { display: flex; gap: 12px; }
+
+.btn-secondary {
+  font-family: var(--font-body); font-size: 15px; font-weight: 600;
+  padding: 14px 24px; border-radius: 8px;
+  border: 2px solid var(--border-soft); cursor: pointer;
+  transition: all 0.3s; background: white; color: var(--text-primary);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-secondary:hover { border-color: var(--accent-orange); transform: translateY(-2px); }
+
+.btn-primary {
+  font-family: var(--font-body); font-size: 15px; font-weight: 600;
+  padding: 14px 32px; border-radius: 8px; border: none;
+  cursor: pointer; transition: all 0.3s;
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent-orange); color: white; flex: 1; justify-content: center;
+}
+.btn-primary:hover { background: #262626; transform: translateY(-2px); box-shadow: var(--shadow-medium); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+/* RIGHT SIDE — Horizontal Carousel */
+.social-side {
+  background: #0a0a0a;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Particle background */
+.social-side::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.social-side::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -30%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.social-header {
+  position: relative;
+  z-index: 2;
+  padding: 0 40px;
+  margin-bottom: 32px;
+}
+
+.social-label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #525252;
+  margin-bottom: 8px;
+}
+
+.social-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  line-height: 1.3;
+}
+
+/* Carousel Track */
+.carousel-viewport {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+
+.carousel-track {
+  display: flex;
+  gap: 20px;
+  padding: 8px 40px;
+  animation: slideLeft 20s linear infinite;
+  width: max-content;
+}
+
+.carousel-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes slideLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Testimonial Card */
+.t-card {
+  flex-shrink: 0;
+  width: 300px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.t-card:hover {
+  background: rgba(255,255,255,0.09);
+  border-color: rgba(255,255,255,0.15);
+  transform: translateY(-4px);
+}
+
+.t-quote {
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.t-footer { display: flex; align-items: center; gap: 10px; }
+.t-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: white; flex-shrink: 0;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.t-name { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.9); }
+.t-role { font-size: 11px; color: rgba(255,255,255,0.4); }
+
+.t-result {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 600; color: #4ade80;
+  background: rgba(74, 222, 128, 0.1);
+  padding: 4px 10px; border-radius: 20px;
+  margin-top: 14px;
+}
+
+.t-company-url {
+  display: block; font-size: 11px; color: rgba(255,255,255,0.35);
+  text-decoration: none; font-weight: 500; margin-top: 2px; transition: color 0.2s;
+}
+.t-company-url:hover { color: rgba(255,255,255,0.6); }
+
+/* Navigation dots */
+.carousel-dots {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 28px;
+}
+.c-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  border: none; cursor: pointer;
+  transition: all 0.3s;
+  padding: 0;
+}
+.c-dot.active {
+  width: 20px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.5);
+}
+
+.industry-option:nth-child(5) { animation-delay: 0.5s; }
+
+.agency-row { margin: 24px 0 24px; }
+
+/* Simplified list style */
+.section-subtitle, .mini-caption {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  margin: -8px 0 12px;
+}
+
+.agency-row .mini-caption {
+  margin: 0 0 12px;
+}
+
+.simple-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.simple-list .simple-option:last-child {
+  grid-column: 1 / -1;
+}
+
+.simple-option {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px 12px;
+  background: white;
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text-primary);
+  text-align: left;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+}
+
+.simple-option:hover {
+  border-color: var(--accent-orange);
+}
+
+.simple-option.selected {
+  border-color: var(--accent-orange);
+  background: #f7f7f7;
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+  .page-layout { grid-template-columns: 1fr; }
+  .form-side { padding: 40px 20px; }
+  .social-side { min-height: 500px; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .button-group { flex-direction: column; }
+  .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 600px) {
+  .simple-list {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="page-layout">
+  <!-- LEFT -->
+  <div class="form-side">
+    <div class="form-card">
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: 45%"></div>
+      </div>
+
+      <h1 class="form-title">Tell us about your company</h1>
+      <p class="form-subtitle">This helps us personalize your experience.</p>
+
+      <div class="section-subtitle">Your company size</div>
+      <div class="simple-list">
+        <button class="simple-option" data-size="1~10">1~10 employees</button>
+        <button class="simple-option" data-size="11~50">11~50 employees</button>
+        <button class="simple-option" data-size="51~100">51~100 employees</button>
+        <button class="simple-option" data-size="101~500">101~500 employees</button>
+        <button class="simple-option" data-size="500+">500+ employees</button>
+      </div>
+
+      <div class="agency-row">
+        <div class="mini-caption">Are you an agency?</div>
+        <label style="display:flex; align-items:center; gap:8px; font-size:14px; color: var(--text-secondary);">
+          <input type="checkbox" id="agencyCheckbox">
+          <span>Yes, I am an agency</span>
+        </label>
+      </div>
+
+      <div class="button-group">
+        <button class="btn-secondary" onclick="window.location.href='1.2_Onboarding_V2.html'">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M11 4 L6 9 L11 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Back
+        </button>
+        <button class="btn-primary" id="continueBtn" disabled onclick="continueToNext()">
+          Continue
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M7 4 L12 9 L7 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT — Horizontal Carousel -->
+  <div class="social-side">
+    <div class="social-header">
+      <div class="social-label">Trusted by growth teams</div>
+      <div class="social-title">See what teams are achieving</div>
+    </div>
+
+    <div class="carousel-viewport">
+      <div class="carousel-track" id="carouselTrack">
+        <!-- Set 1 -->
+        <div class="t-card">
+          <div class="t-quote">"Within weeks our brand started appearing in ChatGPT recommendations."</div>
+          <div class="t-footer">
+            <div class="t-avatar">TN</div>
+            <div>
+              <div class="t-name">Tom Nguyen</div>
+              <div class="t-role">VP Growth, CloudBase</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="t-card">
+          <div class="t-quote">"WorkfxAI helped us boost clients' AI search visibility with insights traditional tools couldn't provide."</div>
+          <div class="t-footer">
+            <div class="t-avatar">JK</div>
+            <div>
+              <div class="t-name">Joe Kerlin</div>
+              <div class="t-role">Director of SXO, Rocket55</div>
+            </div>
+          </div>
+          <div class="t-result">+340% AI visibility</div>
+        </div>
+
+        <div class="t-card">
+          <div class="t-quote">"ChatGPT now refers customers directly to our products. Fastest-growing channel."</div>
+          <div class="t-footer">
+            <div class="t-avatar">AB</div>
+            <div>
+              <div class="t-name">Aryan Bhadouria</div>
+              <div class="t-role">CEO, Vercel</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="t-card">
+          <div class="t-quote">"We went from invisible to recommended by AI in under a month."</div>
+          <div class="t-footer">
+            <div class="t-avatar">SL</div>
+            <div>
+              <div class="t-name">Sarah Lin</div>
+              <div class="t-role">Head of Growth, Ramp</div>
+            </div>
+          </div>
+          <div class="t-result">+210% organic traffic</div>
+        </div>
+
+        <div class="t-card">
+          <div class="t-quote">"Finally a tool that shows exactly how AI engines see our brand."</div>
+          <div class="t-footer">
+            <div class="t-avatar">MR</div>
+            <div>
+              <div class="t-name">Marcus Reid</div>
+              <div class="t-role">CMO, DataStack</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Set 2 (duplicate for infinite scroll) -->
+        <div class="t-card">
+          <div class="t-quote">"Within weeks our brand started appearing in ChatGPT recommendations."</div>
+          <div class="t-footer">
+            <div class="t-avatar">TN</div>
+            <div>
+              <div class="t-name">Tom Nguyen</div>
+              <div class="t-role">VP Growth, CloudBase</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="t-card">
+          <div class="t-quote">"WorkfxAI helped us boost clients' AI search visibility with insights traditional tools couldn't provide."</div>
+          <div class="t-footer">
+            <div class="t-avatar">JK</div>
+            <div>
+              <div class="t-name">Joe Kerlin</div>
+              <div class="t-role">Director of SXO, Rocket55</div>
+            </div>
+          </div>
+          <div class="t-result">+340% AI visibility</div>
+        </div>
+
+        <div class="t-card">
+          <div class="t-quote">"ChatGPT now refers customers directly to our products. Fastest-growing channel."</div>
+          <div class="t-footer">
+            <div class="t-avatar">AB</div>
+            <div>
+              <div class="t-name">Aryan Bhadouria</div>
+              <div class="t-role">CEO, Vercel</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="t-card">
+          <div class="t-quote">"We went from invisible to recommended by AI in under a month."</div>
+          <div class="t-footer">
+            <div class="t-avatar">SL</div>
+            <div>
+              <div class="t-name">Sarah Lin</div>
+              <div class="t-role">Head of Growth, Ramp</div>
+            </div>
+          </div>
+          <div class="t-result">+210% organic traffic</div>
+        </div>
+
+        <div class="t-card">
+          <div class="t-quote">"Finally a tool that shows exactly how AI engines see our brand."</div>
+          <div class="t-footer">
+            <div class="t-avatar">MR</div>
+            <div>
+              <div class="t-name">Marcus Reid</div>
+              <div class="t-role">CMO, DataStack</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="carousel-dots">
+      <button class="c-dot active"></button>
+      <button class="c-dot"></button>
+      <button class="c-dot"></button>
+      <button class="c-dot"></button>
+      <button class="c-dot"></button>
+    </div>
+  </div>
+</div>
+
+<script>
+let selectedSize = null;
+
+document.querySelectorAll('.simple-option').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.simple-option').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    selectedSize = card.dataset.size || null;
+    document.getElementById('continueBtn').disabled = !selectedSize;
+  });
+});
+
+function continueToNext() {
+  if (!selectedSize) return;
+  const isAgency = !!document.getElementById('agencyCheckbox')?.checked;
+  localStorage.setItem('workfxai_company_size', selectedSize);
+  localStorage.setItem('workfxai_is_agency', String(isAgency));
+  if (isAgency) {
+    window.location.href = '1.4_Competitor_Confirmation_V2.html';
+    return;
+  }
+  // Skip competitor confirmation if user already entered competitors in 1.2
+  const savedCompetitors = localStorage.getItem('workfxai_competitors');
+  if (savedCompetitors && savedCompetitors.trim()) {
+    window.location.href = '1.5_Goal_Selection_V2.html';
+  } else {
+    window.location.href = '1.4_Competitor_Confirmation_V2.html';
+  }
+}
+
+// Carousel dot sync
+const dots = document.querySelectorAll('.c-dot');
+let currentDot = 0;
+setInterval(() => {
+  dots[currentDot].classList.remove('active');
+  currentDot = (currentDot + 1) % dots.length;
+  dots[currentDot].classList.add('active');
+}, 4000);
+</script>
+
+</body>
+</html>

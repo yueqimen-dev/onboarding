@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What's Your Main Goal? | WorkfxAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-warm: #fafafa;
+  --text-primary: #0a0a0a;
+  --text-secondary: #525252;
+  --text-tertiary: #737373;
+  --accent: #0a0a0a;
+  --border-soft: #e5e5e5;
+  --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-large: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --font-display: 'Manrope', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body { font-family: var(--font-body); background: var(--bg-warm); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; }
+
+.page-layout { min-height: 100vh; display: grid; grid-template-columns: 50% 50%; }
+
+/* LEFT SIDE */
+.form-side { display: flex; align-items: center; justify-content: center; padding: 60px 40px; }
+.form-card { max-width: 520px; width: 100%; animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.progress-bar { margin-bottom: 40px; height: 2px; background: #e5e5e5; border-radius: 1px; overflow: hidden; }
+.progress-fill { height: 100%; background: #0a0a0a; border-radius: 1px; transition: width 0.6s ease; }
+
+.form-title { font-family: var(--font-display); font-size: clamp(28px, 4vw, 36px); font-weight: 800; margin-bottom: 10px; letter-spacing: -0.02em; line-height: 1.2; }
+.form-subtitle { font-size: 16px; color: var(--text-secondary); margin-bottom: 32px; line-height: 1.6; }
+
+/* Goal Cards */
+.goal-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+
+.goal-card {
+  background: white; border: 2px solid var(--border-soft); border-radius: 12px;
+  padding: 22px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex; align-items: center; gap: 18px;
+  opacity: 0; animation: cardFadeIn 0.5s ease forwards;
+}
+.goal-check {
+  width: 18px; height: 18px; border-radius: 5px;
+  border: 1.5px solid var(--border-soft); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.goal-card.selected .goal-check {
+  border-color: var(--accent); background: var(--accent);
+}
+.goal-card.selected .goal-check::after {
+  content: '';
+  width: 5px; height: 9px;
+  border: solid #ffffff; border-width: 0 2px 2px 0;
+  transform: rotate(45deg); margin-top: -2px;
+}
+.goal-card:nth-child(1) { animation-delay: 0.15s; }
+.goal-card:nth-child(2) { animation-delay: 0.25s; }
+.goal-card:nth-child(3) { animation-delay: 0.35s; }
+@keyframes cardFadeIn { to { opacity: 1; } }
+
+.goal-card:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: var(--shadow-large); }
+.goal-card.selected { border-color: var(--accent); background: #f5f5f5; box-shadow: var(--shadow-medium); }
+
+.goal-icon { font-size: 32px; flex-shrink: 0; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; }
+.goal-content { flex: 1; }
+.goal-title { font-family: var(--font-display); font-size: 17px; font-weight: 700; margin-bottom: 3px; }
+.goal-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+.goal-arrow { color: var(--border-soft); flex-shrink: 0; transition: all 0.2s; }
+.goal-card:hover .goal-arrow { color: var(--text-tertiary); transform: translateX(3px); }
+.goal-card.selected .goal-arrow { color: var(--accent); }
+/* Hide right arrow on cards per new design */
+.goal-arrow { display: none; }
+
+.bottom-note { font-size: 13px; color: var(--text-tertiary); }
+
+/* Micro caption for left panel */
+.micro-caption {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+/* Left actions */
+.left-actions { margin-top: 12px; }
+.btn-primary {
+  font-family: var(--font-body); font-size: 15px; font-weight: 600;
+  padding: 14px 32px; border-radius: 8px; border: none;
+  cursor: pointer; transition: all 0.3s;
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--text-primary); color: white; justify-content: center;
+}
+.btn-primary:hover { background: #262626; transform: translateY(-2px); box-shadow: var(--shadow-medium); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* RIGHT SIDE */
+.right-side {
+  background: #0a0a0a;
+  display: flex; align-items: center; justify-content: center;
+  padding: 48px 56px; position: relative; overflow: hidden;
+}
+
+.right-side::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 20%, rgba(255,255,255,0.03) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 80% at 20% 80%, rgba(255,255,255,0.02) 0%, transparent 60%);
+}
+
+.right-content { position: relative; z-index: 1; max-width: 400px; width: 100%; }
+
+/* Default state — minimal */
+.right-default { }
+
+.rd-rule {
+  width: 28px; height: 1.5px; background: rgba(255,255,255,0.15);
+  margin-bottom: 24px;
+  opacity: 0; animation: rdIn 0.6s ease 0.3s forwards;
+}
+
+@keyframes rdIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.rd-title {
+  font-family: var(--font-display); font-size: 24px; font-weight: 700;
+  color: rgba(255,255,255,0.9); line-height: 1.4;
+  letter-spacing: -0.02em; margin-bottom: 12px;
+  opacity: 0; animation: rdUp 0.7s ease 0.4s forwards;
+}
+
+.rd-body {
+  font-size: 14px; color: rgba(255,255,255,0.3); line-height: 1.6;
+  opacity: 0; animation: rdUp 0.7s ease 0.55s forwards;
+}
+
+@keyframes rdUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Q&A step transition */
+.rqa-question-wrapper {
+  position: relative;
+  min-height: 200px;
+}
+
+.rqa-question {
+  opacity: 0; transform: translateY(12px);
+  animation: qIn 0.4s ease forwards;
+}
+
+@keyframes qIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes qOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-12px); }
+}
+
+.rqa-question.exiting {
+  animation: qOut 0.3s ease forwards;
+}
+
+/* Step indicator */
+.rqa-step-dots {
+  display: flex; gap: 6px; margin-bottom: 20px;
+}
+
+.rqa-step-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); transition: all 0.3s;
+}
+
+.rqa-step-dot.active {
+  width: 18px; border-radius: 3px;
+  background: #4ade80;
+}
+
+.rqa-step-dot.done {
+  background: rgba(74, 222, 128, 0.4);
+}
+
+/* Q&A panel on right */
+.right-qa { display: none; }
+.right-qa.visible { display: block; animation: panelIn 0.5s ease; }
+
+@keyframes panelIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Visual panel (new) */
+.right-visual { display: none; }
+.right-visual.visible { display: block; animation: panelIn 0.5s ease; }
+.rv-title {
+  font-family: var(--font-display); font-size: 20px; font-weight: 700;
+  color: rgba(255,255,255,0.92); line-height: 1.3; margin-bottom: 10px;
+}
+.rv-sub {
+  font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 18px;
+}
+.rv-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;
+}
+.rv-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px; padding: 14px;
+}
+.rv-card h4 {
+  margin: 0 0 6px; font-size: 13px; color: rgba(255,255,255,0.85);
+}
+.rv-chip {
+  display: inline-block; font-size: 11px; color: rgba(255,255,255,0.75);
+  border: 1px solid rgba(255,255,255,0.15); border-radius: 999px;
+  padding: 4px 8px; margin: 4px 6px 0 0;
+}
+.rv-bar {
+  height: 6px; background: rgba(255,255,255,0.08); border-radius: 6px; overflow: hidden; margin-top: 8px;
+}
+.rv-bar > span {
+  display: block; height: 100%; background: linear-gradient(90deg, #4ade80, #22c55e);
+}
+.rv-linechart {
+  width: 100%; height: 120px; background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;
+  position: relative; overflow: hidden;
+}
+.rv-linechart::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: linear-gradient(to right, rgba(255,255,255,0.06) 1px, transparent 1px),
+                    linear-gradient(to top, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+.rv-note {
+  font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 8px;
+}
+
+.right-visual { opacity: 0; transform: translateY(8px); transition: opacity .35s ease, transform .35s ease; }
+.right-visual.visible { opacity: 1; transform: none; }
+
+.rv-mini {
+  font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+  color: rgba(255,255,255,0.7); margin: 10px 0 12px;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.rv-mini::before { content: ''; width: 20px; height: 2px; background: rgba(255,255,255,0.15); border-radius: 2px; }
+.rv-figure {
+  width: 100%; height: 148px; background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.12); border-radius: 12px;
+  position: relative; overflow: hidden; margin-bottom: 10px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02), 0 8px 28px rgba(0,0,0,0.25);
+}
+.rv-figure svg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+}
+
+.rqa-goal-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.1em; color: #4ade80;
+  background: rgba(74, 222, 128, 0.1);
+  padding: 5px 12px; border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.rqa-title {
+  font-family: var(--font-display); font-size: 20px; font-weight: 700;
+  color: white; line-height: 1.3; margin-bottom: 6px;
+}
+
+.rqa-subtitle {
+  font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 28px;
+}
+
+/* Question block — handled above in step transition */
+
+.rqa-q-label {
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.08em; color: rgba(255,255,255,0.3);
+  margin-bottom: 10px;
+}
+
+.rqa-q-text {
+  font-family: var(--font-display); font-size: 15px; font-weight: 600;
+  color: rgba(255,255,255,0.85); margin-bottom: 14px; line-height: 1.4;
+}
+
+.rqa-options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+
+.rqa-opt {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px; padding: 14px 16px; cursor: pointer;
+  font-family: var(--font-body); font-size: 13px; font-weight: 500;
+  color: rgba(255,255,255,0.6); text-align: left;
+  transition: all 0.25s; display: flex; align-items: center; gap: 10px;
+}
+
+.rqa-opt:hover {
+  background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.85);
+}
+
+.rqa-opt.selected {
+  background: rgba(74, 222, 128, 0.08); border-color: rgba(74, 222, 128, 0.25);
+  color: #4ade80;
+}
+
+.rqa-opt-check {
+  width: 18px; height: 18px; border-radius: 5px;
+  border: 1.5px solid rgba(255,255,255,0.2); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+
+.rqa-opt.selected .rqa-opt-check {
+  border-color: #4ade80; background: #4ade80;
+}
+
+.rqa-opt.selected .rqa-opt-check::after {
+  content: '';
+  width: 5px; height: 9px;
+  border: solid #0a0a0a; border-width: 0 2px 2px 0;
+  transform: rotate(45deg); margin-top: -2px;
+}
+
+.rqa-multi-hint {
+  font-size: 11px; color: rgba(255,255,255,0.25);
+  margin-bottom: 12px; font-style: italic;
+}
+
+/* Divider */
+.rqa-divider {
+  height: 1px; background: rgba(255,255,255,0.06); margin: 4px 0 24px;
+}
+
+/* Actions */
+.rqa-actions {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 8px;
+}
+
+.rqa-skip {
+  font-size: 13px; color: rgba(255,255,255,0.3); cursor: pointer;
+  background: none; border: none; font-family: var(--font-body);
+  text-decoration: underline; text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+.rqa-skip:hover { color: rgba(255,255,255,0.5); }
+
+.rqa-continue {
+  padding: 12px 28px; background: white; color: #0a0a0a;
+  border: none; border-radius: 8px; font-family: var(--font-body);
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;
+  opacity: 0.3; pointer-events: none;
+}
+
+.rqa-continue.enabled {
+  opacity: 1; pointer-events: auto;
+}
+
+.rqa-continue.enabled:hover {
+  transform: translateY(-2px); box-shadow: 0 4px 16px rgba(255,255,255,0.1);
+}
+
+/* Calendar Widget Styles */
+.cal-container {
+  background: #171717; border-radius: 12px; padding: 20px;
+  font-family: var(--font-body); color: white;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+.cal-header {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 16px;
+}
+.cal-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+.cal-stats { font-size: 11px; color: rgba(255,255,255,0.5); font-weight: 500; }
+
+.cal-filters { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.cal-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 600;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.8);
+}
+.cal-chip.active { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.25); color: white; }
+.cal-chip-count {
+  background: rgba(0,0,0,0.3); padding: 1px 5px; border-radius: 10px; font-size: 9px;
+}
+
+.cal-insights {
+  background: rgba(255,255,255,0.03); border-radius: 6px;
+  padding: 10px 12px; margin-bottom: 20px;
+  font-size: 10px; color: rgba(255,255,255,0.6);
+  display: flex; align-items: center; gap: 16px; border: 1px solid rgba(255,255,255,0.05);
+}
+.cal-insight-item { display: flex; align-items: center; gap: 6px; }
+.cal-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+.cal-view-tabs { display: flex; gap: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 16px; }
+.cal-tab {
+  font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.5);
+  padding-bottom: 10px; cursor: pointer; position: relative;
+}
+.cal-tab.active { color: white; }
+.cal-tab.active::after {
+  content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: white;
+}
+
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+.cal-col { display: flex; flex-direction: column; gap: 6px; }
+.cal-day {
+  font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.3);
+  text-transform: uppercase; margin-bottom: 4px; text-align: center;
+}
+.cal-card {
+  padding: 8px; border-radius: 6px;
+  font-size: 9px; line-height: 1.4; font-weight: 500;
+  border-left: 3px solid; background: rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.9);
+  position: relative; overflow: hidden;
+  transition: transform 0.2s;
+}
+.cal-card:hover { transform: translateY(-2px); background: rgba(255,255,255,0.08); }
+.cal-card.blog { border-color: #94a3b8; }
+.cal-card.reddit { border-color: #f97316; }
+.cal-card.insta { border-color: #ec4899; }
+.cal-card.linkedin { border-color: #3b82f6; }
+.cal-card.x { border-color: white; }
+.cal-card-icon { margin-right: 4px; opacity: 0.7; }
+
+/* AI Response Preview (ai_mentions) */
+.air-container {
+  background: #171717;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid rgba(255,255,255,0.1);
+  font-family: var(--font-body);
+  color: white;
+  margin-top: 10px;
+  position: relative;
+  overflow: hidden;
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.air-scoreboard {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  width: 120px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+.air-score-label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.air-gauge {
+   width: 80px;
+   height: 40px;
+   margin: 0 auto;
+   position: relative;
+   overflow: hidden;
+ }
+ 
+ .air-gauge-bg {
+   width: 80px;
+   height: 40px;
+   border-radius: 40px 40px 0 0;
+   border: 8px solid rgba(255, 255, 255, 0.1);
+   border-bottom: none;
+   box-sizing: border-box;
+ }
+ 
+ .air-gauge-fill {
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 80px;
+   height: 40px;
+   border-radius: 40px 40px 0 0;
+   border: 8px solid #4ade80;
+   border-bottom: none;
+   box-sizing: border-box;
+   transform-origin: 50% 100%;
+   transform: rotate(-180deg);
+   transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+ }
+
+.air-score-val {
+  font-size: 28px;
+  font-weight: 700;
+  color: #4ade80;
+  margin-top: 4px;
+}
+
+.air-chart-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 16px;
+}
+
+.air-chart-row {
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.air-chart-label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.air-bar-bg {
+  height: 8px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  width: 65%; /* Leave room for scoreboard */
+}
+
+.air-bar-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 4px;
+  transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.air-bar-fill.comp {
+  background: #60a5fa;
+}
+.air-bar-fill.you {
+  background: #4ade80;
+}
+
+/* Image Gen Showcase */
+.ig-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 24px;
+  width: 120%; margin-left: -10%;
+}
+.ig-card {
+  background: #171717; border-radius: 8px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: transform 0.2s; cursor: pointer;
+}
+.ig-card:hover { transform: translateY(-3px); border-color: rgba(255,255,255,0.25); }
+.ig-img {
+  width: 100%; aspect-ratio: 9/16; background-size: cover; background-position: center;
+  position: relative;
+  background-color: #262626;
+}
+.ig-img::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+}
+.ig-meta { padding: 8px 10px; }
+
+.ig-desc { font-size: 8px; color: rgba(255,255,255,0.5); line-height: 1.3; }
+
+/* Responsive */
+@media (max-width: 968px) {
+  .page-layout { grid-template-columns: 1fr; }
+  .form-side { padding: 40px 20px; }
+  .right-side { min-height: 500px; padding: 40px 24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="page-layout">
+  <!-- LEFT SIDE -->
+  <div class="form-side">
+    <div class="form-card">
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: 85%"></div>
+      </div>
+
+      
+
+      <div class="micro-caption">What's your brand's biggest pain point?</div>
+      <div class="goal-list">
+        <div class="goal-card" role="button" tabindex="0" data-goal="content_channels">
+          <div class="goal-check"></div>
+          <div class="goal-icon">🔎</div>
+          <div class="goal-content">
+            <div class="goal-title">Marketing spend is high — need to reduce costs and increase efficiency</div>
+          </div>
+        </div>
+
+        <div class="goal-card" data-goal="ai_mentions">
+          <div class="goal-check"></div>
+          <div class="goal-icon">🤖</div>
+          <div class="goal-content">
+            <div class="goal-title">Not enough organic traffic, or poor conversion</div>
+          </div>
+        </div>
+
+        <div class="goal-card" data-goal="intel_monitoring">
+          <div class="goal-check"></div>
+          <div class="goal-icon">📊</div>
+          <div class="goal-content">
+            <div class="goal-title">Want to do social media but don’t know where to start</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="left-actions">
+        <button class="btn-primary" id="leftNext" disabled>
+          Next
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M7 4 L12 9 L7 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RIGHT SIDE -->
+  <div class="right-side">
+    <div class="right-content">
+
+      <!-- Default: 1-2 sentences only -->
+      <div class="right-default" id="rightDefault">
+        <div class="rd-rule"></div>
+        <div class="rd-title">Pick your priority and we'll build a step-by-step action plan around it.</div>
+        <div class="rd-body">You can work on all goals later — pick your starting priority.</div>
+      </div>
+
+      <!-- Q&A panel: appears after goal selection -->
+      <div class="right-qa" id="rightQA">
+        <div class="rqa-goal-badge" id="rqaBadge"></div>
+        <div class="rqa-title" id="rqaTitle"></div>
+        <div class="rqa-subtitle" id="rqaSubtitle"></div>
+
+        <div class="rqa-step-dots" id="rqaStepDots"></div>
+        <div id="rqaQuestions"></div>
+
+        <div class="rqa-actions">
+          <button class="rqa-skip" id="rqaSkip">Skip &rarr;</button>
+          <button class="rqa-continue" id="rqaContinue">
+            <span id="rqaContinueLabel">Next</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Visual panel: appears for new selection cards -->
+      <div class="right-visual" id="rightVisual"></div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── Goal-specific questions (multi-select) ───
+const goalQuestions = {
+  ai_mentions: {
+    label: '🤖 AI Mentions',
+    title: 'Improve AI assistant mentions',
+    subtitle: 'A couple quick checks to diagnose visibility gaps',
+    questions: [
+      {
+        text: 'Which assistants matter most to you?',
+        hint: 'Select all that apply',
+        options: ['ChatGPT', 'Gemini', 'Copilot', 'Perplexity', 'Others']
+      },
+      {
+        text: 'Current brand mention frequency?',
+        hint: 'Select one',
+        multi: false,
+        options: ['Frequently', 'Sometimes', 'Rarely / never', 'Not sure']
+      }
+    ]
+  },
+  content_channels: {
+    label: '🔎 Queries & Channels',
+    title: 'Prioritize queries and channels',
+    subtitle: 'Let’s identify topics and where to publish first',
+    questions: [
+      {
+        text: 'Focus areas to prioritize?',
+        hint: 'Select all that apply',
+        options: ['Core products', 'Solutions / use cases', 'How‑tos / docs', 'Comparisons / alternatives', 'Local / regional topics']
+      },
+      {
+        text: 'Preferred channels to start with?',
+        hint: 'Select all that apply',
+        options: ['Website / blog', 'Docs / help center', 'Social / community', 'Marketplaces', 'PR / outreach']
+      }
+    ]
+  },
+  intel_monitoring: {
+    label: '📊 Competitive Intel',
+    title: 'Competitor and market monitoring',
+    subtitle: 'Set benchmarks and track shifts over time',
+    questions: [
+      {
+        text: 'Which competitors or benchmarks matter?',
+        hint: 'Select all that apply',
+        options: ['Direct competitors', 'Category leaders', 'Marketplace rivals', 'Publisher sites', 'Other references']
+      },
+      {
+        text: 'Metrics to monitor?',
+        hint: 'Select all that apply',
+        options: ['Share of voice', 'AI citations', 'SERP presence', 'Backlinks / mentions', 'Traffic trends']
+      }
+    ]
+  }
+};
+
+let selectedGoal = null;
+let currentStep = 0;
+let answers = {};
+let currentData = null;
+
+// ─── Goal selection ───
+const selectedGoals = new Set(JSON.parse(localStorage.getItem('workfxai_goals') || '[]'));
+document.querySelectorAll('.goal-card').forEach(card => {
+  const key = card.dataset.goal;
+  if (selectedGoals.has(key)) card.classList.add('selected');
+  card.addEventListener('click', function() {
+    const goal = this.dataset.goal;
+    if (selectedGoals.has(goal)) {
+      selectedGoals.delete(goal);
+      this.classList.remove('selected');
+    } else {
+      selectedGoals.add(goal);
+      this.classList.add('selected');
+    }
+    // persist multi-select and last interacted goal
+    localStorage.setItem('workfxai_goals', JSON.stringify(Array.from(selectedGoals)));
+    localStorage.setItem('workfxai_goal', goal);
+
+    // show visual for the last clicked goal
+    showRightPanel(goal);
+    const nextBtn = document.getElementById('leftNext');
+    if (nextBtn) nextBtn.disabled = selectedGoals.size === 0;
+  });
+});
+// init Next state on load
+(() => {
+  const nextBtn = document.getElementById('leftNext');
+  if (nextBtn) nextBtn.disabled = selectedGoals.size === 0;
+})();
+
+function showRightPanel(goal) {
+  // Hide default and Q&A, show visual panel
+  document.getElementById('rightDefault').style.display = 'none';
+  document.getElementById('rightQA').classList.remove('visible');
+  const rv = document.getElementById('rightVisual');
+  rv.classList.remove('visible');
+  void rv.offsetWidth;
+
+  if (goal === 'ai_mentions') {
+    rv.innerHTML = `
+      <div class="air-container" style="margin-top: 0">
+        <div class="air-scoreboard">
+          <div class="air-score-label">AI Visibility</div>
+          <div class="air-gauge">
+            <div class="air-gauge-bg"></div>
+            <div class="air-gauge-fill" id="air-gauge-fill"></div>
+          </div>
+          <div class="air-score-val" id="air-score-val">0%</div>
+        </div>
+
+        <div class="air-chart-title">Market Position</div>
+        <div class="air-chart">
+          <!-- Competitors -->
+          <div class="air-chart-row">
+            <div class="air-chart-label"><span>Competitor A</span> <span>28%</span></div>
+            <div class="air-bar-bg"><div class="air-bar-fill comp" id="bar-a" style="width: 0%"></div></div>
+          </div>
+          <div class="air-chart-row">
+            <div class="air-chart-label"><span>Competitor B</span> <span>45%</span></div>
+            <div class="air-bar-bg"><div class="air-bar-fill comp" id="bar-b" style="width: 0%"></div></div>
+          </div>
+          <div class="air-chart-row">
+            <div class="air-chart-label"><span>Competitor C</span> <span>22%</span></div>
+            <div class="air-bar-bg"><div class="air-bar-fill comp" id="bar-c" style="width: 0%"></div></div>
+          </div>
+          <!-- You -->
+          <div class="air-chart-row">
+            <div class="air-chart-label"><span style="color:#4ade80; font-weight:700">Your Brand</span> <span id="air-your-score" style="color:#4ade80; font-weight:700">0%</span></div>
+            <div class="air-bar-bg"><div class="air-bar-fill you" id="air-your-bar" style="width: 0%"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="rv-note">Track and improve your presence across AI search engines.</div>
+    `;
+
+    // Trigger Animation safely
+    requestAnimationFrame(() => {
+      const barA = document.getElementById('bar-a');
+      if (!barA) return;
+      
+      // Force reflow to ensure initial state (width: 0%) is rendered
+      void barA.offsetWidth;
+
+      // Start animations after a brief delay to allow DOM paint
+      setTimeout(() => {
+        // Bars
+        const bars = [
+          { id: 'bar-a', w: '28%' },
+          { id: 'bar-b', w: '45%' },
+          { id: 'bar-c', w: '22%' },
+          { id: 'air-your-bar', w: '78%' }
+        ];
+        bars.forEach(item => {
+          const el = document.getElementById(item.id);
+          if (el) el.style.width = item.w;
+        });
+
+        // Gauge
+        const gaugeFill = document.getElementById('air-gauge-fill');
+        if (gaugeFill) gaugeFill.style.transform = 'rotate(-40deg)';
+
+        // Counter
+        const duration = 1500;
+        const startTime = performance.now();
+        const targetScore = 78;
+
+        function update(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const ease = 1 - Math.pow(1 - progress, 4); // EaseOutQuart
+
+          const currentVal = Math.floor(targetScore * ease);
+          
+          const scoreVal = document.getElementById('air-score-val');
+          const yourScore = document.getElementById('air-your-score');
+          
+          if(scoreVal) scoreVal.innerText = currentVal + '%';
+          if(yourScore) yourScore.innerText = currentVal + '%';
+
+          if (progress < 1) {
+            requestAnimationFrame(update);
+          }
+        }
+        requestAnimationFrame(update);
+      }, 100);
+    });
+
+  } else if (goal === 'content_channels') {
+    rv.innerHTML = `
+      <div class="rv-title">AI helps you cut costs & boost efficiency.</div>
+       
+      
+      
+      <div class="ig-grid">
+        <div class="ig-card">
+          <div class="ig-img" style="background-image: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%);">
+          </div>
+          <div class="ig-meta">
+            <div class="ig-desc">Clean background, perfect lighting</div>
+          </div>
+        </div>
+        <div class="ig-card">
+          <div class="ig-img" style="background-image: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);">
+          </div>
+          <div class="ig-meta">
+            <div class="ig-desc">Placed in real-world context</div>
+          </div>
+        </div>
+        <div class="ig-card">
+          <div class="ig-img" style="background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);">
+          </div>
+          <div class="ig-meta">
+            <div class="ig-desc">High-impact campaign visuals</div>
+          </div>
+        </div>
+      </div>
+      <div class="rv-note">AI Generated</div>
+    `;
+  } else if (goal === 'intel_monitoring') {
+    rv.innerHTML = `
+      <div class="cal-container">
+        <div class="cal-header">
+          <div class="cal-title">Content Calendar</div>
+          <div class="cal-stats">12 Scheduled · 8 Published</div>
+        </div>
+
+        <div class="cal-filters">
+          <div class="cal-chip active"><div class="cal-chip-count">4</div> All</div>
+          <div class="cal-chip"><div class="cal-chip-count">2</div> Blog</div>
+          <div class="cal-chip"><div class="cal-chip-count">1</div> Social</div>
+          <div class="cal-chip"><div class="cal-chip-count">3</div> Email</div>
+        </div>
+
+        <div class="cal-insights">
+          <div class="cal-insight-item"><div class="cal-dot" style="color:#4ade80"></div> High Engagement</div>
+          <div class="cal-insight-item"><div class="cal-dot" style="color:#facc15"></div> Needs Review</div>
+        </div>
+
+        <div class="cal-view-tabs">
+          <div class="cal-tab active">Month</div>
+          <div class="cal-tab">Week</div>
+          <div class="cal-tab">List</div>
+        </div>
+
+        <div class="cal-grid">
+          <div class="cal-day">Mon</div>
+          <div class="cal-day">Tue</div>
+          <div class="cal-day">Wed</div>
+          <div class="cal-day">Thu</div>
+          <div class="cal-day">Fri</div>
+          <div class="cal-day">Sat</div>
+          <div class="cal-day">Sun</div>
+
+          <!-- Week 1 -->
+          <div class="cal-col"></div>
+          <div class="cal-col">
+            <div class="cal-card linkedin">
+              <span class="cal-card-icon">👔</span>AI Trends Report
+            </div>
+          </div>
+          <div class="cal-col"></div>
+          <div class="cal-col">
+            <div class="cal-card blog">
+              <span class="cal-card-icon">📝</span>Product Update v2.0
+            </div>
+          </div>
+          <div class="cal-col"></div>
+          <div class="cal-col">
+            <div class="cal-card x">
+              <span class="cal-card-icon">𝕏</span>Weekend Poll
+            </div>
+          </div>
+          <div class="cal-col"></div>
+
+          <!-- Week 2 -->
+          <div class="cal-col">
+             <div class="cal-card insta">
+               <span class="cal-card-icon">📸</span>Behind Scenes
+             </div>
+          </div>
+          <div class="cal-col"></div>
+          <div class="cal-col">
+             <div class="cal-card reddit">
+               <span class="cal-card-icon">🤖</span>AMA Session
+             </div>
+          </div>
+          <div class="cal-col"></div>
+          <div class="cal-col">
+             <div class="cal-card linkedin">
+               <span class="cal-card-icon">👔</span>Case Study
+             </div>
+          </div>
+          <div class="cal-col"></div>
+          <div class="cal-col"></div>
+        </div>
+      </div>
+    `;
+  } else {
+    rv.innerHTML = '';
+  }
+
+  rv.classList.add('visible');
+}
+
+function showGoalQA(goal) {
+  currentData = goalQuestions[goal];
+  currentStep = 0;
+  answers = {};
+
+  document.getElementById('rightDefault').style.display = 'none';
+  const qa = document.getElementById('rightQA');
+  qa.classList.remove('visible');
+  void qa.offsetWidth;
+  qa.classList.add('visible');
+
+  // Set badge, title, subtitle
+  document.getElementById('rqaBadge').innerHTML = currentData.label;
+  document.getElementById('rqaTitle').textContent = currentData.title;
+  document.getElementById('rqaSubtitle').textContent = currentData.subtitle;
+
+  // Render step dots
+  renderStepDots();
+
+  // Show first question
+  renderQuestion(0);
+
+  // Reset continue
+  document.getElementById('rqaContinue').classList.remove('enabled');
+  document.getElementById('rqaContinueLabel').textContent = 'Next';
+}
+
+function renderStepDots() {
+  const dots = document.getElementById('rqaStepDots');
+  dots.innerHTML = '';
+  currentData.questions.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'rqa-step-dot';
+    if (i === currentStep) dot.classList.add('active');
+    if (i < currentStep) dot.classList.add('done');
+    dots.appendChild(dot);
+  });
+}
+
+function renderQuestion(step) {
+  const container = document.getElementById('rqaQuestions');
+  const q = currentData.questions[step];
+  const isMulti = q.multi !== false; // default true
+
+  // Clear and render
+  container.innerHTML = '';
+
+  const block = document.createElement('div');
+  block.className = 'rqa-question';
+
+  let optionsHTML = q.options.map((opt, oi) =>
+    `<button class="rqa-opt" data-oi="${oi}">
+      <div class="rqa-opt-check"></div>
+      <span>${opt}</span>
+    </button>`
+  ).join('');
+
+  block.innerHTML = `
+    <div class="rqa-q-label">Question ${step + 1} of ${currentData.questions.length}</div>
+    <div class="rqa-q-text">${q.text}</div>
+    <div class="rqa-multi-hint">${q.hint || 'Select all that apply'}</div>
+    <div class="rqa-options">${optionsHTML}</div>
+  `;
+  container.appendChild(block);
+
+  // Bind clicks (multi-select toggle)
+  container.querySelectorAll('.rqa-opt').forEach(btn => {
+    btn.addEventListener('click', function() {
+      if (isMulti) {
+        // Toggle selection
+        this.classList.toggle('selected');
+      } else {
+        // Single select
+        container.querySelectorAll('.rqa-opt').forEach(b => b.classList.remove('selected'));
+        this.classList.add('selected');
+      }
+
+      // Collect answers
+      const selected = [];
+      container.querySelectorAll('.rqa-opt.selected span').forEach(s => selected.push(s.textContent));
+      answers[step] = selected;
+
+      // Enable continue if at least 1 selected
+      if (selected.length > 0) {
+        document.getElementById('rqaContinue').classList.add('enabled');
+      } else {
+        document.getElementById('rqaContinue').classList.remove('enabled');
+      }
+    });
+  });
+
+  // Update button label
+  const isLast = step === currentData.questions.length - 1;
+  document.getElementById('rqaContinueLabel').textContent = isLast ? 'See My Strategy' : 'Next';
+  document.getElementById('rqaContinue').classList.remove('enabled');
+}
+
+function advanceStep() {
+  const isLast = currentStep === currentData.questions.length - 1;
+
+  if (isLast) {
+    goNext();
+    return;
+  }
+
+  // Animate out current question
+  const container = document.getElementById('rqaQuestions');
+  const current = container.querySelector('.rqa-question');
+  if (current) {
+    current.classList.add('exiting');
+    setTimeout(() => {
+      currentStep++;
+      renderStepDots();
+      renderQuestion(currentStep);
+    }, 300);
+  }
+}
+
+// ─── Navigation ───
+function goNext() {
+  sessionStorage.setItem('workfxai_knowledge_qa', JSON.stringify(answers));
+  window.location.href = '1.6_LoadingPage.html';
+}
+
+document.getElementById('rqaSkip').addEventListener('click', goNext);
+document.getElementById('rqaContinue').addEventListener('click', advanceStep);
+document.getElementById('leftNext').addEventListener('click', () => {
+  const goals = Array.from(selectedGoals);
+  if (goals.length === 0) return;
+  sessionStorage.setItem('workfxai_selected_goals', JSON.stringify(goals));
+  goNext();
+});
+</script>
+
+<script src="nav.js" defer></script>
+</body>
+</html>

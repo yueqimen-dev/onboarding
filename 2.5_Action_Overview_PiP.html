@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Action Overview — Guided Trial | WorkfxAI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --app-bg: #fafafa;
+  --app-surface: #FFFFFF;
+  --app-primary: #0a0a0a;
+  --app-text: #171717;
+  --app-sub: #525252;
+  --app-muted: #a3a3a3;
+  --app-border: #e5e5e5;
+  --app-border-light: #f5f5f5;
+  --app-font: 'Inter', sans-serif;
+  --app-body: 'Inter', sans-serif;
+  --shell-font: 'Manrope', sans-serif;
+  --accent: #0a0a0a;
+  --accent-dark: #262626;
+  --accent-light: #f5f5f5;
+  --blue: #2563eb;
+  --green: #16a34a;
+  --green-light: #f0fdf4;
+  --red: #dc2626;
+  --red-light: #fef2f2;
+  --orange: #0a0a0a;
+  --orange-light: #f5f5f5;
+  --purple: #525252;
+  --purple-light: #f5f5f5;
+  --teal: #0D9488;
+  --teal-light: #F0FDFA;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--app-font);
+  background: var(--app-bg);
+  color: var(--app-text);
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ═══════════════════════════════════
+   GUIDED TRIAL BAR
+   ═══════════════════════════════════ */
+.trial-bar {
+  display: flex;
+  align-items: center;
+  padding: 10px 24px;
+  background: white;
+  border-bottom: 1px solid var(--app-border);
+  flex-shrink: 0;
+  gap: 20px;
+  opacity: 0;
+  animation: barIn 0.4s ease 0.05s forwards;
+}
+
+@keyframes barIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.trial-label {
+  font-family: var(--shell-font);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.trial-label-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.trial-track {
+  flex: 1;
+  height: 3px;
+  background: var(--app-border);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.trial-fill {
+  height: 100%;
+  background: var(--app-primary);
+  border-radius: 100px;
+  transition: width 0.6s ease;
+}
+
+.trial-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.trial-skip {
+  font-family: var(--shell-font);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--app-muted);
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: color 0.2s;
+}
+
+.trial-skip:hover { color: var(--app-sub); }
+
+.trial-next {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 18px;
+  border-radius: 8px;
+  border: 1.5px solid var(--app-border);
+  background: white;
+  font-family: var(--shell-font);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--app-sub);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.trial-next:hover {
+  border-color: var(--app-sub);
+  color: var(--app-text);
+}
+
+.trial-next svg { transition: transform 0.2s; }
+.trial-next:hover svg { transform: translateX(2px); }
+
+/* ═══════════════════════════════════
+   MAIN LAYOUT: SIDEBAR + WORKSPACE
+   ═══════════════════════════════════ */
+.app-layout {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  opacity: 0;
+  animation: layoutIn 0.5s ease 0.15s forwards;
+}
+
+@keyframes layoutIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ── Left Sidebar ── */
+.sidebar {
+  width: 220px;
+  background: white;
+  border-right: 1px solid var(--app-border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.sidebar-logo {
+  padding: 16px;
+  border-bottom: 1px solid var(--app-border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-logo-box {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: var(--app-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--app-font);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.sidebar-logo-text {
+  font-family: var(--app-font);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--app-primary);
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 12px 10px;
+  overflow-y: auto;
+}
+
+/* Overview module - special style */
+.nav-overview {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  background: #f5f5f5;
+  border: 1px solid #e5e5e5;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 8px;
+}
+
+.nav-overview-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.nav-overview-content { flex: 1; }
+
+.nav-overview-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--blue);
+  line-height: 1.3;
+}
+
+.nav-overview-desc {
+  font-size: 11px;
+  color: var(--app-sub);
+  margin-top: 1px;
+}
+
+.nav-divider {
+  height: 1px;
+  background: var(--app-border-light);
+  margin: 4px 0 8px;
+}
+
+.nav-section-label {
+  font-family: var(--shell-font);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--app-muted);
+  padding: 0 10px;
+  margin-bottom: 6px;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: default;
+  border: 1px solid transparent;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 2px;
+  transition: all 0.2s;
+}
+
+.nav-btn.locked {
+  opacity: 0.35;
+  filter: blur(1.5px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.nav-idx {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--app-border-light);
+  color: var(--app-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 10px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.nav-content { flex: 1; }
+
+.nav-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--app-text);
+  line-height: 1.3;
+}
+
+.nav-desc {
+  font-size: 11px;
+  color: var(--app-sub);
+  margin-top: 1px;
+}
+
+/* ── Workspace ── */
+.workspace {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  background: var(--app-bg);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.workspace::-webkit-scrollbar { display: none; }
+
+.tool-panel {
+  padding: 32px 48px 48px;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ═══════════════════════════════════
+   WORKSPACE HEADER
+   ═══════════════════════════════════ */
+.workspace-header {
+  text-align: center;
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: fadeUp 0.45s ease 0.15s forwards;
+}
+
+.header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #16a34a;
+  background: #f0fdf4;
+  padding: 5px 14px;
+  border-radius: 100px;
+  margin-bottom: 14px;
+}
+
+.workspace-title {
+  font-family: var(--shell-font);
+  font-size: clamp(22px, 3.5vw, 28px);
+  font-weight: 800;
+  color: var(--app-primary);
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.workspace-subtitle {
+  font-size: 14px;
+  color: var(--app-sub);
+  max-width: 460px;
+  margin: 0 auto;
+}
+
+/* ═══════════════════════════════════
+   HERO CARD: CONTENT STRATEGY
+   ═══════════════════════════════════ */
+.hero-card {
+  background: white;
+  border: 2px solid var(--orange);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 14px;
+  position: relative;
+  cursor: pointer;
+  opacity: 0;
+  animation: fadeUp 0.45s ease 0.25s forwards;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-card:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
+}
+
+.impact-badge {
+  position: absolute;
+  top: -10px;
+  left: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: white;
+  background: var(--orange);
+  padding: 4px 11px;
+  border-radius: 6px;
+}
+
+.hero-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.hero-icon {
+  width: 44px;
+  height: 44px;
+  background: var(--orange-light);
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hero-title {
+  font-family: var(--shell-font);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--app-primary);
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+
+.hero-subtitle {
+  font-size: 13px;
+  color: var(--app-sub);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+/* Article previews */
+.article-previews {
+  background: var(--app-bg);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+
+.article-previews-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--app-muted);
+  margin-bottom: 8px;
+}
+
+.article-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--app-border-light);
+  font-size: 12px;
+  color: var(--app-text);
+  font-weight: 500;
+}
+.article-item:last-child { border-bottom: none; }
+
+.article-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.channel-tag {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--app-muted);
+  margin-right: 2px;
+  flex-shrink: 0;
+}
+
+.article-more {
+  font-size: 11px;
+  color: var(--app-muted);
+  font-weight: 600;
+  padding-top: 4px;
+}
+
+/* Stats row */
+.hero-stats {
+  display: flex;
+  gap: 0;
+  margin-bottom: 18px;
+}
+
+.hero-stat {
+  flex: 1;
+  text-align: center;
+  padding: 10px 6px;
+  border-right: 1px solid var(--app-border-light);
+}
+.hero-stat:last-child { border-right: none; }
+
+.hero-stat-num {
+  font-family: var(--shell-font);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--app-primary);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.hero-stat-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--app-muted);
+}
+
+/* Hero CTA */
+.hero-cta {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 13px;
+  background: var(--app-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: var(--app-font);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hero-cta:hover {
+  background: #171717;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+}
+
+/* ═══════════════════════════════════
+   SECONDARY CARDS
+   ═══════════════════════════════════ */
+.secondary-label {
+  font-family: var(--shell-font);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--app-muted);
+  text-align: center;
+  margin-bottom: 10px;
+  opacity: 0;
+  animation: fadeIn 0.3s ease 0.4s forwards;
+}
+
+.secondary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+  opacity: 0;
+  animation: fadeUp 0.45s ease 0.45s forwards;
+}
+
+.sec-card {
+  background: white;
+  border: 1px solid var(--app-border);
+  border-radius: 12px;
+  padding: 18px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.sec-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  transform: translateY(-2px);
+  border-color: var(--app-sub);
+}
+
+.sec-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.sec-icon.purple { background: var(--purple-light); }
+.sec-icon.teal { background: var(--teal-light); }
+
+.sec-title {
+  font-family: var(--shell-font);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--app-text);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+
+.sec-desc {
+  font-size: 12px;
+  color: var(--app-sub);
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.sec-stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.sec-stat-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.sec-stat-dot.ready { background: var(--green); }
+.sec-stat-dot.scanned { background: var(--orange); }
+
+.sec-stat-text { color: var(--app-sub); }
+
+.sec-link {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--app-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.2s;
+}
+.sec-card:hover .sec-link { color: var(--app-text); }
+
+/* ═══════════════════════════════════
+   BOTTOM NOTE
+   ═══════════════════════════════════ */
+.bottom-note {
+  text-align: center;
+  opacity: 0;
+  animation: fadeIn 0.3s ease 0.55s forwards;
+}
+
+.bottom-note p {
+  font-size: 13px;
+  color: var(--app-muted);
+}
+.bottom-note a {
+  color: var(--orange);
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+.bottom-note a:hover { text-decoration: underline; }
+
+/* ═══════════════════════════════════
+   TRUST FLOW — 4-STEP CARDS
+   ═══════════════════════════════════ */
+/* ═══ COLLAPSIBLE TRUST SECTION ═══ */
+.trust-section {
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 0.45s ease 0.35s forwards;
+}
+
+.trust-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: none;
+  border: 1px solid var(--app-border);
+  border-radius: 10px;
+  padding: 12px 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.trust-toggle:hover {
+  background: white;
+  border-color: var(--app-sub);
+}
+.trust-toggle-text {
+  font-family: var(--shell-font);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--app-text);
+}
+.trust-toggle-arrow {
+  transition: transform 0.3s;
+  color: var(--app-muted);
+}
+.trust-toggle.open .trust-toggle-arrow {
+  transform: rotate(180deg);
+}
+
+.trust-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.trust-body.open {
+  max-height: 600px;
+}
+.trust-body-inner {
+  padding-top: 14px;
+}
+
+/* Cards grid — 5 items: 4 modules + 1 result */
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+/* ═══ CONVERGENCE ANIMATION ═══ */
+.trust-converge {
+  position: relative;
+  height: 140px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+/* 4 vertical lines dropping from cards */
+.converge-lines {
+  position: absolute;
+  top: 10px;
+  left: 0; right: 0;
+  height: 36px;
+  display: flex;
+  justify-content: space-around;
+  padding: 0 calc(12.5% - 4px);
+}
+.converge-line {
+  width: 1.5px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--app-border), var(--app-muted));
+  position: relative;
+}
+
+/* Animated dots traveling down the lines */
+.converge-line::after {
+  content: '';
+  position: absolute;
+  top: -4px; left: -2.5px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--app-sub);
+  animation: dotDrop 2.4s ease-in-out infinite;
+}
+.converge-line:nth-child(1)::after { animation-delay: 0s; }
+.converge-line:nth-child(2)::after { animation-delay: 0.3s; }
+.converge-line:nth-child(3)::after { animation-delay: 0.6s; }
+.converge-line:nth-child(4)::after { animation-delay: 0.9s; }
+
+@keyframes dotDrop {
+  0% { top: -4px; opacity: 0; }
+  15% { opacity: 1; }
+  50% { top: calc(100% - 4px); opacity: 1; }
+  65% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* Horizontal merge lines */
+.converge-merge {
+  position: absolute;
+  top: 44px;
+  left: calc(12.5% - 4px);
+  right: calc(12.5% - 4px);
+  height: 1.5px;
+  background: var(--app-border);
+}
+.converge-merge::after {
+  content: '';
+  position: absolute;
+  left: 50%; top: 0;
+  width: 1.5px; height: 22px;
+  background: linear-gradient(to bottom, var(--app-muted), var(--green));
+  transform: translateX(-50%);
+}
+
+/* Center result node */
+.converge-node {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+.converge-node-dot {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--green-light);
+  border: 1.5px solid #bbf7d0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px;
+  animation: nodePulse 2.4s ease-in-out infinite;
+}
+@keyframes nodePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.3); }
+  50% { box-shadow: 0 0 0 6px rgba(22, 163, 74, 0); }
+}
+.converge-node-title {
+  font-family: var(--shell-font);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--app-text);
+  line-height: 1.2;
+}
+.converge-node-desc {
+  font-size: 10px;
+  color: var(--app-sub);
+  line-height: 1.3;
+}
+.converge-node-tag {
+  display: inline-block;
+  font-family: var(--shell-font);
+  font-size: 9px; font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 100px;
+  background: var(--green-light);
+  color: var(--green);
+  margin-top: 2px;
+}
+
+.trust-card {
+  background: white;
+  border: 1px solid var(--app-border);
+  border-radius: 10px;
+  padding: 14px 10px 12px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.trust-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  border-color: var(--app-sub);
+}
+
+/* ═══ BACK BUTTON ═══ */
+.trial-back {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1.5px solid var(--app-border);
+  background: white;
+  font-family: var(--shell-font);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--app-sub);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.trial-back:hover {
+  border-color: var(--app-sub);
+  color: var(--app-text);
+}
+
+/* ═══ SIDEBAR NAV — ACTIVE + UNLOCK ANIMATION ═══ */
+.nav-btn.active {
+  background: var(--app-border-light);
+  border: 1px solid var(--app-border);
+  opacity: 1;
+  filter: none;
+  pointer-events: auto;
+}
+.nav-btn.active .nav-idx {
+  background: var(--blue);
+  color: white;
+}
+.nav-btn.active .nav-title {
+  color: var(--blue);
+}
+
+/* Unlock animation */
+.nav-btn.unlocking {
+  animation: navUnlock 0.4s ease forwards;
+}
+@keyframes navUnlock {
+  from { opacity: 0.3; filter: blur(0.8px); }
+  to { opacity: 1; filter: blur(0); }
+}
+.nav-btn.unlocked {
+  opacity: 1;
+  filter: none;
+  pointer-events: auto;
+  cursor: pointer;
+}
+.nav-btn.unlocked:hover {
+  background: var(--app-border-light);
+  border-color: var(--app-border);
+}
+
+/* Top accent line */
+.trust-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2.5px;
+  background: var(--app-border);
+}
+.trust-card:nth-child(1)::before { background: var(--app-muted); }
+.trust-card:nth-child(2)::before { background: var(--app-muted); }
+.trust-card:nth-child(3)::before { background: var(--app-sub); }
+.trust-card:nth-child(4)::before { background: var(--app-sub); }
+
+.trust-num {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--shell-font);
+  font-size: 10px; font-weight: 800;
+  background: var(--app-border-light);
+  color: var(--app-sub);
+  border: 1.5px solid var(--app-border);
+  margin: 0 auto 8px;
+}
+.trust-icon { font-size: 16px; margin-bottom: 5px; line-height: 1; }
+
+.trust-card-title {
+  font-family: var(--shell-font);
+  font-size: 11px; font-weight: 700;
+  color: var(--app-text);
+  margin-bottom: 2px; line-height: 1.3;
+}
+
+.trust-card-desc {
+  font-size: 10px;
+  color: var(--app-sub);
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+
+.trust-tag {
+  display: inline-block;
+  font-family: var(--shell-font);
+  font-size: 9px; font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 100px;
+  background: var(--app-border-light);
+  color: var(--app-sub);
+}
+@media (max-width: 768px) {
+  .trust-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ GUIDED TRIAL BAR ═══ -->
+<div class="trial-bar">
+  <div class="trial-label">
+    <div class="trial-label-dot"></div>
+    Guided Trial
+  </div>
+  <div class="trial-track">
+    <div class="trial-fill" style="width: 25%"></div>
+  </div>
+  <div class="trial-nav">
+    <button class="trial-back" onclick="window.location.href='2.4_Quick_Check_V5.html'">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L4.5 7 9 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back
+    </button>
+    <button class="trial-skip" onclick="window.location.href='4.1_Action_Overview_V5.html'">Skip</button>
+    <button class="trial-next" onclick="window.location.href='4.1_Action_Overview_V5.html'">
+      Next Step
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4.5 4-4.5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══ APP LAYOUT ═══ -->
+<div class="app-layout">
+
+  <!-- Left Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-box">W</div>
+      <div class="sidebar-logo-text">WorkfxAI</div>
+    </div>
+    <div class="sidebar-nav">
+
+      <!-- Action Overview — Active -->
+      <div class="nav-overview">
+        <div class="nav-overview-icon">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.5 3L11 4.5 8.5 7l.5 3.5L6 9 3 10.5l.5-3.5L1 4.5l3.5-.5z" fill="white"/></svg>
+        </div>
+        <div class="nav-overview-content">
+          <div class="nav-overview-title">Action Overview</div>
+          <div class="nav-overview-desc">Your Growth Plan</div>
+        </div>
+      </div>
+
+      <div class="nav-divider"></div>
+      <div class="nav-section-label">Modules</div>
+
+      <div class="nav-btn locked" data-module="quick-check" data-href="2.4_Quick_Check_V5.html">
+        <div class="nav-idx">1</div>
+        <div class="nav-content">
+          <div class="nav-title">Competitor Analysis</div>
+          <div class="nav-desc">Health Score</div>
+        </div>
+      </div>
+      <div class="nav-btn locked" data-module="tech-assessment" data-href="4.10_Product_Page_Editorial.html">
+        <div class="nav-idx">2</div>
+        <div class="nav-content">
+          <div class="nav-title">Tech Assessment</div>
+          <div class="nav-desc">Fix Critical Errors</div>
+        </div>
+      </div>
+      <div class="nav-btn locked" data-module="product-listing" data-href="3.1_Ecommerce_Tool_Selection.html">
+        <div class="nav-idx">3</div>
+        <div class="nav-content">
+          <div class="nav-title">Product Listing</div>
+          <div class="nav-desc">Optimize & Sell</div>
+        </div>
+      </div>
+      <div class="nav-btn locked" data-module="daily-content" data-href="4.1_Action_Overview_V5.html">
+        <div class="nav-idx">4</div>
+        <div class="nav-content">
+          <div class="nav-title">Daily Content</div>
+          <div class="nav-desc">Growth Engine</div>
+        </div>
+      </div>
+      <div class="nav-btn locked" data-module="reddit-strategy" data-href="4.1_Action_Overview_V5.html">
+        <div class="nav-idx">5</div>
+        <div class="nav-content">
+          <div class="nav-title">Reddit Strategy</div>
+          <div class="nav-desc">Community Engagement</div>
+        </div>
+      </div>
+      <div class="nav-btn locked" data-module="performance" data-href="4.1_Action_Overview_V5.html">
+        <div class="nav-idx">6</div>
+        <div class="nav-content">
+          <div class="nav-title">Performance</div>
+          <div class="nav-desc">Analytics</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Workspace -->
+  <div class="workspace">
+    <div class="tool-panel">
+
+      <!-- Header -->
+      <div class="workspace-header">
+        <div class="header-badge">
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" fill="#16a34a"/><path d="M4 6l1.5 1.5L8 5" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Analysis complete
+        </div>
+        <div class="workspace-title">Here's your action plan</div>
+        <div class="workspace-subtitle">Based on your competitive gaps, this is the fastest path to visibility</div>
+      </div>
+
+      <!-- HERO: CONTENT STRATEGY -->
+      <div class="hero-card" id="heroCard">
+        <div class="impact-badge">
+          <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M5 0l1.5 3.5L10 4l-2.5 2.5.5 3.5L5 8l-3 2 .5-3.5L0 4l3.5-.5z" fill="white"/></svg>
+          Highest Impact
+        </div>
+
+        <div class="hero-top">
+          <div class="hero-icon">
+            <svg width="24" height="24" viewBox="0 0 26 26" fill="none">
+              <rect x="4" y="3" width="18" height="20" rx="3" stroke="#0a0a0a" stroke-width="2"/>
+              <path d="M9 8h8M9 12h6M9 16h4" stroke="#0a0a0a" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="hero-title">Content Strategy</div>
+            <div class="hero-subtitle">Blog, Reddit, and social posts — all targeting the gaps Macy's and Bloomingdale's are winning</div>
+          </div>
+        </div>
+
+        <!-- Content previews -->
+        <div class="article-previews">
+          <div class="article-previews-label">Content preview</div>
+          <div class="article-item">
+            <span class="article-dot" style="background:#0a0a0a"></span>
+            <span class="channel-tag">BLOG</span>
+            Best Online Department Stores for Designer Fashion 2025
+          </div>
+          <div class="article-item">
+            <span class="article-dot" style="background:#FF4500"></span>
+            <span class="channel-tag">REDDIT</span>
+            r/FrugalFemaleFashion — Nordstrom Anniversary Sale deals
+          </div>
+          <div class="article-more">+ 83 more across blog, Reddit, X, and social</div>
+        </div>
+
+        <!-- Stats -->
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-num">30</div>
+            <div class="hero-stat-label">Blog articles</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">25</div>
+            <div class="hero-stat-label">Reddit posts</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">30</div>
+            <div class="hero-stat-label">Social posts</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">+25K</div>
+            <div class="hero-stat-label">Est. reach/mo</div>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <button class="hero-cta" id="heroCTA">
+          Start Content Strategy
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4.5l3.5 3.5-3.5 3.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <!-- SECONDARY CARDS -->
+      <div class="secondary-label">Also in your plan</div>
+      <div class="secondary-grid">
+
+        <!-- Product Listing -->
+        <div class="sec-card" id="productCard">
+          <div class="sec-icon purple">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+              <rect x="3" y="2" width="14" height="16" rx="2.5" stroke="#525252" stroke-width="1.6"/>
+              <path d="M7 7h6M7 10h4" stroke="#525252" stroke-width="1.4" stroke-linecap="round"/>
+              <rect x="7" y="13" width="6" height="2" rx="1" fill="#525252" opacity="0.3"/>
+            </svg>
+          </div>
+          <div class="sec-title">Product Listing</div>
+          <div class="sec-desc">Optimize your product pages so AI recommends you</div>
+          <div class="sec-link">
+            View details
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4.5 3l3 3-3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+        <!-- Tech Assessment -->
+        <div class="sec-card" id="techCard">
+          <div class="sec-icon teal">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+              <path d="M8 7l-4 3 4 3" stroke="#0D9488" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 7l4 3-4 3" stroke="#0D9488" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="11" y1="5" x2="9" y2="15" stroke="#0D9488" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="sec-title">Technical Fixes</div>
+          <div class="sec-desc">Improve your site health for better search rankings</div>
+          <div class="sec-link">
+            View details
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4.5 3l3 3-3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- HOW IT WORKS — COLLAPSIBLE -->
+      <div class="trust-section">
+        <button class="trust-toggle" id="trustToggle" onclick="toggleTrust()">
+          <span class="trust-toggle-text">How your visibility strategy works</span>
+          <svg class="trust-toggle-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3.5 5.5L7 9l3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="trust-body" id="trustBody">
+          <div class="trust-body-inner">
+            <div class="trust-grid">
+              <div class="trust-card" data-nav="tech-assessment">
+                <div class="trust-num">1</div>
+                <div class="trust-icon">&#x2699;&#xFE0F;</div>
+                <div class="trust-card-title">Technical SEO</div>
+                <div class="trust-card-desc">"Can AI find us" — site health & structure</div>
+                <div class="trust-tag">Ongoing</div>
+              </div>
+              <div class="trust-card" data-nav="product-listing">
+                <div class="trust-num">2</div>
+                <div class="trust-icon">&#x1F6D2;</div>
+                <div class="trust-card-title">Product Pages</div>
+                <div class="trust-card-desc">"Who we are" — official source of truth</div>
+                <div class="trust-tag">Ongoing</div>
+              </div>
+              <div class="trust-card" data-nav="daily-content">
+                <div class="trust-num">3</div>
+                <div class="trust-icon">&#x1F4DD;</div>
+                <div class="trust-card-title">Blog & GEO</div>
+                <div class="trust-card-desc">"Why choose us" — depth & expertise</div>
+                <div class="trust-tag">2-4 weeks</div>
+              </div>
+              <div class="trust-card" data-nav="reddit-strategy">
+                <div class="trust-num">4</div>
+                <div class="trust-icon">&#x1F4AC;</div>
+                <div class="trust-card-title">Reddit & Social</div>
+                <div class="trust-card-desc">"Real users say" — social proof</div>
+                <div class="trust-tag">Short-term</div>
+              </div>
+            </div>
+            <div class="trust-converge">
+              <div class="converge-lines">
+                <div class="converge-line"></div>
+                <div class="converge-line"></div>
+                <div class="converge-line"></div>
+                <div class="converge-line"></div>
+              </div>
+              <div class="converge-merge"></div>
+              <div class="converge-node">
+                <div class="converge-node-dot">&#x1F916;</div>
+                <div class="converge-node-title">AI Trust Built</div>
+                <div class="converge-node-desc">Consistent across all sources = priority citation</div>
+                <div class="converge-node-tag">Long-term &amp; compounding</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ═══ MODULE NAVIGATION MAP ═══
+const modulePages = {
+  'quick-check':     '2.4_Quick_Check_V5.html',
+  'tech-assessment': '4.10_Product_Page_Editorial.html',
+  'product-listing': '3.1_Ecommerce_Tool_Selection.html',
+  'daily-content':   '4.1_Action_Overview_V5.html',
+  'reddit-strategy': '4.1_Action_Overview_V5.html',
+  'performance':     '4.1_Action_Overview_V5.html'
+};
+
+// ═══ NAVIGATE TO MODULE ═══
+// Highlights sidebar item → waits 800ms → navigates
+// After arriving, destination page reads activeModule and unlocks sidebar after 5s
+function goToModule(moduleId) {
+  // Highlight the sidebar item
+  const navBtn = document.querySelector(`.nav-btn[data-module="${moduleId}"]`);
+  if (navBtn) {
+    navBtn.classList.remove('locked');
+    navBtn.classList.add('active');
+  }
+
+  // Store active module so destination page can read it
+  sessionStorage.setItem('activeModule', moduleId);
+
+  // Navigate after a brief highlight moment
+  setTimeout(() => {
+    window.location.href = modulePages[moduleId];
+  }, 600);
+}
+
+// ═══ TRUST CARD CLICKS ═══
+document.querySelectorAll('.trust-card[data-nav]').forEach(card => {
+  card.addEventListener('click', () => goToModule(card.dataset.nav));
+});
+
+// ═══ HERO CARD ═══
+document.getElementById('heroCTA').addEventListener('click', (e) => {
+  e.stopPropagation();
+  goToModule('daily-content');
+});
+document.getElementById('heroCard').addEventListener('click', (e) => {
+  if (e.target.id !== 'heroCTA' && !e.target.closest('.hero-cta')) {
+    goToModule('daily-content');
+  }
+});
+
+// ═══ SECONDARY CARDS ═══
+document.getElementById('productCard').addEventListener('click', () => goToModule('product-listing'));
+document.getElementById('techCard').addEventListener('click', () => goToModule('tech-assessment'));
+
+// ═══ SIDEBAR NAV CLICKS (when unlocked) ═══
+document.querySelectorAll('.nav-btn[data-module]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.classList.contains('unlocked') || btn.classList.contains('active')) {
+      goToModule(btn.dataset.module);
+    }
+  });
+});
+
+// ═══ SIDEBAR UNLOCK — always start blurred, unlock after 5s ═══
+setTimeout(() => {
+  const navBtns = document.querySelectorAll('.nav-btn.locked');
+  navBtns.forEach((btn, i) => {
+    setTimeout(() => {
+      btn.classList.remove('locked');
+      btn.classList.add('unlocking');
+      setTimeout(() => {
+        btn.classList.remove('unlocking');
+        btn.classList.add('unlocked');
+      }, 400);
+    }, i * 120);
+  });
+}, 5000);
+
+// ═══ TOGGLE TRUST SECTION ═══
+function toggleTrust() {
+  document.getElementById('trustToggle').classList.toggle('open');
+  document.getElementById('trustBody').classList.toggle('open');
+}
+
+// ═══ VIEW REPORTS ═══
+function goToReports() {
+  sessionStorage.setItem('fromQuickCheck', 'true');
+  window.location.href = '2.8_SEO_Report_Paywall_Editorial.html';
+}
+</script>
+
+</body>
+</html>

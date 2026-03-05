@@ -1301,7 +1301,7 @@ document.querySelectorAll('.trust-card[data-nav]').forEach(card => {
 // ═══ HERO CARD ═══
 document.getElementById('heroCTA').addEventListener('click', (e) => {
   e.stopPropagation();
-  goToModule('daily-content');
+  window.location.href = '4.1_Action_Plan.html';
 });
 document.getElementById('heroCard').addEventListener('click', (e) => {
   if (e.target.id !== 'heroCTA' && !e.target.closest('.hero-cta')) {

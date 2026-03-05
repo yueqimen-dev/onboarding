@@ -1864,7 +1864,8 @@
     function closePricingModal() { document.getElementById('pricingOverlay').classList.remove('active'); }
     document.getElementById('mainCTA').addEventListener('click', () => {
       sessionStorage.setItem('quickCheckComplete', 'true');
-      location.href = '3.0_Subscription_Plans.html';
+      // Redirect to 2.5 Action Overview PiP
+      location.href = '2.5_Action_Overview_PiP.html';
     });
     bindAIPreviewTabs();
     // Info popover

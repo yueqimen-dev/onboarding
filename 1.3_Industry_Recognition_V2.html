@@ -820,10 +820,13 @@ function continueToNext() {
   const isAgency = !!document.getElementById('agencyCheckbox')?.checked;
   localStorage.setItem('workfxai_company_size', selectedSize);
   localStorage.setItem('workfxai_is_agency', String(isAgency));
+  
   if (isAgency) {
-    window.location.href = '1.4_Competitor_Confirmation_V2.html';
+    // Redirect agencies to Contact Sales
+    window.location.href = 'Contact_Sales_WorkfxAI.html';
     return;
   }
+  
   // Skip competitor confirmation if user already entered competitors in 1.2
   const savedCompetitors = localStorage.getItem('workfxai_competitors');
   if (savedCompetitors && savedCompetitors.trim()) {

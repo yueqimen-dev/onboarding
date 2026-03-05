@@ -374,12 +374,77 @@
       position: relative;
     }
 
-    /* Onboarding Mode: Disable bottom section */
-    .selection-section.onboarding-locked {
-      opacity: 0.4;
-      filter: grayscale(100%);
-      pointer-events: none;
-      user-select: none;
+    /* Onboarding Mode: Container style */
+    .selection-section.onboarding-locked .cards-grid {
+      position: relative;
+    }
+    
+    /* Overlay */
+    .locked-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        z-index: 10;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+    }
+    
+    .onboarding-locked .locked-overlay {
+        display: flex;
+    }
+    
+    .lock-content {
+        background: white;
+        padding: 24px 32px;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+        border: 1px solid var(--gray-200);
+        text-align: center;
+        max-width: 320px;
+    }
+    
+    .lock-icon {
+        font-size: 24px;
+        margin-bottom: 12px;
+        display: inline-block;
+    }
+    
+    .lock-title {
+        font-family: var(--font-display);
+        font-size: 16px;
+        font-weight: 800;
+        color: var(--black);
+        margin-bottom: 6px;
+    }
+    
+    .lock-desc {
+        font-size: 13px;
+        color: var(--gray-500);
+        margin-bottom: 16px;
+        line-height: 1.4;
+    }
+    
+    .unlock-btn {
+        background: var(--black);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-family: var(--font-body);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        width: 100%;
+    }
+    
+    .unlock-btn:hover {
+        background: var(--gray-700);
+        transform: translateY(-1px);
     }
 
     .section-title {
@@ -414,6 +479,46 @@
       border: 2px solid var(--blue);
       box-shadow: 0 0 0 4px var(--blue-light);
       animation: pulse-border 2s infinite;
+      position: relative;
+    }
+    
+    .upload-hint {
+        position: absolute;
+        right: -14px;
+        top: 50%;
+        transform: translateY(-50%) translateX(100%);
+        background: var(--black);
+        color: white;
+        padding: 8px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 700;
+        display: none; /* Hide by default */
+        align-items: center;
+        gap: 8px;
+        animation: hint-bounce 1.5s infinite;
+        white-space: nowrap;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 20;
+    }
+    
+    .onboarding-highlight .upload-hint {
+        display: flex;
+    }
+    
+    .upload-hint::before {
+        content: '';
+        position: absolute;
+        right: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        border: 6px solid transparent;
+        border-right-color: var(--black);
+    }
+    
+    @keyframes hint-bounce {
+        0%, 100% { transform: translateY(-50%) translateX(0); }
+        50% { transform: translateY(-50%) translateX(6px); }
     }
     
     @keyframes pulse-border {
@@ -663,6 +768,11 @@
       </div>
       <div class="upload-text">Upload one product image, get versions styled for each platform.</div>
       <button class="generate-btn">Generate</button>
+      
+      <!-- Hint Tooltip -->
+      <div class="upload-hint">
+          <span>👈 Start Here</span>
+      </div>
     </div>
 
     <!-- Platform Options -->
@@ -701,10 +811,19 @@
     <section class="selection-section onboarding-locked">
       <h2 class="section-title">
           Please select the function you want to use
-          <span class="locked-badge">Unlock after Trial</span>
       </h2>
       
       <div class="cards-grid">
+        <!-- Overlay -->
+        <div class="locked-overlay">
+            <div class="lock-content">
+                <div class="lock-icon">🔒</div>
+                <div class="lock-title">Unlock Full Features</div>
+                <div class="lock-desc">Complete the guided trial to access all product optimization tools.</div>
+                <button class="unlock-btn">Unlock Now</button>
+            </div>
+        </div>
+
         <!-- Card 1 -->
         <div class="func-card">
           <div class="card-img-area">

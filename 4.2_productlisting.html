@@ -371,6 +371,15 @@
     /* Function Selection */
     .selection-section {
       text-align: center;
+      position: relative;
+    }
+
+    /* Onboarding Mode: Disable bottom section */
+    .selection-section.onboarding-locked {
+      opacity: 0.4;
+      filter: grayscale(100%);
+      pointer-events: none;
+      user-select: none;
     }
 
     .section-title {
@@ -379,6 +388,38 @@
       font-weight: 800;
       color: var(--black);
       margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .locked-badge {
+        font-size: 10px;
+        background: var(--gray-200);
+        color: var(--gray-600);
+        padding: 4px 8px;
+        border-radius: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        display: none; /* Hidden by default */
+    }
+    
+    .onboarding-locked .locked-badge {
+        display: inline-block;
+    }
+
+    /* Highlight Upload Bar in Onboarding */
+    .upload-bar.onboarding-highlight {
+      border: 2px solid var(--blue);
+      box-shadow: 0 0 0 4px var(--blue-light);
+      animation: pulse-border 2s infinite;
+    }
+    
+    @keyframes pulse-border {
+        0% { box-shadow: 0 0 0 0px rgba(37, 99, 235, 0.2); }
+        50% { box-shadow: 0 0 0 6px rgba(37, 99, 235, 0); }
+        100% { box-shadow: 0 0 0 0px rgba(37, 99, 235, 0); }
     }
 
     .cards-grid {
@@ -607,7 +648,7 @@
     </header>
 
     <!-- Upload Bar -->
-    <div class="upload-bar">
+    <div class="upload-bar onboarding-highlight">
       <div class="upload-icons">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
@@ -657,8 +698,11 @@
     </div>
 
     <!-- Selection Cards -->
-    <section class="selection-section">
-      <h2 class="section-title">Please select the function you want to use from the following options.</h2>
+    <section class="selection-section onboarding-locked">
+      <h2 class="section-title">
+          Please select the function you want to use
+          <span class="locked-badge">Unlock after Trial</span>
+      </h2>
       
       <div class="cards-grid">
         <!-- Card 1 -->

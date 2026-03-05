@@ -196,6 +196,12 @@ body {
   box-shadow:var(--shadow-large);padding:8px;display:none;max-height:220px;overflow:auto;z-index:10
 }
 .region-dd.open .region-dd-panel{display:block}
+.region-section-label {
+  font-size: 11px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase;
+  margin: 12px 8px 6px; letter-spacing: 0.05em;
+}
+.region-section-label:first-child { margin-top: 4px; }
+.region-divider { height: 1px; background: var(--border-soft); margin: 8px 0; }
 .region-opt {
   display: flex; align-items: center; gap: 8px; padding: 6px 8px;
   border-radius: 6px; cursor: pointer; transition: background 0.2s;
@@ -213,6 +219,18 @@ body {
 .region-select {
   width: 100%; padding: 10px; border: 1px solid var(--border-soft); border-radius: 8px;
   font-family: var(--font-body); font-size: 14px; color: var(--text-primary); background: #fff;
+}
+.location-trigger {
+  font-size: 13px; color: var(--accent-orange); cursor: pointer; margin-top: 8px; display: inline-block;
+  text-decoration: none; font-weight: 500;
+}
+.location-trigger:hover { text-decoration: underline; }
+.specific-location-wrap { margin-top: 8px; display: none; }
+.specific-location-wrap.visible { display: block; }
+.specific-location-input {
+  width: 100%; padding: 10px; border: 1px solid var(--border-soft); border-radius: 8px;
+  font-family: var(--font-body); font-size: 14px; color: var(--text-primary);
+  background: #f9f9f9;
 }
 
 /* RIGHT SIDE — Horizontal Carousel */
@@ -473,99 +491,150 @@ body {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
           <div class="region-dd-panel" id="regionPanel">
+            
+            <div class="region-section-label">Popular Regions</div>
+            
             <!-- Global -->
-            <label class="region-opt" style="border-bottom: 1px solid var(--border-soft); margin-bottom: 4px; padding-bottom: 8px;">
-              <input type="checkbox" value="Global" onchange="updateRegionsFromPanel()">
-              Global
+            <label class="region-opt">
+              <input type="checkbox" value="Global" onchange="updateRegionsFromPanel(this)">
+              <span class="region-flag">🌍</span> Global
             </label>
 
-            <!-- NA -->
-            <div class="region-group">
-              <label class="region-opt">
-                <input type="checkbox" value="North America (NA)" onchange="updateRegionsFromPanel(this, 'na-group')">
-                North America (NA)
-                <div class="region-expand-btn" onclick="toggleRegionGroup(event, 'na-group')">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-                </div>
-              </label>
-              <div class="region-group-children" id="na-group">
-                <label class="region-opt child"><input type="checkbox" value="United States" onchange="updateRegionsFromPanel(this)"> United States</label>
-                <label class="region-opt child"><input type="checkbox" value="Canada" onchange="updateRegionsFromPanel(this)"> Canada</label>
-                <label class="region-opt child"><input type="checkbox" value="Mexico" onchange="updateRegionsFromPanel(this)"> Mexico</label>
-              </div>
-            </div>
+            <!-- US -->
+            <label class="region-opt">
+              <input type="checkbox" value="United States" onchange="updateRegionsFromPanel(this)">
+              <span class="region-flag">🇺🇸</span> United States
+            </label>
 
-            <!-- EU -->
-            <div class="region-group">
-              <label class="region-opt">
-                <input type="checkbox" value="Europe (EU)" onchange="updateRegionsFromPanel(this, 'eu-group')">
-                Europe (EU)
-                <div class="region-expand-btn" onclick="toggleRegionGroup(event, 'eu-group')">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-                </div>
-              </label>
-              <div class="region-group-children" id="eu-group">
-                <label class="region-opt child"><input type="checkbox" value="United Kingdom" onchange="updateRegionsFromPanel(this)"> United Kingdom</label>
-                <label class="region-opt child"><input type="checkbox" value="Germany" onchange="updateRegionsFromPanel(this)"> Germany</label>
-                <label class="region-opt child"><input type="checkbox" value="France" onchange="updateRegionsFromPanel(this)"> France</label>
-                <label class="region-opt child"><input type="checkbox" value="Spain" onchange="updateRegionsFromPanel(this)"> Spain</label>
-                <label class="region-opt child"><input type="checkbox" value="Italy" onchange="updateRegionsFromPanel(this)"> Italy</label>
-                <label class="region-opt child"><input type="checkbox" value="Netherlands" onchange="updateRegionsFromPanel(this)"> Netherlands</label>
-                <label class="region-opt child"><input type="checkbox" value="Nordics" onchange="updateRegionsFromPanel(this)"> Nordics</label>
-              </div>
-            </div>
+            <!-- UK -->
+            <label class="region-opt">
+              <input type="checkbox" value="United Kingdom" onchange="updateRegionsFromPanel(this)">
+              <span class="region-flag">🇬🇧</span> United Kingdom
+            </label>
 
-            <!-- APAC -->
-            <div class="region-group">
-              <label class="region-opt">
-                <input type="checkbox" value="Asia Pacific (APAC)" onchange="updateRegionsFromPanel(this, 'apac-group')">
-                Asia Pacific (APAC)
-                <div class="region-expand-btn" onclick="toggleRegionGroup(event, 'apac-group')">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-                </div>
-              </label>
-              <div class="region-group-children" id="apac-group">
-                <label class="region-opt child"><input type="checkbox" value="China" onchange="updateRegionsFromPanel(this)"> China</label>
-                <label class="region-opt child"><input type="checkbox" value="Japan" onchange="updateRegionsFromPanel(this)"> Japan</label>
-                <label class="region-opt child"><input type="checkbox" value="South Korea" onchange="updateRegionsFromPanel(this)"> South Korea</label>
-                <label class="region-opt child"><input type="checkbox" value="India" onchange="updateRegionsFromPanel(this)"> India</label>
-                <label class="region-opt child"><input type="checkbox" value="Southeast Asia" onchange="updateRegionsFromPanel(this)"> Southeast Asia</label>
-                <label class="region-opt child"><input type="checkbox" value="Australia & New Zealand" onchange="updateRegionsFromPanel(this)"> Australia & New Zealand</label>
-              </div>
-            </div>
+            <!-- AU -->
+            <label class="region-opt">
+              <input type="checkbox" value="Australia" onchange="updateRegionsFromPanel(this)">
+              <span class="region-flag">🇦🇺</span> Australia
+            </label>
 
-            <!-- LATAM -->
-            <div class="region-group">
-              <label class="region-opt">
-                <input type="checkbox" value="Latin America (LATAM)" onchange="updateRegionsFromPanel(this, 'latam-group')">
-                Latin America (LATAM)
-                <div class="region-expand-btn" onclick="toggleRegionGroup(event, 'latam-group')">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-                </div>
-              </label>
-              <div class="region-group-children" id="latam-group">
-                <label class="region-opt child"><input type="checkbox" value="Brazil" onchange="updateRegionsFromPanel(this)"> Brazil</label>
-                <label class="region-opt child"><input type="checkbox" value="Argentina" onchange="updateRegionsFromPanel(this)"> Argentina</label>
-                <label class="region-opt child"><input type="checkbox" value="Colombia" onchange="updateRegionsFromPanel(this)"> Colombia</label>
-              </div>
-            </div>
+            <!-- CA -->
+            <label class="region-opt">
+              <input type="checkbox" value="Canada" onchange="updateRegionsFromPanel(this)">
+              <span class="region-flag">🇨🇦</span> Canada
+            </label>
+            
+            <!-- EU (Group or Region?) -->
+            <label class="region-opt">
+              <input type="checkbox" value="Germany" onchange="updateRegionsFromPanel(this)">
+              <span class="region-flag">🇩🇪</span> Germany
+            </label>
 
-            <!-- MEA -->
+            <label class="region-opt">
+              <input type="checkbox" value="France" onchange="updateRegionsFromPanel(this)">
+              <span class="region-flag">🇫🇷</span> France
+            </label>
+
+            <div class="region-divider"></div>
+            
+            <!-- Collapsible Other Regions -->
             <div class="region-group">
-              <label class="region-opt">
-                <input type="checkbox" value="Middle East & Africa (MEA)" onchange="updateRegionsFromPanel(this, 'mea-group')">
-                Middle East & Africa (MEA)
-                <div class="region-expand-btn" onclick="toggleRegionGroup(event, 'mea-group')">
+              <label class="region-opt" onclick="toggleRegionGroup(event, 'other-regions-group')">
+                <span style="font-weight: 600; font-size: 13px;">Other Regions</span>
+                <div class="region-expand-btn">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
                 </div>
               </label>
-              <div class="region-group-children" id="mea-group">
-                <label class="region-opt child"><input type="checkbox" value="GCC" onchange="updateRegionsFromPanel(this)"> GCC</label>
-                <label class="region-opt child"><input type="checkbox" value="North Africa" onchange="updateRegionsFromPanel(this)"> North Africa</label>
-                <label class="region-opt child"><input type="checkbox" value="Sub-Saharan Africa" onchange="updateRegionsFromPanel(this)"> Sub-Saharan Africa</label>
+              <div class="region-group-children" id="other-regions-group">
+                
+                <!-- NA Group -->
+                <div class="region-group" style="margin-left: 8px; margin-top: 8px;">
+                  <label class="region-opt">
+                    <input type="checkbox" value="North America (NA)" onchange="updateRegionsFromPanel(this, 'na-group')">
+                    North America (NA)
+                  </label>
+                  <div class="region-group-children open" id="na-group" style="padding-left: 8px;">
+                     <!-- US/Canada are already in Popular. Should we duplicate or hide? 
+                          User said "conflict". If we duplicate, we must sync state.
+                          Simplest: Hide US/CA here, only show Mexico etc? 
+                          Or just list them again and sync. Syncing is safer for logic.
+                     -->
+                    <label class="region-opt child"><input type="checkbox" value="United States" data-sync="United States" onchange="updateRegionsFromPanel(this)"> United States</label>
+                    <label class="region-opt child"><input type="checkbox" value="Canada" data-sync="Canada" onchange="updateRegionsFromPanel(this)"> Canada</label>
+                    <label class="region-opt child"><input type="checkbox" value="Mexico" onchange="updateRegionsFromPanel(this)"> Mexico</label>
+                  </div>
+                </div>
+
+                <!-- EU Group -->
+                <div class="region-group" style="margin-left: 8px; margin-top: 8px;">
+                  <label class="region-opt">
+                    <input type="checkbox" value="Europe (EU)" data-sync="Europe (EU)" onchange="updateRegionsFromPanel(this, 'eu-group')">
+                    Europe (EU)
+                  </label>
+                  <div class="region-group-children open" id="eu-group" style="padding-left: 8px;">
+                    <label class="region-opt child"><input type="checkbox" value="United Kingdom" data-sync="United Kingdom" onchange="updateRegionsFromPanel(this)"> United Kingdom</label>
+                    <label class="region-opt child"><input type="checkbox" value="Germany" onchange="updateRegionsFromPanel(this)"> Germany</label>
+                    <label class="region-opt child"><input type="checkbox" value="France" onchange="updateRegionsFromPanel(this)"> France</label>
+                    <label class="region-opt child"><input type="checkbox" value="Spain" onchange="updateRegionsFromPanel(this)"> Spain</label>
+                    <label class="region-opt child"><input type="checkbox" value="Italy" onchange="updateRegionsFromPanel(this)"> Italy</label>
+                    <label class="region-opt child"><input type="checkbox" value="Netherlands" onchange="updateRegionsFromPanel(this)"> Netherlands</label>
+                    <label class="region-opt child"><input type="checkbox" value="Nordics" onchange="updateRegionsFromPanel(this)"> Nordics</label>
+                  </div>
+                </div>
+
+                <!-- APAC Group -->
+                <div class="region-group" style="margin-left: 8px; margin-top: 8px;">
+                  <label class="region-opt">
+                    <input type="checkbox" value="Asia Pacific (APAC)" data-sync="Asia Pacific (APAC)" onchange="updateRegionsFromPanel(this, 'apac-group')">
+                    Asia Pacific (APAC)
+                  </label>
+                  <div class="region-group-children open" id="apac-group" style="padding-left: 8px;">
+                    <label class="region-opt child"><input type="checkbox" value="Australia" data-sync="Australia" onchange="updateRegionsFromPanel(this)"> Australia</label>
+                    <label class="region-opt child"><input type="checkbox" value="China" onchange="updateRegionsFromPanel(this)"> China</label>
+                    <label class="region-opt child"><input type="checkbox" value="Japan" onchange="updateRegionsFromPanel(this)"> Japan</label>
+                    <label class="region-opt child"><input type="checkbox" value="South Korea" onchange="updateRegionsFromPanel(this)"> South Korea</label>
+                    <label class="region-opt child"><input type="checkbox" value="India" onchange="updateRegionsFromPanel(this)"> India</label>
+                    <label class="region-opt child"><input type="checkbox" value="Southeast Asia" onchange="updateRegionsFromPanel(this)"> Southeast Asia</label>
+                    <label class="region-opt child"><input type="checkbox" value="Australia & New Zealand" onchange="updateRegionsFromPanel(this)"> New Zealand</label>
+                  </div>
+                </div>
+                
+                <!-- LATAM -->
+                <div class="region-group" style="margin-left: 8px; margin-top: 8px;">
+                  <label class="region-opt">
+                    <input type="checkbox" value="Latin America (LATAM)" onchange="updateRegionsFromPanel(this, 'latam-group')">
+                    Latin America (LATAM)
+                  </label>
+                  <div class="region-group-children open" id="latam-group" style="padding-left: 8px;">
+                    <label class="region-opt child"><input type="checkbox" value="Brazil" onchange="updateRegionsFromPanel(this)"> Brazil</label>
+                    <label class="region-opt child"><input type="checkbox" value="Argentina" onchange="updateRegionsFromPanel(this)"> Argentina</label>
+                    <label class="region-opt child"><input type="checkbox" value="Colombia" onchange="updateRegionsFromPanel(this)"> Colombia</label>
+                  </div>
+                </div>
+
+                <!-- MEA -->
+                <div class="region-group" style="margin-left: 8px; margin-top: 8px;">
+                  <label class="region-opt">
+                    <input type="checkbox" value="Middle East & Africa (MEA)" onchange="updateRegionsFromPanel(this, 'mea-group')">
+                    Middle East & Africa (MEA)
+                  </label>
+                  <div class="region-group-children open" id="mea-group" style="padding-left: 8px;">
+                    <label class="region-opt child"><input type="checkbox" value="GCC" onchange="updateRegionsFromPanel(this)"> GCC</label>
+                    <label class="region-opt child"><input type="checkbox" value="North Africa" onchange="updateRegionsFromPanel(this)"> North Africa</label>
+                    <label class="region-opt child"><input type="checkbox" value="Sub-Saharan Africa" onchange="updateRegionsFromPanel(this)"> Sub-Saharan Africa</label>
+                  </div>
+                </div>
+
               </div>
             </div>
+            
           </div>
+        </div>
+        
+        <!-- Specific Location (Progressive) -->
+        <a class="location-trigger" id="locationTrigger" onclick="showSpecificLocation()">+ Target a specific city or area?</a>
+        <div class="specific-location-wrap" id="specificLocationWrap">
+          <input type="text" class="specific-location-input" id="specificLocation" placeholder="e.g. New York, London, Shibuya..." oninput="localStorage.setItem('workfxai_specific_location', this.value)">
         </div>
       </div>
 
@@ -735,12 +804,19 @@ document.querySelectorAll('.simple-option').forEach(card => {
     document.querySelectorAll('.simple-option').forEach(c => c.classList.remove('selected'));
     card.classList.add('selected');
     selectedSize = card.dataset.size || null;
-    document.getElementById('continueBtn').disabled = !selectedSize;
+    validateForm();
   });
 });
 
+function validateForm() {
+  const regions = localStorage.getItem('workfxai_regions');
+  const hasRegions = regions && regions.trim().length > 0;
+  const isValid = selectedSize && hasRegions;
+  document.getElementById('continueBtn').disabled = !isValid;
+}
+
 function continueToNext() {
-  if (!selectedSize) return;
+  if (document.getElementById('continueBtn').disabled) return;
   const isAgency = !!document.getElementById('agencyCheckbox')?.checked;
   localStorage.setItem('workfxai_company_size', selectedSize);
   localStorage.setItem('workfxai_is_agency', String(isAgency));
@@ -800,66 +876,64 @@ function updateRegionsFromPanel(target, groupId) {
       const globalInput = panel.querySelector('input[value="Global"]');
       if (globalInput) globalInput.checked = false;
     }
+    // Also, if a group parent was clicked and checked, uncheck Global
+    if (groupId && target.checked) {
+      const globalInput = panel.querySelector('input[value="Global"]');
+      if (globalInput) globalInput.checked = false;
+    }
   }
 
   // 1. Group checkbox clicked -> toggle all children
   if (target && groupId) {
     const isChecked = target.checked;
+    
+    // Check if it's a "sync" group (like Popular EU vs Other EU)
+    // Actually simpler: find all checkboxes with same value and sync them FIRST
+    // Then handle children logic.
+    // But groupId is passed specifically for the group container.
+    
     const childrenDiv = document.getElementById(groupId);
     if (childrenDiv) {
       childrenDiv.querySelectorAll('input[type="checkbox"]').forEach(ch => {
         ch.checked = isChecked;
+        // Also sync any duplicates of these children (e.g. US in Popular vs US in NA)
+        syncDuplicates(ch);
       });
     }
   }
 
   // 2. Child checkbox clicked -> update parent state
-  if (target && target.closest('.region-group-children')) {
-    const childrenDiv = target.closest('.region-group-children');
-    const groupDiv = childrenDiv.parentElement;
-    const parentInput = groupDiv.querySelector('.region-opt > input[type="checkbox"]');
-    
-    if (parentInput && childrenDiv) {
-      const allChildren = Array.from(childrenDiv.querySelectorAll('input[type="checkbox"]'));
-      const allChecked = allChildren.every(c => c.checked);
-      const someChecked = allChildren.some(c => c.checked);
-      
-      parentInput.checked = allChecked;
-      parentInput.indeterminate = someChecked && !allChecked;
-    }
+  // Also sync duplicates first
+  if (target && !groupId) {
+     syncDuplicates(target);
   }
+  
+  // Re-evaluate all parents because sync might have changed things in other groups
+  panel.querySelectorAll('.region-group').forEach(groupDiv => {
+      const parentInput = groupDiv.querySelector('.region-opt > input[type="checkbox"]');
+      const childrenDiv = groupDiv.querySelector('.region-group-children');
+      if (parentInput && childrenDiv) {
+          const allChildren = Array.from(childrenDiv.querySelectorAll('input[type="checkbox"]'));
+          const allChecked = allChildren.every(c => c.checked);
+          const someChecked = allChildren.some(c => c.checked);
+          parentInput.checked = allChecked;
+          parentInput.indeterminate = someChecked && !allChecked;
+          
+          // If parent changed, sync its duplicates too (e.g. EU in Popular vs EU group)
+          syncDuplicates(parentInput);
+      }
+  });
 
   // 3. Update display text & storage
-  // Logic: if parent is checked, show parent name only? Or show all children?
-  // User asked for "comma separated". 
-  // Let's collect: Global + any checked Parent + any checked Child that isn't covered by a checked Parent?
-  // Actually simplest is just list what is checked.
-  // But to be cleaner: 
-  // - If Global is checked, list Global
-  // - If NA is checked (all children), list NA
-  // - If NA is partial, list checked children (US, Canada...)
-  
-  const selectedLabels = [];
-  
-  // Global
-  const globalInput = panel.querySelector('input[value="Global"]');
-  if(globalInput && globalInput.checked) selectedLabels.push('Global');
-
-  // Groups
-  const groups = panel.querySelectorAll('.region-group');
-  groups.forEach(g => {
-    const parentInput = g.querySelector('.region-opt > input[type="checkbox"]');
-    const childrenDiv = g.querySelector('.region-group-children');
-    
-    if (parentInput.checked) {
-      // Full group selected
-      selectedLabels.push(parentInput.value);
-    } else if (parentInput.indeterminate) {
-      // Partial group selected
-      const checkedChildren = childrenDiv.querySelectorAll('input[type="checkbox"]:checked');
-      checkedChildren.forEach(c => selectedLabels.push(c.value));
-    }
+  // Logic: deduplicate values for display and storage
+  const checks = Array.from(panel.querySelectorAll('input[type="checkbox"]'));
+  // We want unique checked values
+  const uniqueChecked = new Set();
+  checks.forEach(c => {
+      if (c.checked && !c.indeterminate) uniqueChecked.add(c.value);
   });
+  
+  const selectedLabels = Array.from(uniqueChecked);
 
   const text = document.getElementById('regionBtnText');
   if (text) {
@@ -868,10 +942,30 @@ function updateRegionsFromPanel(target, groupId) {
     else text.textContent = selectedLabels.join(', ');
   }
   
-  // Save all checked values for restoration
-  const allChecked = Array.from(panel.querySelectorAll('input[type="checkbox"]:checked')).map(c => c.value);
-  localStorage.setItem('workfxai_regions', allChecked.join(','));
+  localStorage.setItem('workfxai_regions', selectedLabels.join(','));
+  validateForm();
 }
+
+function syncDuplicates(sourceInput) {
+    if (!sourceInput) return;
+    const val = sourceInput.value;
+    const panel = document.getElementById('regionPanel');
+    // Find all inputs with same value
+    const duplicates = panel.querySelectorAll(`input[value="${val}"]`);
+    duplicates.forEach(d => {
+        if (d !== sourceInput) {
+            d.checked = sourceInput.checked;
+            d.indeterminate = sourceInput.indeterminate;
+        }
+    });
+}
+
+function showSpecificLocation() {
+  document.getElementById('locationTrigger').style.display = 'none';
+  document.getElementById('specificLocationWrap').classList.add('visible');
+  document.getElementById('specificLocation').focus();
+}
+
 document.addEventListener('click', (ev)=>{
   const dd = document.getElementById('regionDropdown');
   if(!dd) return;
@@ -887,6 +981,13 @@ document.addEventListener('click', (ev)=>{
     });
   }
   updateRegionsFromPanel();
+  
+  // Restore specific location
+  const loc = localStorage.getItem('workfxai_specific_location');
+  if (loc) {
+    document.getElementById('specificLocation').value = loc;
+    showSpecificLocation();
+  }
 })();
 
 function toggleRegionGroup(e, id) {

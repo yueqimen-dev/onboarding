@@ -1564,7 +1564,7 @@
           tip.className = 'pv-tooltip';
           tip.textContent = 'Click to preview';
           el.appendChild(tip);
-          el.addEventListener('click', () => { window.location.href = '4.2_Content_Creation_PiP.html'; });
+          el.addEventListener('click', () => { window.location.href = '4.2_productlisting.html'; });
           col.appendChild(el);
         } else {
           const el = document.createElement('div');
@@ -1615,9 +1615,10 @@
           (isPreview && ii === 0 ? '<span class="list-pv-badge">Preview</span>' : '') +
           '</td>' +
           '<td><span class="list-status ' + statusClass + '"><span class="st-dot"></span>' + statusLabel + '</span></td>';
+        
         if (isPreview && ii === 0) {
           tr.style.cursor = 'pointer';
-          tr.addEventListener('click', () => { window.location.href = '4.2_Content_Creation_PiP.html'; });
+          tr.addEventListener('click', () => { window.location.href = '4.2_productlisting.html'; });
         } else if (item.p === 'ig') {
           // Instagram link to Connect Platforms
           tr.style.cursor = 'pointer';
@@ -1626,6 +1627,7 @@
           tr.style.cursor = 'pointer';
           tr.addEventListener('click', () => openModal());
         }
+        
         listBody.appendChild(tr);
       });
     });

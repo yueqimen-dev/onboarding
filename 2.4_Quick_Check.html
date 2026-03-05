@@ -5,10 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Competitor Analysis — Guided Trial | WorkfxAI</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
-    rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/fonts-manrope-inter.css">
   <style>
     :root {
       --bg: #f5f5f5;
@@ -1393,27 +1390,116 @@
 <body>
 
   <style>
-    #debugUnlockBtn {
+    #debugStateCtl {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      padding: 8px 16px;
-      background: rgba(0, 0, 0, 0.1);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      background: rgba(255, 255, 255, 0.9);
       color: #333;
       border: 1px solid #ccc;
-      border-radius: 4px;
+      border-radius: 6px;
       font-size: 12px;
-      cursor: pointer;
       z-index: 9999;
-      opacity: 0.3;
-      transition: opacity 0.2s;
+      opacity: 0.35;
+      transition: opacity 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+      backdrop-filter: blur(4px);
     }
-    #debugUnlockBtn:hover {
-      opacity: 1;
+    #debugStateCtl:hover { opacity: 1; }
+    #debugStateSelect {
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
       background: #fff;
+      color: #333;
     }
   </style>
-  <button id="debugUnlockBtn" onclick="debugUnlockReport()">Debug: Unlock Report</button>
+  <div id="debugStateCtl" aria-label="Debug State Switch">
+    <span style="font-weight:600;color:#555;">State</span>
+    <select id="debugStateSelect">
+      <option value="visitor">未付费</option>
+      <option value="paid_unbuilt">付费但未生成</option>
+      <option value="paid_built">已生成</option>
+    </select>
+  </div>
+  <script>
+    (function(){
+      function applyState(selVal){
+        if(selVal==='visitor'){
+          localStorage.setItem('loggedIn','false');
+          localStorage.setItem('isPaid','false');
+          localStorage.setItem('reportGenerated','false');
+          localStorage.setItem('debugState','visitor');
+        }else if(selVal==='paid_unbuilt'){
+          localStorage.setItem('loggedIn','true');
+          localStorage.setItem('isPaid','true');
+          localStorage.setItem('reportGenerated','false');
+          localStorage.setItem('debugState','paid');
+        }else if(selVal==='paid_built'){
+          localStorage.setItem('loggedIn','true');
+          localStorage.setItem('isPaid','true');
+          localStorage.setItem('reportGenerated','true');
+          localStorage.setItem('debugState','paid');
+        }
+        applyVisualLocks();
+        if(window.applyReportButtonsCopy){ window.applyReportButtonsCopy(); }
+        toggleOutlineCTA();
+        window.dispatchEvent(new CustomEvent('debugStateChanged'));
+      }
+      function applyVisualLocks(){
+        const isPaid = localStorage.getItem('isPaid')==='true';
+        const built = localStorage.getItem('reportGenerated')==='true';
+        const shouldUnlock = isPaid && built;
+        document.querySelectorAll('.report-wrap').forEach(w=>{
+          w.classList.toggle('locked', !shouldUnlock);
+        });
+        const items = document.querySelectorAll('.nav-item');
+        items.forEach((it, idx)=>{
+          if(idx===0){ it.classList.remove('locked'); return; }
+          it.classList.toggle('locked', !shouldUnlock);
+        });
+      }
+      function toggleOutlineCTA(){
+        const isPaid = localStorage.getItem('isPaid')==='true';
+        const cta = document.querySelector('.outline-cta-pay');
+        const pointer = document.getElementById('outlinePointer');
+        const badge = document.getElementById('outlineCtaBadge');
+        const label = document.getElementById('outlineCtaLabel');
+        if(!cta) return;
+        cta.style.display = 'inline-flex';
+        if(label){ label.textContent = isPaid ? 'Manage Subscription' : 'Unlock your brand report'; }
+        cta.onclick = function(){
+          location.href = '3.0_Subscription_Plans.html';
+        };
+        if(pointer){ pointer.style.display = isPaid ? 'none' : 'inline-flex'; }
+        if(badge){ badge.style.display = isPaid ? 'none' : 'inline-flex'; }
+      }
+      function currentSel(){
+        const isPaid = localStorage.getItem('isPaid')==='true';
+        const logged = localStorage.getItem('loggedIn')==='true';
+        const built = localStorage.getItem('reportGenerated')==='true';
+        if(isPaid && logged && built) return 'paid_built';
+        if(isPaid && logged) return 'paid_unbuilt';
+        return 'visitor';
+      }
+      const select = document.getElementById('debugStateSelect');
+      if(select){
+        select.value = currentSel();
+        select.addEventListener('change', function(){
+          applyState(this.value);
+        });
+        // Apply on load to ensure locks reflect stored state
+        applyVisualLocks();
+        toggleOutlineCTA();
+        if(window.applyReportButtonsCopy){ window.applyReportButtonsCopy(); }
+      }
+    })();
+  </script>
 
   <!-- TRIAL BAR -->
   <div class="trial-bar">
@@ -1566,41 +1652,26 @@
             <div>
               <div class="ms-subtitle-row">
                 <div class="ms-subtitle">Top queries</div>
-                <div class="ms-pop">
-                  <button class="ms-info-btn" onclick="openOutline('geo')">What geo report covers</button>
-                </div>
               </div>
               <ul class="ms-list">
                 <li class="ms-item"><span class="ms-text">"luxury handbags"</span></li>
                 <li class="ms-item"><span class="ms-text">"best department store for designer"</span></li>
                 <li class="ms-item"><span class="ms-text">"where to buy designer shoes"</span></li>
               </ul>
-              <button class="ms-view-report" id="btn-geo-report" onclick="simulateReportLoading('geo', 'geo report.html')">View GEO Full Report</button>
+              <button class="ms-view-report" id="btn-geo-report" onclick="viewReport('geo')">View GEO Full Report</button>
             </div>
             <div>
               <div class="ms-subtitle-row">
                 <div class="ms-subtitle">Top Keywords</div>
-                <div class="ms-pop">
-                  <button class="ms-info-btn" onclick="openOutline('seo')">What seo report covers</button>
-                </div>
               </div>
               <ul class="ms-list">
                 <li class="ms-item"><span class="ms-text">nordstrom anniversary sale</span></li>
                 <li class="ms-item"><span class="ms-text">designer handbags online</span></li>
                 <li class="ms-item"><span class="ms-text">luxury department store</span></li>
               </ul>
-              <button class="ms-view-report" id="btn-seo-report" onclick="simulateReportLoading('seo', 'seo report.html')">View SEO Full Report</button>
+              <button class="ms-view-report" id="btn-seo-report" onclick="viewReport('seo')">View SEO Full Report</button>
             </div>
           </div>
-        </div>
-        <div class="report-lock-bottom">
-          <button class="ms-unlock-btn" onclick="location.href='3.0_Subscription_Plans.html'">
-            Unlock Report
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-              <rect x="2" y="5.5" width="8" height="5.5" rx="1.5" fill="currentColor"/>
-              <path d="M4 5.5V4a2 2 0 014 0v1.5" stroke="currentColor" stroke-width="1.1"/>
-            </svg>
-          </button>
         </div>
         </div>
 
@@ -1810,36 +1881,16 @@
       }
     });
   </script>
-
+ 
   <script src="nav.js" defer></script>
   <script>
     // Existing script content
-    
     // Debug: Unlock Report
     function debugUnlockReport() {
-      console.log('Debug: Unlocking report...');
-      
-      // 1. Remove locked class from report wrappers
       const lockedReports = document.querySelectorAll('.report-wrap.locked');
-      lockedReports.forEach(report => {
-        report.classList.remove('locked');
-      });
-
-      // 2. Remove locked class from nav items
+      lockedReports.forEach(report => report.classList.remove('locked'));
       const lockedNavItems = document.querySelectorAll('.nav-item.locked');
-      lockedNavItems.forEach(item => {
-        item.classList.remove('locked');
-        // Optional: add a visual cue that it's unlocked if needed, 
-        // but removing .locked should be enough based on standard CSS patterns
-      });
-
-      // 3. Update the main CTA to reflect unlocked state if applicable
-      // (This is optional depending on how the page is structured)
-      const mainCTA = document.getElementById('mainCTA');
-      if (mainCTA) {
-        mainCTA.style.display = 'none';
-      }
-      
+      lockedNavItems.forEach(item => item.classList.remove('locked'));
       alert('Debug: Report Unlocked!');
     }
   </script>
@@ -2136,14 +2187,27 @@
     }
     /* OUTLINE MODAL */
     .outline-overlay{position:fixed;inset:0;z-index:10006;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center}
-    .outline-card{width:96vw;max-width:1200px;max-height:90vh;background:#fff;border-radius:16px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.25)}
-    .outline-header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-bottom:1px solid var(--blue-light);background:#fff}
-    .outline-title{font-family:var(--font-d);font-size:20px;font-weight:800;color:var(--ink)}
-    .outline-close{background:none;border:1px solid var(--border);color:var(--ink-3);padding:6px 10px;border-radius:8px;cursor:pointer;font-family:var(--font-d);font-weight:700}
+    .outline-card{position:relative;width:90vw;max-width:1600px;height:90vh;max-height:90vh;background:#fff;border-radius:16px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.25)}
+    .outline-header{position:relative;top:auto;left:auto;right:auto;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--border);background:#fff}
+    .outline-title{font-family:var(--font-d);font-size:20px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:12px}
+    .outline-demo-chip{font-family:var(--font-d);font-size:12px;color:#111827;background:linear-gradient(135deg,#fde68a,#f59e0b);border:1px solid rgba(17,24,39,.15);padding:3px 10px;border-radius:999px;font-weight:900;letter-spacing:.25px;box-shadow:0 2px 8px rgba(245,158,11,.3);text-transform:uppercase}
+    .outline-close{background:none;border:1px solid var(--border);color:var(--ink-3);padding:8px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
     .outline-close:hover{background:var(--border-light);color:var(--ink)}
-    .outline-body{padding:24px 28px;overflow:auto;background:var(--blue-light)}
+    .outline-actions{display:flex;align-items:center;gap:12px}
+    .outline-cta-wrap{position:relative;display:inline-flex;align-items:center}
+    .outline-cta-badge{position:absolute;top:-10px;right:12px;background:linear-gradient(135deg,#22d3ee,#60a5fa);color:#0b1220;border:1px solid rgba(255,255,255,.6);box-shadow:0 6px 16px rgba(99,102,241,.25), inset 0 1px 0 rgba(255,255,255,.6);padding:2px 8px;border-radius:999px;font-family:var(--font-d);font-weight:900;font-size:10px;letter-spacing:.3px;white-space:nowrap}
+    .outline-pointer{display:inline-flex;align-items:center;gap:6px;color:#0ea5e9;font-weight:900;font-family:var(--font-d);font-size:12px;animation:nudgeX 1.4s ease-in-out infinite}
+    .outline-pointer svg{display:block}
+    @keyframes nudgeX{0%,100%{transform:translateX(0)}50%{transform:translateX(6px)}}
+    .outline-cta-pay{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border-radius:12px;border:none;cursor:pointer;font-family:var(--font-d);font-size:14px;font-weight:900;color:#fff;background:linear-gradient(90deg,#06b6d4 0%, #6366f1 50%, #ef4444 100%);box-shadow:0 10px 24px rgba(99,102,241,.35)}
+    .outline-cta-pay:hover{filter:brightness(1.07)}
+    .outline-plain{white-space:pre-wrap;font-family:var(--font-d);font-size:13px;color:var(--ink-2);line-height:1.7;padding:0 28px 20px}
+    .outline-body{position:relative;padding:0;overflow:auto;background:#fff;flex:1;min-height:0;display:flex;width:100%}
+    .outline-body.embedded{padding:0}
+    .outline-iframe{width:100%;height:100%;border:0;display:block;margin:0;padding:0;box-sizing:border-box}
     .outline-grid{display:grid;grid-template-columns:1fr;gap:28px}
     .outline-grid>div{display:block}
+    .outline-grid.embedded{display:block;height:100%;width:100%;gap:0}
     .outline-col{background:#fff;border:1px solid var(--blue-light);border-radius:12px;padding:18px}
     .outline-col h3{font-family:var(--font-d);font-size:16px;font-weight:800;color:var(--ink);margin:0 0 8px;display:flex;align-items:center;gap:6px}
     .outline-ico{font-size:14px}
@@ -2247,8 +2311,27 @@
   <div class="outline-overlay" id="outlineOverlay" onclick="if(event.target===this)closeOutline()">
     <div class="outline-card">
       <div class="outline-header">
-        <div class="outline-title" id="outlineTitle">Report Outline</div>
-        <button class="outline-close" onclick="closeOutline()">Close</button>
+        <div class="outline-title" id="outlineTitle"><span id="outlineTitleText">Report Outline</span>
+          <span class="outline-demo-chip">Demo</span>
+        </div>
+        <div class="outline-actions">
+          <span class="outline-pointer" id="outlinePointer" aria-hidden="true" title="Unlock your own report">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M4 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="outline-cta-wrap">
+            <span class="outline-cta-badge" id="outlineCtaBadge">3DAY free trial</span>
+            <button class="outline-cta-pay" onclick="location.href='3.0_Subscription_Plans.html'">
+              <span class="outline-cta-label" id="outlineCtaLabel">Unlock your brand report</span>
+            </button>
+          </span>
+          <button class="outline-close" onclick="closeOutline()" aria-label="Close">
+            <svg width="16" height="16" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
       </div>
       <div class="outline-body">
         <div class="outline-grid" id="outlineBody"></div>
@@ -2369,6 +2452,184 @@
     }
     
     // --- Full Report Modal Logic ---
+    function getCoverHTML(type){
+      const css = `
+        <style>
+          :root{--ink:#0a0a0a;--ink-2:#3f3f46;--blue:#3b82f6;--blue-light:#eff6ff;--border:#e5e7eb;font-family:Inter,system-ui,Arial}
+          body{margin:0;background:#fff;color:var(--ink)}
+          .wrap{padding:20px}
+          .section{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px}
+          .section h2{margin:0 0 10px;font-size:16px;font-weight:800}
+          .tile{border:1px solid var(--blue-light);border-radius:10px;padding:10px;background:#fff}
+          .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+          .bar{height:20px;background:rgba(59,130,246,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#6b7280}
+          table{width:100%;border-collapse:separate;border-spacing:0}
+          thead th{background:var(--blue-light);padding:8px;text-align:left;font-weight:800;font-size:13px}
+          tbody td{border-bottom:1px solid var(--blue-light);padding:8px;font-size:12px;color:var(--ink-2)}
+          .kv{display:flex;gap:6px;flex-wrap:wrap}
+          .kv span{border:1px solid var(--border);border-radius:999px;padding:3px 8px;font-size:11px;color:#6b7280;font-weight:700}
+          .timeline{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+          .bucket{border:1px solid var(--border);border-radius:10px;padding:10px}
+          .btitle{font-weight:800;margin-bottom:6px}
+          .line{height:10px;background:#e5e7eb;border-radius:6px}
+        </style>
+      `;
+      const geoHTML = `
+        <div class="wrap">
+          <div class="section"><h2>Executive Summary</h2>
+            <div class="tiles">
+              <div class="tile"><div>ChatGPT Visibility</div><div class="bar">?%</div></div>
+              <div class="tile"><div>Gemini Visibility</div><div class="bar">?%</div></div>
+              <div class="tile"><div>Claude Visibility</div><div class="bar">?%</div></div>
+              <div class="tile"><div>Overall AI Visibility</div><div class="bar">?%</div></div>
+            </div>
+          </div>
+          <div class="section"><h2>1.1 Brand Overview</h2>
+            <div class="kv"><span>Industry</span><span>Business Model</span><span>Audience Region</span></div>
+          </div>
+          <div class="section"><h2>1.2 Platform Performance</h2>
+            <table>
+              <thead><tr><th>Model</th><th>Dimension A</th><th>Dimension B</th><th>Dimension C</th><th>Dimension D</th></tr></thead>
+              <tbody>
+                <tr><td><strong>GPT</strong></td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+                <tr><td><strong>Gemini</strong></td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+                <tr><td><strong>Claude</strong></td><td>?</td><td>?</td><td>?</td><td>?</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="section"><h2>1.3 Query Highlights</h2>
+            <table>
+              <thead><tr><th>Query</th><th>GPT</th><th>Gemini</th><th>Claude</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Query 1</strong></td><td>?</td><td>?</td><td>?</td></tr>
+                <tr><td><strong>Query 2</strong></td><td>?</td><td>?</td><td>?</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="section"><h2>2. To‑Do List</h2>
+            <div class="timeline">
+              <div class="bucket"><div class="btitle">Week 1</div><div class="line"></div><div class="line"></div><div class="line"></div></div>
+              <div class="bucket"><div class="btitle">Week 1–2</div><div class="line"></div><div class="line"></div><div class="line"></div></div>
+              <div class="bucket"><div class="btitle">Week 3–8</div><div class="line"></div><div class="line"></div><div class="line"></div></div>
+              <div class="bucket"><div class="btitle">Month 3+</div><div class="line"></div><div class="line"></div><div class="line"></div></div>
+            </div>
+          </div>
+          <div class="section"><h2>3. Strategic Query Targeting</h2>
+            <table>
+              <thead><tr><th>Type</th><th>Sample</th><th>Action</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Advantage Query</strong></td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+                <tr><td><strong>Potential Query</strong></td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+                <tr><td><strong>Competitive Query</strong></td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="section"><h2>3.4 Top Competitors</h2>
+            <table>
+              <thead><tr><th>Brand</th><th>Competitor Mentions</th><th>Why They Win</th><th>Your Advantage</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Brand A</strong></td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+                <tr><td><strong>Brand B</strong></td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="section"><h2>Appendix</h2>
+            <table>
+              <thead><tr><th>Query</th><th>Platform A</th><th>Platform B</th><th>Platform C</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Query A</strong></td><td>?</td><td></td><td></td></tr>
+                <tr><td><strong>Query B</strong></td><td>?</td><td></td><td></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+      const seoHTML = `
+        <div class="wrap">
+          <div class="section"><h2>Overview — 1.1 Brand Comparison</h2>
+            <div class="tiles" style="grid-template-columns:repeat(3,1fr)">
+              <div class="tile"><div>Your Brand</div><div class="bar">?</div></div>
+              <div class="tile"><div>Competitor Brand</div><div class="bar">?</div></div>
+              <div class="tile"><div>Performance Gap</div><div class="bar">?</div></div>
+            </div>
+          </div>
+          <div class="section"><h2>1.2 Overall Performance Overview</h2>
+            <table>
+              <thead><tr><th>Performance Indicator</th><th>Target Brand</th><th>Competitor Brand</th><th>Gap</th><th>Winner</th><th>Significance</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Overall SEO Score</strong></td><td>?</td><td>?</td><td>?</td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+                <tr><td><strong>Competitive Status</strong></td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+                <tr><td><strong>Dimensions Won</strong></td><td>?</td><td>?</td><td>?</td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="section"><h2>1.3 Competitive Dimensions Overview</h2>
+            <table>
+              <thead><tr><th>Matrix Dimension</th><th>What It Measures</th><th>Target Brand</th><th>Competitor Brand</th><th>Gap</th><th>Status</th><th>Priority</th><th>Impact</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Search Visibility</strong></td><td><div class="line"></div></td><td>?</td><td>?</td><td>?</td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+                <tr><td><strong>Social Media</strong></td><td><div class="line"></div></td><td>?</td><td>?</td><td>?</td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="section"><h2>3. Search Performance</h2>
+            <table>
+              <thead><tr><th>Keyword</th><th>Rank</th><th>Traffic</th><th>Intent</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Keyword A</strong></td><td>?</td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+                <tr><td><strong>Keyword B</strong></td><td>?</td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="section"><h2>4. Social Media</h2>
+            <table>
+              <thead><tr><th>Platform</th><th>Presence</th><th>Engagement</th><th>Quality</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Twitter</strong></td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+                <tr><td><strong>LinkedIn</strong></td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="section"><h2>5. Content Marketing</h2>
+            <table>
+              <thead><tr><th>Topic</th><th>Coverage</th><th>Depth</th><th>Performance</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Topic A</strong></td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+                <tr><td><strong>Topic B</strong></td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="section"><h2>6. Trust & Security</h2>
+            <table>
+              <thead><tr><th>Signal</th><th>Status</th><th>Evidence</th></tr></thead>
+              <tbody>
+                <tr><td><strong>SSL</strong></td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+                <tr><td><strong>Reviews</strong></td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="section"><h2>7. Online Reputation</h2>
+            <table>
+              <thead><tr><th>Metric</th><th>Target</th><th>Competitor</th><th>Gap</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Backlinks</strong></td><td>?</td><td>?</td><td>?</td></tr>
+                <tr><td><strong>Referring Domains</strong></td><td>?</td><td>?</td><td>?</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="section"><h2>8. Appendix</h2>
+            <table>
+              <thead><tr><th>Item</th><th>A</th><th>B</th><th>C</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Ref A</strong></td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+                <tr><td><strong>Ref B</strong></td><td><div class="line"></div></td><td><div class="line"></div></td><td><div class="line"></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+      return `<!doctype html><html><head>${css}</head><body>${type==='geo'?geoHTML:seoHTML}</body></html>`;
+    }
     function openFullReport(type, url) {
       currentReportType = type;
       currentReportUrl = url;
@@ -2430,14 +2691,201 @@
     async function openOutline(type){
       const overlay = document.getElementById('outlineOverlay');
       const title = document.getElementById('outlineTitle');
+      const titleText = document.getElementById('outlineTitleText');
       const body = document.getElementById('outlineBody');
       const isGeo = type === 'geo';
+      const isFile = location.protocol === 'file:';
+      const makeTable = (headers, rows)=>{
+        const thead = `<thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead>`;
+        const tbody = `<tbody>${rows.map(r=>{
+          return `<tr>${r.map((c,i)=>{
+            if(i===0) return `<td><strong>${c}</strong></td>`;
+            if(typeof c === 'string' && c === '?') return `<td>?</td>`;
+            return `<td><div class="skel-line w60"></div></td>`;
+          }).join('')}</tr>`;
+        }).join('')}</tbody>`;
+        return `<table class="outline-table">${thead}${tbody}</table>`;
+      };
+      const buildOffline = (isGeo)=>{
+        const cards = [];
+        if(isGeo){
+          cards.push(
+            `<div class="outline-col" data-oid="executive-summary">
+               <h3><span class="outline-ico">📊</span>Executive Summary</h3>
+               <div class="outline-tiles">
+                 <div class="outline-tile"><div class="tile-label">ChatGPT Visibility</div><div class="tile-bar"><span class="tile-value">?%</span></div></div>
+                 <div class="outline-tile"><div class="tile-label">Gemini Visibility</div><div class="tile-bar"><span class="tile-value">?%</span></div></div>
+                 <div class="outline-tile"><div class="tile-label">Claude Visibility</div><div class="tile-bar"><span class="tile-value">?%</span></div></div>
+                 <div class="outline-tile"><div class="tile-label">Overall AI Visibility</div><div class="tile-bar"><span class="tile-value">?%</span></div></div>
+               </div>
+             </div>`
+          );
+          cards.push(
+            `<div class="outline-col" data-oid="brand-overview">
+               <h3><span class="outline-ico">🧭</span>1.1 Brand Overview</h3>
+               <div class="kv-tags"><span class="kv-tag">Industry</span><span class="kv-tag">Business Model</span><span class="kv-tag">Audience Region</span></div>
+             </div>`
+          );
+          cards.push(
+            `<div class="outline-col" data-oid="platform-performance">
+               <h3><span class="outline-ico">⚙️</span>1.2 Platform Performance</h3>
+               <div class="outline-sub"><span class="outline-ico-sm">📊</span>Model vs Dimensions</div>
+               ${makeTable(['Model','Dimension A','Dimension B','Dimension C','Dimension D'],[
+                 ['GPT','?','?','?','?'],
+                 ['Gemini','?','?','?','?'],
+                 ['Claude','?','?','?','?']
+               ])}
+             </div>`
+          );
+          cards.push(
+            `<div class="outline-col" data-oid="query-highlights">
+               <h3><span class="outline-ico">🔎</span>1.3 Query Highlights</h3>
+               <div class="outline-sub"><span class="outline-ico-sm">🔍</span>Queries vs Models</div>
+               ${makeTable(['Query','GPT','Gemini','Claude'],[
+                 ['Query 1','?','?','?'],
+                 ['Query 2','?','?','?']
+               ])}
+             </div>`
+          );
+          cards.push(
+            `<div class="outline-col" data-oid="action-plan">
+               <h3><span class="outline-ico">🗓️</span>2. To‑Do List</h3>
+               <div class="outline-timeline">
+                 <div class="timeline-bucket"><div class="tb-title">Week 1</div><div class="tb-divider"></div><div class="tb-row"><span class="tb-label">Action 1</span><div class="tb-line"></div></div><div class="tb-steps"><div class="tb-step"><span class="tb-slabel">Step 1</span><div class="tb-sline"></div></div><div class="tb-step"><span class="tb-slabel">Step 2</span><div class="tb-sline"></div></div><div class="tb-step"><span class="tb-slabel">Step 3</span><div class="tb-sline"></div></div></div></div>
+                 <div class="timeline-bucket"><div class="tb-title">Week 1–2</div><div class="tb-divider"></div><div class="tb-row"><span class="tb-label">Action 1</span><div class="tb-line"></div></div><div class="tb-steps"><div class="tb-step"><span class="tb-slabel">Step 1</span><div class="tb-sline"></div></div><div class="tb-step"><span class="tb-slabel">Step 2</span><div class="tb-sline"></div></div><div class="tb-step"><span class="tb-slabel">Step 3</span><div class="tb-sline"></div></div></div></div>
+                 <div class="timeline-bucket"><div class="tb-title">Week 3–8</div><div class="tb-divider"></div><div class="tb-row"><span class="tb-label">Action 1</span><div class="tb-line"></div></div><div class="tb-steps"><div class="tb-step"><span class="tb-slabel">Step 1</span><div class="tb-sline"></div></div><div class="tb-step"><span class="tb-slabel">Step 2</span><div class="tb-sline"></div></div><div class="tb-step"><span class="tb-slabel">Step 3</span><div class="tb-sline"></div></div></div></div>
+                 <div class="timeline-bucket"><div class="tb-title">Month 3+</div><div class="tb-divider"></div><div class="tb-row"><span class="tb-label">Action 1</span><div class="tb-line"></div></div><div class="tb-steps"><div class="tb-step"><span class="tb-slabel">Step 1</span><div class="tb-sline"></div></div><div class="tb-step"><span class="tb-slabel">Step 2</span><div class="tb-sline"></div></div><div class="tb-step"><span class="tb-slabel">Step 3</span><div class="tb-sline"></div></div></div></div>
+               </div>
+             </div>`
+          );
+          cards.push(
+            `<div class="outline-col" data-oid="strategic-targeting">
+               <h3><span class="outline-ico">🎯</span>3. Strategic Query Targeting</h3>
+               <div class="outline-sub"><span class="outline-ico-sm">📊</span>Query Types</div>
+               ${makeTable(['Type','Sample','Action'],[
+                 ['Advantage Query','',''],
+                 ['Potential Query','',''],
+                 ['Competitive Query','','']
+               ])}
+             </div>`
+          );
+          cards.push(
+            `<div class="outline-col" data-oid="appendix">
+               <h3><span class="outline-ico">📎</span>Appendix</h3>
+               ${makeTable(['Query','Platform A','Platform B','Platform C'],[
+                 ['Query A','?','',''],
+                 ['Query B','?','','']
+               ])}
+             </div>`
+          );
+          cards.push(
+            `<div class="outline-col" data-oid="top-competitors">
+               <h3><span class="outline-ico">🏆</span>3.4 Top Competitors</h3>
+               ${makeTable(['Brand','Competitor Mentions','Why They Win','Your Advantage'],[
+                 ['Brand A','','',''],
+                 ['Brand B','','','']
+               ])}
+             </div>`
+          );
+        }else{
+          cards.push(
+            `<div class="outline-col" data-oid="overview">
+               <h3><span class="outline-ico">📈</span>Overview</h3>
+               <div class="outline-sub"><span class="outline-ico-sm">🏷️</span>1.1 Brand Comparison</div>
+               <div class="outline-tiles">
+                 <div class="outline-tile"><div class="tile-label">Your Brand</div><div class="tile-bar"><span class="tile-value">?</span></div></div>
+                 <div class="outline-tile"><div class="tile-label">Competitor Brand</div><div class="tile-bar"><span class="tile-value">?</span></div></div>
+                 <div class="outline-tile"><div class="tile-label">Performance Gap</div><div class="tile-bar"><span class="tile-value">?</span></div></div>
+               </div>
+               <div class="outline-sub"><span class="outline-ico-sm">📊</span>1.2 Overall Performance Overview</div>
+               ${makeTable(['Performance Indicator','Target Brand','Competitor Brand','Gap','Winner','Significance'],[
+                 ['Overall SEO Score','?','?','?','',''],
+                 ['Competitive Status','','','','',''],
+                 ['Dimensions Won','?','?','?','','']
+               ])}
+               <div class="outline-sub"><span class="outline-ico-sm">🏆</span>1.3 Competitive Dimensions Overview</div>
+               ${makeTable(['Matrix Dimension','What It Measures','Target Brand','Competitor Brand','Gap','Status','Priority','Impact'],[
+                 ['Search Visibility','', '?','?','?','','',''],
+                 ['Social Media','', '?','?','?','','','']
+               ])}
+             </div>`
+          );
+          cards.push(
+            `<div class="outline-col" data-oid="social-media">
+               <h3><span class="outline-ico">💬</span>4. Social Media</h3>
+               <div class="outline-sub"><span class="outline-ico-sm">💬</span>Platform Metrics</div>
+               ${makeTable(['Platform','Presence','Engagement','Quality'],[
+                 ['Twitter','','',''],
+                 ['LinkedIn','','','']
+               ])}
+               <div class="outline-sub"><span class="outline-ico-sm">📝</span>Content Types</div>
+               ${makeTable(['Type','Frequency','Performance'],[
+                 ['Short Video','',''],
+                 ['Long Form','','']
+               ])}
+             </div>`
+          );
+          cards.push(
+            `<div class="outline-col" data-oid="search-performance">
+               <h3><span class="outline-ico">🔍</span>3. Search Performance</h3>
+               ${makeTable(['Keyword','Rank','Traffic','Intent'],[
+                 ['Keyword A','?','',''],
+                 ['Keyword B','?','','']
+               ])}
+             </div>`
+          );
+          cards.push(
+            `<div class="outline-col" data-oid="content-marketing">
+               <h3><span class="outline-ico">📝</span>5. Content Marketing</h3>
+               ${makeTable(['Topic','Coverage','Depth','Performance'],[
+                 ['Topic A','','','',''],
+                 ['Topic B','','','','']
+               ])}
+             </div>`
+          );
+          cards.push(
+            `<div class="outline-col" data-oid="trust-security">
+               <h3><span class="outline-ico">🛡️</span>6. Trust & Security</h3>
+               ${makeTable(['Signal','Status','Evidence'],[
+                 ['SSL','',''],
+                 ['Reviews','','']
+               ])}
+             </div>`
+          );
+          cards.push(
+            `<div class="outline-col" data-oid="online-reputation">
+               <h3><span class="outline-ico">🌐</span>7. Online Reputation</h3>
+               ${makeTable(['Metric','Target','Competitor','Gap'],[
+                 ['Backlinks','?','?','?'],
+                 ['Referring Domains','?','?','?']
+               ])}
+             </div>`
+          );
+          cards.push(
+            `<div class="outline-col" data-oid="appendix">
+               <h3><span class="outline-ico">📎</span>8. Appendix</h3>
+               ${makeTable(['Item','A','B','C'],[
+                 ['Ref A','','','',''],
+                 ['Ref B','','','','']
+               ])}
+             </div>`
+          );
+        }
+        return `<div class="outline-grid">${cards.join('')}</div>`;
+      };
+      if(isFile){
+        if(titleText){ titleText.textContent = `${isGeo ? 'GEO Report' : 'SEO Report'}`; }
+        body.innerHTML = buildOffline(isGeo);
+        overlay.style.display = 'flex';
+        return;
+      }
       try{
         const url = (window.reportStatus && reportStatus[type] && reportStatus[type].url) ? reportStatus[type].url : (isGeo ? 'geo report.html' : 'seo report.html');
-        const res = await fetch(url, {cache:'no-store'});
-        const html = await res.text();
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        title.innerText = `${isGeo ? 'GEO' : 'SEO'} Report Demo`;
+        if(titleText){ titleText.textContent = `${isGeo ? 'GEO Report' : 'SEO Report'}`; }
+        body.classList.add('embedded');
+        body.innerHTML = `<iframe class="outline-iframe" src="${url}"></iframe>`;
+        overlay.style.display = 'flex';
+        return;
         const sections = Array.from(doc.querySelectorAll('section.section'));
         const iconFor = (sid)=>{
           const map = {
@@ -2656,9 +3104,9 @@
             return;
           }
           if (!isGeo && id === 'trust-security'){
-            const metricsHtml = `<div class="skel-metrics">${Array.from({length:3}).map(()=>`<div class="skel-metric"></div>`).join('')}</div>`;
-            const linesHtml = [70,60].map(w=>`<div class="skel-line w${w}"></div>`).join('');
-            cards.push(`<div class="outline-col" data-oid="${id}"><h3><span class="outline-ico">${iconFor(id)}</span>${heading}</h3>${metricsHtml}${linesHtml}</div>`);
+            const tablesHtml = sanitizedTablesByPrefix('section-6-');
+            const content = tablesHtml || `<div class="skel-metrics">${Array.from({length:3}).map(()=>`<div class="skel-metric"></div>`).join('')}</div><div class="skel-line w70"></div><div class="skel-line w60"></div>`;
+            cards.push(`<div class="outline-col" data-oid="${id}"><h3><span class="outline-ico">${iconFor(id)}</span>${heading}</h3>${content}</div>`);
             return;
           }
           if (!isGeo && id === 'online-reputation'){
@@ -2682,18 +3130,8 @@
         // Strict sequential single-column layout
         body.innerHTML = `<div class="outline-grid">${cards.join('')}</div>`;
       }catch(e){
-        title.innerText = isGeo ? 'GEO Report Outline' : 'SEO Report Outline';
-        body.innerHTML = `
-          <div class="outline-col">
-            <h3>Overview</h3>
-            <div class="skel-metrics"><div class="skel-metric"></div><div class="skel-metric"></div><div class="skel-metric"></div></div>
-            <div class="skel-line w80"></div><div class="skel-line w60"></div>
-          </div>
-          <div class="outline-col">
-            <h3>Details</h3>
-            <div class="skel-metrics"><div class="skel-metric"></div><div class="skel-metric"></div></div>
-            <div class="skel-line w100"></div><div class="skel-line w70"></div>
-          </div>`;
+        if(titleText){ titleText.textContent = `${isGeo ? 'GEO Report' : 'SEO Report'}`; }
+        body.innerHTML = buildOffline(isGeo);
       }
       overlay.style.display = 'flex';
     }
@@ -2701,6 +3139,51 @@
       document.getElementById('outlineOverlay').style.display = 'none';
       document.getElementById('outlineBody').innerHTML = '';
     }
+  </script>
+  <script>
+    (function(){
+      function qs(k){return new URLSearchParams(location.search).get(k)}
+      function getState(){
+        const d = (localStorage.getItem('debugState')||'').toLowerCase();
+        if(d==='visitor'||d==='unpaid'||d==='paid') return d;
+        const s = (qs('state')||'').toLowerCase();
+        if(s==='visitor'||s==='unpaid'||s==='paid') return s;
+        const paid = localStorage.getItem('isPaid')==='true';
+        const logged = localStorage.getItem('loggedIn')==='true';
+        if(paid) return 'paid';
+        return logged ? 'unpaid' : 'visitor';
+      }
+      window.viewReport = function(type){
+        const state = getState();
+        if(state==='paid'){
+          const url = type==='geo' ? 'geo report.html' : 'seo report.html';
+          if(window.simulateReportLoading){ simulateReportLoading(type, url); return; }
+        }
+        if(window.openOutline){ openOutline(type); }
+      };
+      function applyReportButtonsCopy(){
+        const state = getState();
+        const geoBtn = document.getElementById('btn-geo-report');
+        const seoBtn = document.getElementById('btn-seo-report');
+        if(!geoBtn && !seoBtn) return;
+        if(state==='visitor' || state==='unpaid'){
+          const copy = "See what's in the full report";
+          if(geoBtn) geoBtn.textContent = copy;
+          if(seoBtn) seoBtn.textContent = copy;
+        }else{
+          const generated = localStorage.getItem('reportGenerated')==='true';
+          if(!generated){
+            const copy = 'Start generating your full report';
+            if(geoBtn) geoBtn.textContent = copy;
+            if(seoBtn) seoBtn.textContent = copy;
+          }else{
+            if(geoBtn) geoBtn.textContent = 'View GEO Full Report';
+            if(seoBtn) seoBtn.textContent = 'View SEO Full Report';
+          }
+        }
+      }
+      document.addEventListener('DOMContentLoaded', applyReportButtonsCopy);
+    })();
   </script>
 </body>
 

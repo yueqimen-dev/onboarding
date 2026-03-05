@@ -1,63 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Subscription Plans</title>
-  <style>
-    :root {
-      --ink: #0b0b12;
-      --ink-2: #2f2f3a;
-      --ink-3: #5b5b6b;
-      --ink-4: #8b8b97;
-      --blue: #2563eb;
-      --blue-2: #1d4ed8;
-      --blue-3: #3b82f6;
-      --blue-light: #e8f0ff;
-      --border: #e6e7ec;
-      --bg: #f7f8fb;
-      --white: #fff;
-      --green: #16a34a;
-      --font-d: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji;
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Subscription Plans</title>
+<style>
+:root{
+  --ink:#0b0b12;--ink-2:#2f2f3a;--ink-3:#5b5b6b;--ink-4:#8b8b97;
+  --blue:#2563eb;--blue-2:#1d4ed8;--blue-3:#3b82f6;--blue-light:#e8f0ff;
+  --border:#e6e7ec;--bg:#f7f8fb;--white:#fff;
+  --green:#16a34a;
+  --font-d: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--font-d)}
+.wrap{max-width:1120px;margin:0 auto;padding:32px 20px}
+    .heading{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:22px}
+.heading h1{margin:0;font-size:24px;letter-spacing:-.02em}
+.heading-sub{font-size:13px;color:var(--ink-4)}
+.plans{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.plan{background:var(--white);border:1px solid #c6d3ff;border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.plan .title{font-weight:800;font-size:14px;color:var(--ink-2)}
+.price{display:flex;align-items:baseline;gap:6px}
+.price .num{font-size:30px;font-weight:900}
+.price .per{color:var(--ink-3);font-weight:600}
+.cta{width:100%;padding:12px;border:none;border-radius:8px;background:#eff2f8;color:var(--ink-2);font-weight:800;cursor:pointer}
+.cta.primary{background:var(--blue);color:#fff}
+.cta.starter-btn{background:var(--green);color:#fff}
+.feat{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+.feat li{display:flex;gap:10px;align-items:flex-start;color:var(--ink-2);font-size:13px}
+.tick{flex-shrink:0;width:16px;height:16px;color:var(--green)}
+.pro{border-color:var(--blue-3);position:relative}
+.starter-highlight{border-color:var(--green);position:relative;box-shadow:0 0 0 2px rgba(22,163,74,0.1)}
+.badge{position:absolute;top:-10px;left:18px;background:var(--blue);color:#fff;font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px}
+.badge-starter{background:var(--green)}
+.note{font-size:11px;color:var(--ink-4)}
+@media (max-width:1100px){.plans{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:780px){.plans{grid-template-columns:1fr}}
+.back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-3);text-decoration:none}
+.back:hover{color:var(--ink)}
+.cta-wrap{position:relative;display:block}
+.hover-tip{
+  position:absolute;left:0;top:calc(100% + 8px);z-index:5;display:none;
+  min-width:220px;background:#fff;border:1px solid var(--border);border-radius:10px;
+  box-shadow:0 10px 24px rgba(0,0,0,.12);padding:10px 12px;font-size:12px;color:var(--ink-2);line-height:1.5;
+}
+.cta-wrap:hover .hover-tip{display:block}
+.hover-tip::after{
+  content:"";position:absolute;left:16px;top:-6px;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:6px solid #fff;
+  filter:drop-shadow(0 -1px 0 var(--border));
+}
+.hover-tip ul{margin:0;padding:0;list-style:none}
+.hover-tip li{display:flex;gap:8px;align-items:flex-start;padding:3px 0}
+.hover-tip li::before{content:"•";color:var(--ink-3);line-height:1}
+    .calc-btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 16px;background:linear-gradient(90deg,var(--blue) 0%, var(--blue-3) 100%);
+      border:0;border-radius:999px;font-size:14px;font-weight:800;color:#fff;
+      cursor:pointer;transition:transform .15s ease, box-shadow .15s ease;
+      box-shadow:0 10px 20px rgba(37,99,235,.25);
     }
-    * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: var(--font-d); }
-    .wrap { max-width: 1120px; margin: 0 auto; padding: 32px 20px; }
-    .heading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
-    .heading h1 { margin: 0; font-size: 24px; letter-spacing: -.02em; }
-    .heading-sub { font-size: 13px; color: var(--ink-4); }
-    .plans { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
-    .plan { background: var(--white); border: 1px solid #c6d3ff; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 14px; }
-    .plan .title { font-weight: 800; font-size: 14px; color: var(--ink-2); }
-    .price { display: flex; align-items: baseline; gap: 6px; }
-    .price .num { font-size: 30px; font-weight: 900; }
-    .price .per { color: var(--ink-3); font-weight: 600; }
-    .cta { width: 100%; padding: 12px; border: none; border-radius: 8px; background: #eff2f8; color: var(--ink-2); font-weight: 800; cursor: pointer; }
-    .cta.primary { background: var(--blue); color: #fff; }
-    .feat { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
-    .feat li { display: flex; gap: 10px; align-items: flex-start; color: var(--ink-2); font-size: 13px; }
-    .tick { flex-shrink: 0; width: 16px; height: 16px; color: var(--green); }
-    .pro { border-color: var(--blue-3); position: relative; }
-    .badge { position: absolute; top: -10px; left: 18px; background: var(--blue); color: #fff; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 999px; }
-    .note { font-size: 11px; color: var(--ink-4); }
-    @media (max-width: 1100px) { .plans { grid-template-columns: repeat(3, 1fr); } }
-    @media (max-width: 780px) { .plans { grid-template-columns: 1fr; } }
-    .back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-3); text-decoration: none; }
-    .back:hover { color: var(--ink); }
-    .cta-wrap { position: relative; display: block; }
-    .hover-tip {
-      position: absolute; left: 0; top: calc(100% + 8px); z-index: 5; display: none;
-      min-width: 220px; background: #fff; border: 1px solid var(--border); border-radius: 10px;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, .12); padding: 10px 12px; font-size: 12px; color: var(--ink-2); line-height: 1.5;
+    .calc-btn:hover{transform:translateY(-1px);box-shadow:0 12px 24px rgba(37,99,235,.32)}
+    /* Modal Styles */
+    .modal {
+      display: none;position: fixed;z-index: 1000;left: 0;top: 0;width: 100%;height: 100%;
+      background-color: rgba(0,0,0,0.4);align-items: center;justify-content: center;
     }
-    .cta-wrap:hover .hover-tip { display: block; }
-    .hover-tip::after {
-      content: ""; position: absolute; left: 16px; top: -6px; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 6px solid #fff;
-      filter: drop-shadow(0 -1px 0 var(--border));
+    .modal-content {
+      background-color: #fefefe;border-radius: 16px;width: 400px;max-width: 90%;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      animation: modalFadeIn 0.3s;
     }
-    .hover-tip ul { margin: 0; padding: 0; list-style: none; }
-    .hover-tip li { display: flex; gap: 8px; align-items: flex-start; padding: 3px 0; }
-    .hover-tip li::before { content: "•"; color: var(--ink-3); line-height: 1; }
+    @keyframes modalFadeIn {
+      from {opacity: 0;transform: translateY(-20px);}
+      to {opacity: 1;transform: translateY(0);}
+    }
+    .modal-header {
+      padding: 20px;border-bottom: 1px solid var(--border);
+      display: flex;justify-content: space-between;align-items: center;
+    }
+    .modal-title {font-weight: 800;font-size: 18px;color: var(--ink);}
+    .close-btn {font-size: 24px;cursor: pointer;color: var(--ink-4);}
+    .close-btn:hover {color: var(--ink);}
+    .modal-body {padding: 24px;}
+    .calc-row {margin-bottom: 16px;}
+    .calc-label {display: block;font-size: 13px;font-weight: 600;color: var(--ink-2);margin-bottom: 8px;}
+    .calc-platforms {display: grid;grid-template-columns: repeat(3, 1fr);gap: 10px;margin-bottom: 20px;}
+    .calc-platform-opt {
+      display: flex;flex-direction: column;align-items: center;gap: 6px;
+      padding: 10px;border: 1px solid var(--border);border-radius: 8px;
+      cursor: pointer;transition: all .2s;background: #fff;
+    }
+    .calc-platform-opt:hover {border-color: var(--blue-3);background: var(--blue-light);}
+    .calc-platform-opt.selected {border-color: var(--blue);background: var(--blue-light);box-shadow: 0 0 0 1px var(--blue);}
+    .calc-plat-icon {width: 24px;height: 24px;object-fit: contain;}
+    .calc-plat-name {font-size: 11px;font-weight: 600;color: var(--ink-2);}
+    .calc-type-row {display: flex;justify-content: space-between;align-items: center;padding: 12px 0;border-bottom: 1px dashed var(--border-light);}
+    .calc-type-row:last-child {border-bottom: none;}
+    .calc-type-info {display: flex;flex-direction: column;gap: 4px;}
+    .calc-type-name {font-size: 13px;font-weight: 600;color: var(--ink-2);}
+    .calc-type-sub {font-size: 11px;color: var(--ink-4);}
+    .calc-type-val {font-size: 18px;font-weight: 700;color: var(--blue);text-align: right;}
+    .calc-type-unit {font-size: 11px;font-weight: 400;color: var(--ink-3);display: block;}
+    .calc-result-box {
+      background: var(--bg);border-radius: 12px;padding: 16px;
+      display: flex;flex-direction: column;align-items: center;
+    }
+    .calc-res-row {display: flex;justify-content: space-between;margin-bottom: 8px;font-size: 13px;width: 100%;}
+    .calc-res-row:last-child {margin-bottom: 0;}
+    .calc-res-val {font-weight: 700;color: var(--ink);}
+    .calc-total {
+      margin-top: 16px;padding-top: 16px;border-top: 1px dashed var(--border);
+      font-size: 11px;color: var(--ink-4);line-height: 1.4;text-align: center;width: 100%;
+    }
+    .calc-select {
+      width: 100%;padding: 10px;border: 1px solid var(--border);border-radius: 8px;
+      font-family: var(--font-d);font-size: 14px;color: var(--ink);
+    }
   </style>
 </head>
 <body>
@@ -68,16 +127,167 @@
         <h1>Choose your plan</h1>
         <div class="heading-sub">Flexible plans as you grow</div>
       </div>
+      <button class="calc-btn" onclick="openCalc()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16" y2="18"></line><path d="M16 10h.01"></path><path d="M12 10h.01"></path><path d="M8 10h.01"></path><path d="M12 14h.01"></path><path d="M8 14h.01"></path><path d="M12 18h.01"></path><path d="M8 18h.01"></path></svg>
+        Which plan fits me?
+      </button>
     </div>
+
+    <!-- Calculator Modal -->
+    <div id="calcModal" class="modal" onclick="closeCalc(event)">
+      <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+          <div class="modal-title">Which plan fits me?</div>
+          <span class="close-btn" onclick="closeCalc()">&times;</span>
+        </div>
+        <div class="modal-body">
+          <div class="calc-row">
+            <label class="calc-label">Select Plan</label>
+            <select class="calc-select" id="planSelect" onchange="calculateCredits()">
+              <option value="1500" selected>Starter (1,500 Credits)</option>
+              <option value="3500">Professional (3,500 Credits)</option>
+              <option value="7000">Business (7,000 Credits)</option>
+            </select>
+          </div>
+          <div class="calc-row">
+            <label class="calc-label">Select your preferred platforms (Multiple)</label>
+            <div class="calc-platforms">
+              <div class="calc-platform-opt selected" onclick="togglePlatform(this)" data-cost="50" data-unit="Long Posts" data-name="LinkedIn" data-type="long">
+                <img src="https://logo.clearbit.com/linkedin.com" class="calc-plat-icon" alt="LinkedIn">
+                <div class="calc-plat-name">LinkedIn</div>
+              </div>
+              <div class="calc-platform-opt" onclick="togglePlatform(this)" data-cost="30" data-unit="Threads" data-name="Reddit" data-type="short">
+                <img src="https://logo.clearbit.com/reddit.com" class="calc-plat-icon" alt="Reddit">
+                <div class="calc-plat-name">Reddit</div>
+              </div>
+              <div class="calc-platform-opt" onclick="togglePlatform(this)" data-cost="100" data-unit="Episodes" data-name="Podcast" data-type="long">
+                <img src="https://logo.clearbit.com/spotify.com" class="calc-plat-icon" alt="Podcast">
+                <div class="calc-plat-name">Podcast</div>
+              </div>
+              <div class="calc-platform-opt selected" onclick="togglePlatform(this)" data-cost="20" data-unit="Tweets" data-name="X (Twitter)" data-type="short">
+                <img src="https://logo.clearbit.com/twitter.com" class="calc-plat-icon" alt="X (Twitter)">
+                <div class="calc-plat-name">X (Twitter)</div>
+              </div>
+              <div class="calc-platform-opt" onclick="togglePlatform(this)" data-cost="80" data-unit="Scripts" data-name="YouTube" data-type="long">
+                <img src="https://logo.clearbit.com/youtube.com" class="calc-plat-icon" alt="YouTube">
+                <div class="calc-plat-name">YouTube</div>
+              </div>
+              <div class="calc-platform-opt selected" onclick="togglePlatform(this)" data-cost="40" data-unit="Captions" data-name="Instagram" data-type="visual">
+                <img src="https://logo.clearbit.com/instagram.com" class="calc-plat-icon" alt="Instagram">
+                <div class="calc-plat-name">Instagram</div>
+              </div>
+            </div>
+          </div>
+          <div class="calc-result-box">
+            <div class="calc-label" style="width:100%;text-align:left;margin-bottom:12px">Estimated Output Capacity</div>
+            <div id="calc-list-container" class="calc-list">
+              <!-- Results populated by JS -->
+            </div>
+            <div class="calc-total">
+              * Calculations show maximum potential output for each content type independently based on total plan credits.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+      // Initialize with default selected platforms
+      // Types: long, short, visual
+      let selectedPlatforms = {
+        'LinkedIn': { cost: 50, unit: 'Long Posts', icon: 'https://logo.clearbit.com/linkedin.com', type: 'long' },
+        'X (Twitter)': { cost: 20, unit: 'Tweets', icon: 'https://logo.clearbit.com/twitter.com', type: 'short' },
+        'Instagram': { cost: 40, unit: 'Captions', icon: 'https://logo.clearbit.com/instagram.com', type: 'visual' }
+      };
+
+      function openCalc() {
+        document.getElementById('calcModal').style.display = 'flex';
+        calculateCredits();
+      }
+      function closeCalc(e) {
+        if (!e || e.target.id === 'calcModal' || e.target.classList.contains('close-btn')) {
+          document.getElementById('calcModal').style.display = 'none';
+        }
+      }
+      function togglePlatform(el) {
+        const name = el.dataset.name;
+        if (el.classList.contains('selected')) {
+          delete selectedPlatforms[name];
+          el.classList.remove('selected');
+        } else {
+          selectedPlatforms[name] = {
+            cost: parseInt(el.dataset.cost),
+            unit: el.dataset.unit,
+            icon: el.querySelector('img').src,
+            type: el.dataset.type
+          };
+          el.classList.add('selected');
+        }
+        calculateCredits();
+      }
+      function calculateCredits() {
+        const credits = parseInt(document.getElementById('planSelect').value);
+        const container = document.getElementById('calc-list-container');
+        container.innerHTML = '';
+        
+        const platforms = Object.values(selectedPlatforms);
+        if (platforms.length === 0) {
+          container.innerHTML = '<div style="font-size:13px;color:var(--ink-4);text-align:center;padding:10px">Select platforms above to see capacity</div>';
+          return;
+        }
+
+        // Group by type
+        const groups = {
+          long: { label: 'Long-form Content', sub: 'Articles, Scripts', items: [] },
+          short: { label: 'Short/Medium Posts', sub: 'Threads, Updates', items: [] },
+          visual: { label: 'Visual Content', sub: 'Images, Captions', items: [] }
+        };
+
+        platforms.forEach(p => {
+          if (groups[p.type]) {
+            groups[p.type].items.push(p);
+          }
+        });
+
+        // Calculate and render each group
+        Object.keys(groups).forEach(key => {
+          const group = groups[key];
+          if (group.items.length > 0) {
+            // Calculate average cost for this group
+            const totalCost = group.items.reduce((sum, item) => sum + item.cost, 0);
+            const avgCost = totalCost / group.items.length;
+            const capacity = Math.floor(credits / avgCost);
+            
+            // Get unique unit names for display
+            // const unitNames = [...new Set(group.items.map(i => i.unit))].join(' / ');
+
+            const row = document.createElement('div');
+            row.className = 'calc-type-row';
+            row.innerHTML = `
+              <div class="calc-type-info">
+                <div class="calc-type-name">${group.label}</div>
+                <div class="calc-type-sub">${group.sub}</div>
+              </div>
+              <div class="calc-type-val">
+                ≈ ${capacity.toLocaleString()}
+                <span class="calc-type-unit">items / mo</span>
+              </div>
+            `;
+            container.appendChild(row);
+          }
+        });
+      }
+    </script>
     <div class="plans">
-      <div class="plan">
+      <div class="plan starter-highlight">
+        <div class="badge badge-starter">New User Free Trial</div>
         <div class="title">Starter</div>
         <div class="price"><div class="num">$49</div><div class="per">/ mo</div></div>
         <div class="cta-wrap">
-          <button class="cta primary">Try 7 days for free</button>
+          <button class="cta starter-btn">Try 3 days for free</button>
           <div class="hover-tip" role="tooltip" aria-label="trial details">
             <ul>
-              <li>Free 7‑day trial</li>
+              <li>Free 3‑day trial</li>
               <li>Includes 200 free credits</li>
               <li>First month billed afterward; cancel anytime</li>
             </ul>
@@ -141,5 +351,6 @@
     </div>
     <div class="note" style="margin-top:18px">Prices in USD. Cancel anytime.</div>
   </div>
+<script src="nav.js" defer></script>
 </body>
 </html>

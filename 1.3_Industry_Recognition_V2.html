@@ -177,6 +177,44 @@ body {
 .btn-primary:hover { background: #262626; transform: translateY(-2px); box-shadow: var(--shadow-medium); }
 .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
+/* Region Select */
+.region-row { margin: 16px 0 8px; }
+.region-selected { font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; }
+.region-dd{position:relative}
+.region-dd-toggle{
+  width:100%;padding:10px;border:1px solid var(--border-soft);border-radius:8px;
+  font-family:var(--font-body);font-size:14px;color:var(--text-primary);background:#fff;
+  display:flex;align-items:center;justify-content:space-between;cursor:pointer;
+  min-height: 42px; text-align: left;
+}
+.region-dd-toggle span {
+  flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 8px;
+}
+.region-dd-toggle svg{color:var(--text-tertiary)}
+.region-dd-panel{
+  position:absolute;left:0;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--border-soft);border-radius:8px;
+  box-shadow:var(--shadow-large);padding:8px;display:none;max-height:220px;overflow:auto;z-index:10
+}
+.region-dd.open .region-dd-panel{display:block}
+.region-opt {
+  display: flex; align-items: center; gap: 8px; padding: 6px 8px;
+  border-radius: 6px; cursor: pointer; transition: background 0.2s;
+}
+.region-opt:hover { background: #f5f5f5; }
+.region-opt.child { padding-left: 32px; font-size: 13px; color: var(--text-secondary); }
+.region-expand-btn {
+  margin-left: auto; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
+  border-radius: 4px; color: var(--text-tertiary); transition: all 0.2s;
+}
+.region-expand-btn:hover { background: #eee; color: var(--text-primary); }
+.region-expand-btn.expanded { transform: rotate(180deg); }
+.region-group-children { display: none; margin-bottom: 4px; }
+.region-group-children.open { display: block; }
+.region-select {
+  width: 100%; padding: 10px; border: 1px solid var(--border-soft); border-radius: 8px;
+  font-family: var(--font-body); font-size: 14px; color: var(--text-primary); background: #fff;
+}
+
 /* RIGHT SIDE — Horizontal Carousel */
 .social-side {
   background: #0a0a0a;
@@ -426,6 +464,111 @@ body {
         <button class="simple-option" data-size="500+">500+ employees</button>
       </div>
 
+      <div class="region-row">
+        <div class="mini-caption">where are your target customers?</div>
+        <!-- Removed separate text div -->
+        <div class="region-dd" id="regionDropdown">
+          <button class="region-dd-toggle" type="button" onclick="toggleRegionDD(event)">
+            <span id="regionBtnText">Select regions</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="region-dd-panel" id="regionPanel">
+            <!-- Global -->
+            <label class="region-opt" style="border-bottom: 1px solid var(--border-soft); margin-bottom: 4px; padding-bottom: 8px;">
+              <input type="checkbox" value="Global" onchange="updateRegionsFromPanel()">
+              Global
+            </label>
+
+            <!-- NA -->
+            <div class="region-group">
+              <label class="region-opt">
+                <input type="checkbox" value="North America (NA)" onchange="updateRegionsFromPanel(this, 'na-group')">
+                North America (NA)
+                <div class="region-expand-btn" onclick="toggleRegionGroup(event, 'na-group')">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+              </label>
+              <div class="region-group-children" id="na-group">
+                <label class="region-opt child"><input type="checkbox" value="United States" onchange="updateRegionsFromPanel(this)"> United States</label>
+                <label class="region-opt child"><input type="checkbox" value="Canada" onchange="updateRegionsFromPanel(this)"> Canada</label>
+                <label class="region-opt child"><input type="checkbox" value="Mexico" onchange="updateRegionsFromPanel(this)"> Mexico</label>
+              </div>
+            </div>
+
+            <!-- EU -->
+            <div class="region-group">
+              <label class="region-opt">
+                <input type="checkbox" value="Europe (EU)" onchange="updateRegionsFromPanel(this, 'eu-group')">
+                Europe (EU)
+                <div class="region-expand-btn" onclick="toggleRegionGroup(event, 'eu-group')">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+              </label>
+              <div class="region-group-children" id="eu-group">
+                <label class="region-opt child"><input type="checkbox" value="United Kingdom" onchange="updateRegionsFromPanel(this)"> United Kingdom</label>
+                <label class="region-opt child"><input type="checkbox" value="Germany" onchange="updateRegionsFromPanel(this)"> Germany</label>
+                <label class="region-opt child"><input type="checkbox" value="France" onchange="updateRegionsFromPanel(this)"> France</label>
+                <label class="region-opt child"><input type="checkbox" value="Spain" onchange="updateRegionsFromPanel(this)"> Spain</label>
+                <label class="region-opt child"><input type="checkbox" value="Italy" onchange="updateRegionsFromPanel(this)"> Italy</label>
+                <label class="region-opt child"><input type="checkbox" value="Netherlands" onchange="updateRegionsFromPanel(this)"> Netherlands</label>
+                <label class="region-opt child"><input type="checkbox" value="Nordics" onchange="updateRegionsFromPanel(this)"> Nordics</label>
+              </div>
+            </div>
+
+            <!-- APAC -->
+            <div class="region-group">
+              <label class="region-opt">
+                <input type="checkbox" value="Asia Pacific (APAC)" onchange="updateRegionsFromPanel(this, 'apac-group')">
+                Asia Pacific (APAC)
+                <div class="region-expand-btn" onclick="toggleRegionGroup(event, 'apac-group')">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+              </label>
+              <div class="region-group-children" id="apac-group">
+                <label class="region-opt child"><input type="checkbox" value="China" onchange="updateRegionsFromPanel(this)"> China</label>
+                <label class="region-opt child"><input type="checkbox" value="Japan" onchange="updateRegionsFromPanel(this)"> Japan</label>
+                <label class="region-opt child"><input type="checkbox" value="South Korea" onchange="updateRegionsFromPanel(this)"> South Korea</label>
+                <label class="region-opt child"><input type="checkbox" value="India" onchange="updateRegionsFromPanel(this)"> India</label>
+                <label class="region-opt child"><input type="checkbox" value="Southeast Asia" onchange="updateRegionsFromPanel(this)"> Southeast Asia</label>
+                <label class="region-opt child"><input type="checkbox" value="Australia & New Zealand" onchange="updateRegionsFromPanel(this)"> Australia & New Zealand</label>
+              </div>
+            </div>
+
+            <!-- LATAM -->
+            <div class="region-group">
+              <label class="region-opt">
+                <input type="checkbox" value="Latin America (LATAM)" onchange="updateRegionsFromPanel(this, 'latam-group')">
+                Latin America (LATAM)
+                <div class="region-expand-btn" onclick="toggleRegionGroup(event, 'latam-group')">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+              </label>
+              <div class="region-group-children" id="latam-group">
+                <label class="region-opt child"><input type="checkbox" value="Brazil" onchange="updateRegionsFromPanel(this)"> Brazil</label>
+                <label class="region-opt child"><input type="checkbox" value="Argentina" onchange="updateRegionsFromPanel(this)"> Argentina</label>
+                <label class="region-opt child"><input type="checkbox" value="Colombia" onchange="updateRegionsFromPanel(this)"> Colombia</label>
+              </div>
+            </div>
+
+            <!-- MEA -->
+            <div class="region-group">
+              <label class="region-opt">
+                <input type="checkbox" value="Middle East & Africa (MEA)" onchange="updateRegionsFromPanel(this, 'mea-group')">
+                Middle East & Africa (MEA)
+                <div class="region-expand-btn" onclick="toggleRegionGroup(event, 'mea-group')">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+              </label>
+              <div class="region-group-children" id="mea-group">
+                <label class="region-opt child"><input type="checkbox" value="GCC" onchange="updateRegionsFromPanel(this)"> GCC</label>
+                <label class="region-opt child"><input type="checkbox" value="North Africa" onchange="updateRegionsFromPanel(this)"> North Africa</label>
+                <label class="region-opt child"><input type="checkbox" value="Sub-Saharan Africa" onchange="updateRegionsFromPanel(this)"> Sub-Saharan Africa</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="agency-row">
         <div class="mini-caption">Are you an agency?</div>
         <label style="display:flex; align-items:center; gap:8px; font-size:14px; color: var(--text-secondary);">
@@ -622,6 +765,140 @@ setInterval(() => {
   currentDot = (currentDot + 1) % dots.length;
   dots[currentDot].classList.add('active');
 }, 4000);
+
+function toggleRegionDD(e){
+  const dd = document.getElementById('regionDropdown');
+  if(!dd) return;
+  dd.classList.toggle('open');
+}
+function toggleRegionGroup(e, id) {
+  e.preventDefault();
+  e.stopPropagation();
+  const children = document.getElementById(id);
+  const btn = e.currentTarget;
+  if (children && btn) {
+    children.classList.toggle('open');
+    btn.classList.toggle('expanded');
+  }
+}
+
+function updateRegionsFromPanel(target, groupId) {
+  const panel = document.getElementById('regionPanel');
+  if (!panel) return;
+
+  // 0. Global Mutual Exclusion Logic
+  // If user clicked Global:
+  if (target && target.value === 'Global') {
+    if (target.checked) {
+      // Uncheck all others
+      const allChecks = panel.querySelectorAll('input[type="checkbox"]:not([value="Global"])');
+      allChecks.forEach(c => { c.checked = false; c.indeterminate = false; });
+    }
+  } else if (target) {
+    // If user clicked any other item and checked it, uncheck Global
+    if (target.checked) {
+      const globalInput = panel.querySelector('input[value="Global"]');
+      if (globalInput) globalInput.checked = false;
+    }
+  }
+
+  // 1. Group checkbox clicked -> toggle all children
+  if (target && groupId) {
+    const isChecked = target.checked;
+    const childrenDiv = document.getElementById(groupId);
+    if (childrenDiv) {
+      childrenDiv.querySelectorAll('input[type="checkbox"]').forEach(ch => {
+        ch.checked = isChecked;
+      });
+    }
+  }
+
+  // 2. Child checkbox clicked -> update parent state
+  if (target && target.closest('.region-group-children')) {
+    const childrenDiv = target.closest('.region-group-children');
+    const groupDiv = childrenDiv.parentElement;
+    const parentInput = groupDiv.querySelector('.region-opt > input[type="checkbox"]');
+    
+    if (parentInput && childrenDiv) {
+      const allChildren = Array.from(childrenDiv.querySelectorAll('input[type="checkbox"]'));
+      const allChecked = allChildren.every(c => c.checked);
+      const someChecked = allChildren.some(c => c.checked);
+      
+      parentInput.checked = allChecked;
+      parentInput.indeterminate = someChecked && !allChecked;
+    }
+  }
+
+  // 3. Update display text & storage
+  // Logic: if parent is checked, show parent name only? Or show all children?
+  // User asked for "comma separated". 
+  // Let's collect: Global + any checked Parent + any checked Child that isn't covered by a checked Parent?
+  // Actually simplest is just list what is checked.
+  // But to be cleaner: 
+  // - If Global is checked, list Global
+  // - If NA is checked (all children), list NA
+  // - If NA is partial, list checked children (US, Canada...)
+  
+  const selectedLabels = [];
+  
+  // Global
+  const globalInput = panel.querySelector('input[value="Global"]');
+  if(globalInput && globalInput.checked) selectedLabels.push('Global');
+
+  // Groups
+  const groups = panel.querySelectorAll('.region-group');
+  groups.forEach(g => {
+    const parentInput = g.querySelector('.region-opt > input[type="checkbox"]');
+    const childrenDiv = g.querySelector('.region-group-children');
+    
+    if (parentInput.checked) {
+      // Full group selected
+      selectedLabels.push(parentInput.value);
+    } else if (parentInput.indeterminate) {
+      // Partial group selected
+      const checkedChildren = childrenDiv.querySelectorAll('input[type="checkbox"]:checked');
+      checkedChildren.forEach(c => selectedLabels.push(c.value));
+    }
+  });
+
+  const text = document.getElementById('regionBtnText');
+  if (text) {
+    if (selectedLabels.length === 0) text.textContent = 'Select regions';
+    else if (selectedLabels.length > 3) text.textContent = `${selectedLabels.length} regions selected`;
+    else text.textContent = selectedLabels.join(', ');
+  }
+  
+  // Save all checked values for restoration
+  const allChecked = Array.from(panel.querySelectorAll('input[type="checkbox"]:checked')).map(c => c.value);
+  localStorage.setItem('workfxai_regions', allChecked.join(','));
+}
+document.addEventListener('click', (ev)=>{
+  const dd = document.getElementById('regionDropdown');
+  if(!dd) return;
+  if(!dd.contains(ev.target)) dd.classList.remove('open');
+});
+(() => {
+  const panel = document.getElementById('regionPanel');
+  const saved = localStorage.getItem('workfxai_regions');
+  if(panel && saved){
+    const set = new Set(saved.split(',').map(s=>s.trim()).filter(Boolean));
+    panel.querySelectorAll('input[type="checkbox"]').forEach(ch=>{
+      ch.checked = set.has(ch.value);
+    });
+  }
+  updateRegionsFromPanel();
+})();
+
+function toggleRegionGroup(e, id) {
+  e.preventDefault();
+  e.stopPropagation();
+  const children = document.getElementById(id);
+  const btn = e.currentTarget;
+  if (children && btn) {
+    children.classList.toggle('open');
+    btn.classList.toggle('expanded');
+  }
+}
 </script>
 
 </body>

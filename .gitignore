@@ -1,0 +1,12 @@
+# OS generated files
+.DS_Store
+
+# Temporary export bundles
+export_*
+snapshot_*
+latest_bundle.zip
+quick-check-package/
+quick-check-offline/
+
+# Editor files
+.vscode/

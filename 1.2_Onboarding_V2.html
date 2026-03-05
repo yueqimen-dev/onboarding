@@ -426,6 +426,15 @@ body {
       </p>
 
       <form id="onboardingForm">
+        <!-- Brand Name Input -->
+        <div class="form-group">
+          <label class="form-label">Brand Name</label>
+          <div class="input-wrap">
+            <input type="text" class="input-field" id="brandName" placeholder="e.g. Nordstrom" required style="padding-left: 16px;">
+          </div>
+        </div>
+
+        <!-- Website URL Input -->
         <div class="form-group">
           <label class="form-label">Your Website URL</label>
           <div class="input-wrap">
@@ -520,6 +529,7 @@ document.getElementById('competitorInput').addEventListener('keypress', (e) => {
 document.getElementById('onboardingForm').addEventListener('submit', (e) => {
   e.preventDefault();
   const domain = document.getElementById('websiteUrl').value.trim();
+  const brand = document.getElementById('brandName').value.trim();
   const websiteUrl = 'https://' + domain.replace(/^https?:\/\//, '');
 
   const remainingInput = document.getElementById('competitorInput').value.trim();
@@ -529,6 +539,7 @@ document.getElementById('onboardingForm').addEventListener('submit', (e) => {
   }
 
   localStorage.setItem('workfxai_website', websiteUrl);
+  localStorage.setItem('workfxai_brand_name', brand);
   localStorage.setItem('workfxai_competitors', competitors.join(', '));
 
   window.location.href = '1.3_Industry_Recognition_V2.html';

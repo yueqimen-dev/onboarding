@@ -590,6 +590,24 @@
     .mi.ig {
       background: #fdf2f8;
       border-left-color: #C13584;
+      font-weight: 700;
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(193, 53, 132, 0.15);
+      z-index: 5;
+      position: relative;
+    }
+
+    .mi:not(.ig) {
+        opacity: 0.6;
+    }
+    
+    .mi:not(.ig):not(.pv-item) {
+        filter: grayscale(100%);
+    }
+
+    .mi:not(.ig):hover {
+        opacity: 1;
+        filter: none;
     }
 
     .mi.x {
@@ -1021,7 +1039,7 @@
       line-height: 1.6;
       margin-bottom: 28px;
     }
-
+/*
     .modal-plans {
       display: flex;
       gap: 12px;
@@ -1077,7 +1095,7 @@
       font-weight: 500;
       color: var(--gray-400);
     }
-
+*/
     .modal-cta {
       width: 100%;
       padding: 14px;
@@ -1436,15 +1454,7 @@
       <div class="modal-title">Unlock your full action plan</div>
       <div class="modal-desc">Your personalized 2-week action plan is ready.<br>Execute <strong>18 actions</strong>
         across Blog, Reddit, LinkedIn, Instagram &amp; X.</div>
-      <div class="modal-plans">
-        <div class="plan"><span class="plan-name">Monthly</span>
-          <div class="plan-price">$49<span>/mo</span></div>
-        </div>
-        <div class="plan pop"><span class="plan-name">Annual</span><span class="plan-tag">Save 40%</span>
-          <div class="plan-price">$29<span>/mo</span></div>
-        </div>
-      </div>
-      <button class="modal-cta">Start free trial</button>
+      <button class="modal-cta" onclick="window.location.href='3.0_Subscription_Plans.html'">Start 3 day free trial</button>
     </div>
   </div>
 
@@ -1560,6 +1570,12 @@
           const el = document.createElement('div');
           el.className = 'mi ' + item.p;
           el.innerHTML = IC[item.p] + '<span>' + item.t + '</span>';
+          
+          if (item.p === 'ig') {
+              el.style.cursor = 'pointer';
+              el.addEventListener('click', () => { window.location.href = 'Connect_Platforms_WorkfxAI.html'; });
+          }
+          
           col.appendChild(el);
         }
         if (item.n) {
@@ -1602,6 +1618,10 @@
         if (isPreview && ii === 0) {
           tr.style.cursor = 'pointer';
           tr.addEventListener('click', () => { window.location.href = '4.2_Content_Creation_PiP.html'; });
+        } else if (item.p === 'ig') {
+          // Instagram link to Connect Platforms
+          tr.style.cursor = 'pointer';
+          tr.addEventListener('click', () => { window.location.href = 'Connect_Platforms_WorkfxAI.html'; });
         } else if (isLocked) {
           tr.style.cursor = 'pointer';
           tr.addEventListener('click', () => openModal());
